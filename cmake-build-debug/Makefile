@@ -122,6 +122,33 @@ depend:
 	$(MAKE) -f CMakeFiles\234124_introduction_to_system_programming.dir\build.make CMakeFiles/234124_introduction_to_system_programming.dir/build
 .PHONY : 234124_introduction_to_system_programming/fast
 
+Assignments/hw0/mtm_buggy.obj: Assignments/hw0/mtm_buggy.c.obj
+
+.PHONY : Assignments/hw0/mtm_buggy.obj
+
+# target to build an object file
+Assignments/hw0/mtm_buggy.c.obj:
+	$(MAKE) -f CMakeFiles\234124_introduction_to_system_programming.dir\build.make CMakeFiles/234124_introduction_to_system_programming.dir/Assignments/hw0/mtm_buggy.c.obj
+.PHONY : Assignments/hw0/mtm_buggy.c.obj
+
+Assignments/hw0/mtm_buggy.i: Assignments/hw0/mtm_buggy.c.i
+
+.PHONY : Assignments/hw0/mtm_buggy.i
+
+# target to preprocess a source file
+Assignments/hw0/mtm_buggy.c.i:
+	$(MAKE) -f CMakeFiles\234124_introduction_to_system_programming.dir\build.make CMakeFiles/234124_introduction_to_system_programming.dir/Assignments/hw0/mtm_buggy.c.i
+.PHONY : Assignments/hw0/mtm_buggy.c.i
+
+Assignments/hw0/mtm_buggy.s: Assignments/hw0/mtm_buggy.c.s
+
+.PHONY : Assignments/hw0/mtm_buggy.s
+
+# target to generate assembly for a file
+Assignments/hw0/mtm_buggy.c.s:
+	$(MAKE) -f CMakeFiles\234124_introduction_to_system_programming.dir\build.make CMakeFiles/234124_introduction_to_system_programming.dir/Assignments/hw0/mtm_buggy.c.s
+.PHONY : Assignments/hw0/mtm_buggy.c.s
+
 Assignments/hw0/part1.obj: Assignments/hw0/part1.c.obj
 
 .PHONY : Assignments/hw0/part1.obj
@@ -185,6 +212,9 @@ help:
 	@echo ... 234124_introduction_to_system_programming
 	@echo ... edit_cache
 	@echo ... rebuild_cache
+	@echo ... Assignments/hw0/mtm_buggy.obj
+	@echo ... Assignments/hw0/mtm_buggy.i
+	@echo ... Assignments/hw0/mtm_buggy.s
 	@echo ... Assignments/hw0/part1.obj
 	@echo ... Assignments/hw0/part1.i
 	@echo ... Assignments/hw0/part1.s

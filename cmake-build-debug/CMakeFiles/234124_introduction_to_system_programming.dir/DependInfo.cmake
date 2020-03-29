@@ -4,6 +4,7 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_C
+  "E:/Development/Technion/234124-introduction-to-system-programming/Assignments/hw0/mtm_buggy.c" "E:/Development/Technion/234124-introduction-to-system-programming/cmake-build-debug/CMakeFiles/234124_introduction_to_system_programming.dir/Assignments/hw0/mtm_buggy.c.obj"
   "E:/Development/Technion/234124-introduction-to-system-programming/Assignments/hw0/part1.c" "E:/Development/Technion/234124-introduction-to-system-programming/cmake-build-debug/CMakeFiles/234124_introduction_to_system_programming.dir/Assignments/hw0/part1.c.obj"
   "E:/Development/Technion/234124-introduction-to-system-programming/main.c" "E:/Development/Technion/234124-introduction-to-system-programming/cmake-build-debug/CMakeFiles/234124_introduction_to_system_programming.dir/main.c.obj"
   )

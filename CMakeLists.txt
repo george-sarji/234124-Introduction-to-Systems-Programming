@@ -3,4 +3,4 @@ project(234124_introduction_to_system_programming C)
 
 set(CMAKE_C_STANDARD 99)
 
-add_executable(234124_introduction_to_system_programming main.c Assignments/hw0/part1.c)
+add_executable(234124_introduction_to_system_programming main.c Assignments/hw0/part1.c Assignments/hw0/mtm_buggy.c)

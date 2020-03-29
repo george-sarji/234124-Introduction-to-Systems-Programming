@@ -74,6 +74,9 @@
 				</MakeCommands>
 			</Target>
 		</Build>
+		<Unit filename="E:/Development/Technion/234124-introduction-to-system-programming/Assignments/hw0/mtm_buggy.c">
+			<Option target="234124_introduction_to_system_programming"/>
+		</Unit>
 		<Unit filename="E:/Development/Technion/234124-introduction-to-system-programming/Assignments/hw0/part1.c">
 			<Option target="234124_introduction_to_system_programming"/>
 		</Unit>
