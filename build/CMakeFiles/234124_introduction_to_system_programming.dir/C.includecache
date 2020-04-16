@@ -1,0 +1,28 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+E:/Development/Technion/234124-introduction-to-system-programming/Assignments/hw0/mtm_buggy.c
+stdio.h
+-
+string.h
+-
+stdbool.h
+-
+stdlib.h
+-
+
+E:/Development/Technion/234124-introduction-to-system-programming/Assignments/hw0/part1.c
+stdio.h
+-
+stdlib.h
+-
+
+E:/Development/Technion/234124-introduction-to-system-programming/main.c
+stdio.h
+-
+
