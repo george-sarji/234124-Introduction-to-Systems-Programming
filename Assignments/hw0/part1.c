@@ -52,5 +52,6 @@ int main()
     }
 
     printf("Total exponent sum is %d\n", exponentSum);
+    free(array);
     return 0;
 }
