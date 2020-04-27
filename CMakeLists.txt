@@ -8,3 +8,4 @@ set(CMAKE_C_STANDARD 99)
 
 add_executable(hw0-part1 Assignments/hw0/part1.c)
 add_executable(hw0-part2 Assignments/hw0/mtm_buggy.c)
+add_executable(hw1-q1 Assignments/hw1/q1.c)
