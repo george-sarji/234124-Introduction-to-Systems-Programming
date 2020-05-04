@@ -9,8 +9,8 @@ typedef struct node_t
 
 typedef struct pair_t
 {
-    const char *key;
-    const char *value;
+    char *key;
+    char *value;
 } * MapPair;
 
 #endif

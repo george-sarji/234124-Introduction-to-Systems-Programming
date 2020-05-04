@@ -1,6 +1,17 @@
 {
     "C_Cpp.default.configurationProvider": "vector-of-bool.cmake-tools",
     "files.associations": {
-        "stdlib.h": "c"
+        "stdlib.h": "c",
+        "functional": "c",
+        "system_error": "c",
+        "array": "c",
+        "tuple": "c",
+        "type_traits": "c",
+        "utility": "c",
+        "fstream": "c",
+        "istream": "c",
+        "ostream": "c",
+        "sstream": "c",
+        "string": "c"
     }
 }
