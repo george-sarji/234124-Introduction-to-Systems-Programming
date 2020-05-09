@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include <string.h>
+#include <stdio.h>
 #include "map.h"
 #include "node.h"
 
@@ -9,15 +10,56 @@ struct Map_t
     int iterator;
 };
 
-// TODO: mapCreate: Creates new map object - Needs to be tested
+void freeNode(Node node)
+{
+    // Free only the given node.
+    free(node->data->key);
+    free(node->data->value);
+    free(node->data);
+    free(node);
+}
+void freeNodes(Node node)
+{
+    // Go through the node's data and free it.
+    while (node != NULL)
+    {
+        Node current = node;
+        node = node->next;
+        // Free the current node.
+        freeNode(current);
+    }
+}
+
+char *assignChar(const char *source, char **dest)
+{
+    // Allocate space.
+
+    char *new_str = malloc((strlen(source) + 1) * sizeof(char));
+    if (new_str == NULL)
+        return NULL;
+    strcpy(new_str, source);
+    *dest = new_str;
+    return new_str;
+}
+
+// // TODO TEST: mapCreate: Creates new map object - Needs to be tested
 Map mapCreate()
 {
+    // Allocate pair.
     Map new_map = malloc(sizeof(Map));
     if (new_map == NULL)
         return NULL;
-
+    new_map->data = malloc(sizeof(Node));
+    if (new_map->data == NULL)
+        return NULL;
+    ((new_map)->data)->data = malloc(sizeof(MapPair));
+    if (((new_map)->data)->data == NULL)
+        return NULL;
+    // Allocate integer space for iterator
     // Change iterator status
-    new_map->iterator = 0;
+    // new_map->iterator = (int)*(malloc(sizeof(int)));
+    // (new_map)->iterator = 0;
+    // TODO: Tackle leak issue with iterator
     // Allocate new map.
     return new_map;
 }
@@ -27,67 +69,81 @@ void mapDestroy(Map map)
     if (map == NULL)
         return;
     // Go through the linked list
-    Node pairs = map->data;
-    while (pairs != NULL)
-    {
-        // Start freeing nodes.
-        Node current_pair = pairs;
-        pairs = pairs->next;
-        free(current_pair->data);
-        free(current_pair);
-    }
+    freeNodes(map->data);
     free(map);
 }
 
-// Map mapCopy(Map map)
-// {
-//     if (map == NULL)
-//         return NULL;
-// }
-
-// // TODO: mapCopy: Copies map into new one - Needs to be tested
-// Map mapCopy(Map map)
-// {
-//     if (map == NULL)
-//         return NULL;
-//     //    Allocate new map
-//     Map newMap = mapCreate();
-//     if (newMap == NULL)
-//         return NULL;
-//     // Allocate a pair node
-//     MapPairNode newPair = malloc(sizeof(MapPairNode));
-//     if (newPair == NULL)
-//     {
-//         mapDestroy(newMap);
-//         return NULL;
-//     }
-//     newMap->pairs = newPair;
-//     MapPairNode temp = newPair;
-//     MapPairNode current = map->pairs;
-//     // Go over the current map pairs.
-//     while (current != NULL)
-//     {
-//         // Copy the key and value
-//         temp->data->key = current->data->key;
-//         temp->data->value = current->data->value;
-//         // Is there a next node?
-//         if (current->next != NULL)
-//         {
-//             // Allocate new temp
-//             MapPairNode new = malloc(sizeof(MapPairNode));
-//             if (new == NULL)
-//             {
-//                 // Deallocate everything
-//                 mapDestroy(newMap);
-//                 return NULL;
-//             }
-//             temp->next = new;
-//         }
-//         current = current->next;
-//         temp = temp->next;
-//     }
-//     return newMap;
-// }
+Map mapCopy(Map map)
+{
+    if (map == NULL)
+        return NULL;
+    // Allocate a new map.
+    Map new_map = malloc(sizeof(Map));
+    if (new_map == NULL)
+        return NULL;
+    // Allocate a new starting data node
+    Node start_node = malloc(sizeof(Node));
+    if (start_node == NULL)
+    {
+        mapDestroy(new_map);
+        return NULL;
+    }
+    new_map->data = start_node;
+    // Start node is correctly allocated. Allocate starting pair.
+    MapPair start_pair = malloc(sizeof(MapPair));
+    if (start_pair == NULL)
+    {
+        mapDestroy(new_map);
+        return NULL;
+    }
+    start_node->data = start_pair;
+    // Check the first node and allocate the correct values
+    Node current_copy = start_node, previous_copy = start_node;
+    if (map->data != NULL)
+    {
+        // Allocate the data into the node.
+        if (assignChar(map->data->data->key, &(start_pair->key)) == NULL ||
+            assignChar(map->data->data->value, &(start_pair->value)) == NULL)
+        {
+            mapDestroy(new_map);
+            return NULL;
+        }
+    }
+    // Assign the current and previous node, iterate through.
+    Node current_node = map->data;
+    while (current_node->next != NULL)
+    {
+        // Allocate a new node for current copy
+        current_copy = malloc(sizeof(Node));
+        if (current_copy == NULL)
+        {
+            mapDestroy(new_map);
+            return NULL;
+        }
+        // Create a new pair for the node.
+        MapPair current_pair = malloc(sizeof(MapPair));
+        if (current_pair == NULL)
+        {
+            freeNode(current_copy);
+            mapDestroy(new_map);
+            return NULL;
+        }
+        current_copy->data = current_pair;
+        // Assign the values.
+        if (assignChar(current_node->data->key, &(current_pair->key)) == NULL ||
+            assignChar(current_node->data->value, &(current_pair->value)) == NULL)
+        {
+            freeNode(current_copy);
+            mapDestroy(new_map);
+            return NULL;
+        }
+        // We assigned everything successfully. Assign current node as previous' next and cycle.
+        previous_copy->next = current_copy;
+        previous_copy = previous_copy->next;
+        current_node = current_node->next;
+    }
+    return map;
+}
 
 int mapGetSize(Map map)
 {
@@ -122,89 +178,78 @@ bool mapContains(Map map, const char *key)
     return false;
 }
 
+Node createNewNode(const char *key, const char *data)
+{
+    if (key == NULL || data == NULL)
+        return NULL;
+    Node new_node = malloc(sizeof(Node));
+    if (new_node == NULL)
+        return NULL;
+    // Create a new map pair.
+    new_node->data = malloc(sizeof(MapPair));
+    if (new_node->data == NULL)
+    {
+        freeNode(new_node);
+        return NULL;
+    }
+    char *key_str = (char *)malloc(sizeof(char) * (1 + strlen(key)));
+    char *val_str = malloc(sizeof(char) * (1 + strlen(data)));
+    // Assign the values.
+    // Allocate strings for key and value.
+    // new_node->data->key =
+    if (assignChar(key, &key_str) == NULL ||
+        assignChar(data, &val_str) == NULL)
+    {
+        freeNode(new_node);
+        return NULL;
+    }
+    new_node->data->key = key_str;
+    new_node->data->value = val_str;
+    return new_node;
+}
+
 // TODO: Complete mapPut.
-// MapResult mapPut(Map map, const char *key, const char *data)
-// {
-//     if (map == NULL || key == NULL || data == NULL)
-//         return MAP_NULL_ARGUMENT;
-//     // Go through the current data in the map.
-//     Node current_pair = map->data;
-//     while (current_pair != NULL)
-//     {
-//         // Check if current key matches.
-//         if (strcmp(current_pair->data->key, key) == 0)
-//         {
-//             // We found the matching entry. Update the data.
-//             char *copied_str = malloc(strlen(data) * sizeof(char));
-//             if (copied_str == NULL)
-//                 return MAP_OUT_OF_MEMORY;
-//             // Set the copied string.
-//             strcpy(copied_str, data);
-//             current_pair->data->value = copied_str;
-//             return MAP_SUCCESS;
-//         }
-//         // Check if we are at the last node.
-//         else if(current_pair->next == NULL) {
-//             // Create a new node and add it and return success.
-//             Node new_pair = malloc(sizeof(Node));
-//             if(new_pair == NULL) return MAP_OUT_OF_MEMORY;
-//             MapPair node_data = malloc(sizeof(MapPair));
-//             if(node_data == NULL) return MAP_OUT_OF_MEMORY;
-//             // Set the data.
-//             char* copied_key = malloc(strlen(key) * sizeof(char));
-//             if(copied_key == NULL) return MAP_OUT_OF_MEMORY;
-//             strcpy(copied_key, key);
-//             node_data->key = copied_key;
+MapResult mapPut(Map map, const char *key, const char *data)
+{
+    if (map == NULL || key == NULL || data == NULL)
+        return MAP_NULL_ARGUMENT;
+    // Iterate over the given map.
+    Node current_node = map->data;
+    // Check if the first node is null.
+    if (current_node == NULL || current_node->data == NULL || current_node->data->key == NULL)
+    {
+        // Assign new node.
+        Node new_node = createNewNode(key, data);
+        if (new_node == NULL)
+            return MAP_NULL_ARGUMENT;
+        // Assign the new node to the map itself.
+        map->data = new_node;
+        return MAP_SUCCESS;
+    }
+    while (current_node != NULL)
+    {
+        // Check the current node.
+        if (strcmp(current_node->data->key, key) == 0)
+        {
+            // We located the required key. Assign char into the value and return success.
+            if (assignChar(data, &(current_node->data->value)) == NULL)
+                return MAP_OUT_OF_MEMORY;
+            return MAP_SUCCESS;
+        }
 
-//             char* copied_value = malloc(strlen(data)*sizeof(char));
-//             if(copied_value==NULL) return MAP_OUT_OF_MEMORY;
-//             strcpy(copied_value, data);
-//             node_data->value = copied_value;
-//             // Assign the values to the node.
-//             new_pair->data = node_data;
-
-//             // Set the next to the new node.
-//             current_pair->next = new_pair;
-//             return MAP_SUCCESS;
-//         }
-//     }
-// }
-
-// // TODO: mapPut: Changes value of key or adds key-value pair
-// MapResult mapPut(Map map, const char *key, const char *data)
-// {
-//     if (map == NULL || key == NULL || data == NULL)
-//         return MAP_NULL_ARGUMENT;
-//     // Go through the map pairs.
-//     MapPairNode pair = map->pairs;
-//     while (pair != NULL)
-//     {
-//         // Check if we can find the key.
-//         if (strcmp(pair->data->key, key) == 0)
-//         {
-//             // Change data of current pair
-//             pair->data->value = data;
-//             // Return with success
-//             return MAP_SUCCESS;
-//         }
-//         if (pair->next == NULL)
-//         {
-//             // Last pair. Add and return.
-//             // Allocate new pair space
-//             MapPairNode newSpace = malloc(sizeof(MapPairNode));
-//             if (newSpace == NULL)
-//                 return MAP_OUT_OF_MEMORY;
-//             // Not null. Allocate data, set into next and return.
-//             newSpace->data->key = key;
-//             newSpace->data->value = data;
-//             pair->next = newSpace;
-//             return MAP_SUCCESS;
-//         }
-//         pair = pair->next;
-//     }
-//     // Should not be reached.
-//     return MAP_ERROR;
-// }
+        if (current_node->next == NULL)
+        {
+            // We reached the last node. Create a new node, assign the values and return.
+            Node new_node = createNewNode(key, data);
+            if (new_node == NULL)
+                return MAP_NULL_ARGUMENT;
+            // Assign the new node to the map itself.
+            current_node->next = new_node;
+            return MAP_SUCCESS;
+        }
+    }
+    return MAP_ERROR;
+}
 
 char *mapGet(Map map, const char *key)
 {
@@ -221,6 +266,7 @@ char *mapGet(Map map, const char *key)
             // We found the required entry. Return the data.
             return current_pair->data->value;
         }
+        current_pair = current_pair->next;
     }
     // Returned nothing. Give null.
     return NULL;
@@ -239,10 +285,7 @@ MapResult mapRemove(Map map, const char *key)
         // Remove the element from the list.
         map->data = current_pair->next;
         // Free the current pair.
-        free(current_pair->data->key);
-        free(current_pair->data->value);
-        free(current_pair->data);
-        free(current_pair);
+        freeNode(current_pair);
         return MAP_SUCCESS;
     }
     // Go through the pairs.
@@ -255,10 +298,7 @@ MapResult mapRemove(Map map, const char *key)
             // We found the required node. Skip over.
             current_pair->next = next_pair->next;
             // Free the next pair node
-            free(next_pair->data->key);
-            free(next_pair->data->value);
-            free(next_pair->data);
-            free(next_pair);
+            freeNode(next_pair);
             return MAP_SUCCESS;
         }
         // Go on to the next node.
@@ -269,10 +309,28 @@ MapResult mapRemove(Map map, const char *key)
 }
 
 // TODO: mapGetFirst: Retrieves first key in map
-char *mapGetFirst(Map map) {}
+char *mapGetFirst(Map map);
 
 // TODO: mapGetNext: Retrieves next key in line
-char *mapGetNext(Map map) {}
+char *mapGetNext(Map map);
 
 // TODO: mapClear: Clears the map from key-value pairs
-MapResult mapClear(Map map) {}
+MapResult mapClear(Map map);
+
+int main()
+{
+    Map map = mapCreate();
+    if (map == NULL)
+    {
+        return 0;
+    }
+    mapPut(map, "308324772", "John Snow");
+    mapPut(map, "208364702", "Sansa Stark");
+    mapPut(map, "308324772", "The Night King");
+    char *name = mapGet(map, "308324772");    // name = "The Night King"
+    name = mapGet(map, "208364702");          // name = "Sansa Stark"
+    bool res = mapContains(map, "108364702"); // res = false
+    if (res)
+        return 1;
+    printf("%s", name);
+}
