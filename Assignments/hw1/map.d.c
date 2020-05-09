@@ -34,12 +34,11 @@ char *assignChar(const char *source, char **dest)
 {
     // Allocate space.
 
-    char *new_str = malloc((strlen(source) + 1) * sizeof(char));
-    if (new_str == NULL)
-        return NULL;
-    strcpy(new_str, source);
-    *dest = new_str;
-    return new_str;
+    // *dest = malloc((strlen(source) + 1) * sizeof(char));
+    // if (*dest == NULL)
+    // return NULL;
+    strcpy(*dest, source);
+    return *dest;
 }
 
 // // TODO TEST: mapCreate: Creates new map object - Needs to be tested
@@ -51,10 +50,16 @@ Map mapCreate()
         return NULL;
     new_map->data = malloc(sizeof(Node));
     if (new_map->data == NULL)
+    {
+        mapDestroy(new_map);
         return NULL;
+    }
     ((new_map)->data)->data = malloc(sizeof(MapPair));
     if (((new_map)->data)->data == NULL)
+    {
+        mapDestroy(new_map);
         return NULL;
+    }
     // Allocate integer space for iterator
     // Change iterator status
     // new_map->iterator = (int)*(malloc(sizeof(int)));
@@ -102,12 +107,14 @@ Map mapCopy(Map map)
     if (map->data != NULL)
     {
         // Allocate the data into the node.
-        if (assignChar(map->data->data->key, &(start_pair->key)) == NULL ||
-            assignChar(map->data->data->value, &(start_pair->value)) == NULL)
-        {
-            mapDestroy(new_map);
-            return NULL;
-        }
+        strcpy(start_pair->key, map->data->data->key);
+        strcpy(start_pair->value, map->data->data->value);
+        // if (assignChar(map->data->data->key, &(start_pair->key)) == NULL ||
+        //     assignChar(map->data->data->value, &(start_pair->value)) == NULL)
+        // {
+        //     mapDestroy(new_map);
+        //     return NULL;
+        // }
     }
     // Assign the current and previous node, iterate through.
     Node current_node = map->data;
@@ -130,13 +137,15 @@ Map mapCopy(Map map)
         }
         current_copy->data = current_pair;
         // Assign the values.
-        if (assignChar(current_node->data->key, &(current_pair->key)) == NULL ||
-            assignChar(current_node->data->value, &(current_pair->value)) == NULL)
-        {
-            freeNode(current_copy);
-            mapDestroy(new_map);
-            return NULL;
-        }
+        strcpy(current_pair->key, current_node->data->key);
+        strcpy(current_pair->value, current_node->data->value);
+        // if (assignChar(current_node->data->key, &(current_pair->key)) == NULL ||
+        //     assignChar(current_node->data->value, &(current_pair->value)) == NULL)
+        // {
+        //     freeNode(current_copy);
+        //     mapDestroy(new_map);
+        //     return NULL;
+        // }
         // We assigned everything successfully. Assign current node as previous' next and cycle.
         previous_copy->next = current_copy;
         previous_copy = previous_copy->next;
@@ -192,19 +201,29 @@ Node createNewNode(const char *key, const char *data)
         freeNode(new_node);
         return NULL;
     }
-    char *key_str = (char *)malloc(sizeof(char) * (1 + strlen(key)));
-    char *val_str = malloc(sizeof(char) * (1 + strlen(data)));
-    // Assign the values.
-    // Allocate strings for key and value.
-    // new_node->data->key =
-    if (assignChar(key, &key_str) == NULL ||
-        assignChar(data, &val_str) == NULL)
+    new_node->data->key = (char *)malloc(sizeof(char) * (1 + strlen(key)));
+    if (new_node->data->key == NULL)
     {
         freeNode(new_node);
         return NULL;
     }
-    new_node->data->key = key_str;
-    new_node->data->value = val_str;
+    new_node->data->value = (char *)malloc(sizeof(char) * (1 + strlen(data)));
+    if (new_node->data->value == NULL)
+    {
+        freeNode(new_node);
+        return NULL;
+    }
+    // Assign the values.
+    // Allocate strings for key and value.
+    // new_node->data->key =
+    // assignChar(data, &(new_node->data->value));
+    strcpy(new_node->data->key, key);
+    strcpy(new_node->data->value, data);
+    // if (assignChar(key, &(new_node->data->key)) == NULL || assignChar(data, &(new_node->data->value)) == NULL)
+    // {
+    //     freeNode(new_node);
+    //     return NULL;
+    // }
     return new_node;
 }
 
@@ -223,6 +242,7 @@ MapResult mapPut(Map map, const char *key, const char *data)
         if (new_node == NULL)
             return MAP_NULL_ARGUMENT;
         // Assign the new node to the map itself.
+        freeNode(map->data);
         map->data = new_node;
         return MAP_SUCCESS;
     }
@@ -232,7 +252,9 @@ MapResult mapPut(Map map, const char *key, const char *data)
         if (strcmp(current_node->data->key, key) == 0)
         {
             // We located the required key. Assign char into the value and return success.
-            if (assignChar(data, &(current_node->data->value)) == NULL)
+            free(current_node->data->value);
+            current_node->data->value = malloc(sizeof(char) * (1 + strlen(data)));
+            if (current_node->data->value == NULL || strcpy(current_node->data->value, data) == NULL)
                 return MAP_OUT_OF_MEMORY;
             return MAP_SUCCESS;
         }
@@ -247,6 +269,8 @@ MapResult mapPut(Map map, const char *key, const char *data)
             current_node->next = new_node;
             return MAP_SUCCESS;
         }
+
+        current_node = current_node->next;
     }
     return MAP_ERROR;
 }
@@ -325,12 +349,13 @@ int main()
         return 0;
     }
     mapPut(map, "308324772", "John Snow");
-    mapPut(map, "208364702", "Sansa Stark");
-    mapPut(map, "308324772", "The Night King");
-    char *name = mapGet(map, "308324772");    // name = "The Night King"
-    name = mapGet(map, "208364702");          // name = "Sansa Stark"
-    bool res = mapContains(map, "108364702"); // res = false
-    if (res)
-        return 1;
-    printf("%s", name);
+    // mapPut(map, "208364702", "Sansa Stark");
+    // mapPut(map, "308324772", "The Night King");
+    // char *name = mapGet(map, "308324772");    // name = "The Night King"
+    // name = mapGet(map, "208364702");          // name = "Sansa Stark"
+    // bool res = mapContains(map, "108364702"); // res = false
+    // if (res)
+    //     return 1;
+    // printf("%s", name);
+    return 1;
 }
