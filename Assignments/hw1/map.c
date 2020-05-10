@@ -43,6 +43,7 @@ Map mapCreate()
         return NULL;
     }
     map->data = node;
+    map->iterator = NULL;
     return map;
 }
 
@@ -53,6 +54,7 @@ void mapDestroy(Map map)
         return;
     }
     // Free the node.
+    map->iterator = NULL;
     nodeDestroy(map->data);
     free(map);
 }
@@ -273,6 +275,29 @@ MapResult mapClear(Map map)
     return MAP_SUCCESS;
 }
 
+char *mapGetFirst(Map map)
+{
+    if (map == NULL || mapGetSize(map) == 0)
+    {
+        return NULL;
+    }
+    Node node = mapGetData(map);
+    map->iterator = node;
+    return nodeGetKey(node);
+}
+
+char *mapGetNext(Map map)
+{
+    // Advance iterator.
+    if (map == NULL || map->iterator == NULL || nodeGetNext(map->iterator) == NULL)
+    {
+        return NULL;
+    }
+    Node iterator = map->iterator;
+    iterator = nodeGetNext(iterator);
+    return nodeGetKey(iterator);
+}
+
 int main()
 {
     Map map = mapCreate();
@@ -286,15 +311,18 @@ int main()
     printf("%d", mapContains(map, "012"));
     mapPut(map, "308324772", "John Snow");
     mapPut(map, "208364702", "Sansa Stark");
+    mapGetFirst(map);
+    mapGetNext(map);
     mapGet(map, "308324772"); // name = "The Night King"
     mapDestroy(mapCopy(map));
-    // mapRemove(map, "208364702");
+    mapRemove(map, "208364702");
     mapClear(map);
+    mapPut(map, "308324772", "The Night King");
+    char *name = mapGet(map, "208364702"); // name = "Sansa Stark"
+    printf("%s", name);
+    bool res = mapContains(map, "108364702"); // res = false
     mapDestroy(map);
-    // mapPut(map, "308324772", "The Night King");
-    // name = mapGet(map, "208364702");          // name = "Sansa Stark"
-    // bool res = mapContains(map, "108364702"); // res = false
-    // if (res)
-    //     return 1;
+    if (res)
+        return 1;
     return 1;
 }
