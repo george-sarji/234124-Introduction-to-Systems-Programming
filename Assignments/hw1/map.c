@@ -257,6 +257,22 @@ Map mapCopy(Map map)
     return new_map;
 }
 
+MapResult mapClear(Map map)
+{
+    if (map == NULL)
+    {
+        return MAP_NULL_ARGUMENT;
+    }
+    Node current_node = mapGetData(map);
+    while (current_node != NULL)
+    {
+        Node *previous = &current_node;
+        current_node = nodeGetNext(current_node);
+        nodeDestroy(*previous);
+    }
+    return MAP_SUCCESS;
+}
+
 int main()
 {
     Map map = mapCreate();
@@ -269,10 +285,11 @@ int main()
     printf("%d", count);
     printf("%d", mapContains(map, "012"));
     mapPut(map, "308324772", "John Snow");
-    // mapPut(map, "208364702", "Sansa Stark");
+    mapPut(map, "208364702", "Sansa Stark");
     mapGet(map, "308324772"); // name = "The Night King"
-    mapCopy(map);
-    mapRemove(map, "208364702");
+    mapDestroy(mapCopy(map));
+    // mapRemove(map, "208364702");
+    mapClear(map);
     mapDestroy(map);
     // mapPut(map, "308324772", "The Night King");
     // name = mapGet(map, "208364702");          // name = "Sansa Stark"

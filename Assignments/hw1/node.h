@@ -34,10 +34,8 @@ void nodeDestroy(Node node)
 {
     if (node == NULL)
         return;
-    if (node->key != NULL)
-        free(node->key);
-    if (node->data != NULL)
-        free(node->data);
+    free(node->key);
+    free(node->data);
     free(node);
 }
 
