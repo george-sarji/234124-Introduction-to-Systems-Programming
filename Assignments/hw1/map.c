@@ -169,7 +169,7 @@ char *mapGet(Map map, const char *key)
     while (current_node != NULL)
     {
         // Compare.
-        if (strcmp(nodeGetKey(current_node), key) == 0)
+        if (nodeCompareKey(current_node, key))
         {
             // We found the key.
             return nodeGetData(current_node);
@@ -210,6 +210,53 @@ MapResult mapRemove(Map map, const char *key)
     return MAP_ITEM_DOES_NOT_EXIST;
 }
 
+Map mapCopy(Map map)
+{
+    if (map == NULL)
+    {
+        return NULL;
+    }
+    // Create a new map.
+    Map new_map = mapCreate();
+    if (new_map == NULL)
+    {
+        return NULL;
+    }
+    Node original_node = mapGetData(map);
+    if (original_node == NULL)
+    {
+        return new_map;
+    }
+    Node node_copy = mapGetData(map);
+    while (original_node != NULL)
+    {
+        // Copy the data from the original node to the current node.
+        char *key = nodeGetKey(original_node);
+        char *data = nodeGetData(original_node);
+        nodeSetKey(node_copy, key);
+        nodeSetData(node_copy, data);
+        if (nodeGetNext(original_node) != NULL)
+        {
+            // Create a new node as next.
+            Node next_node = nodeCreate();
+            if (next_node != NULL)
+            {
+                // Assign it as next.
+                nodeSetNext(node_copy, next_node);
+            }
+            else
+            {
+                mapDestroy(new_map);
+                return NULL;
+            }
+        }
+        node_copy = nodeGetNext(node_copy);
+        original_node = nodeGetNext(original_node);
+    }
+    // mapDestroy(new_map);
+    return new_map;
+}
+
 int main()
 {
     Map map = mapCreate();
@@ -222,8 +269,9 @@ int main()
     printf("%d", count);
     printf("%d", mapContains(map, "012"));
     mapPut(map, "308324772", "John Snow");
-    mapPut(map, "208364702", "Sansa Stark");
+    // mapPut(map, "208364702", "Sansa Stark");
     mapGet(map, "308324772"); // name = "The Night King"
+    mapCopy(map);
     mapRemove(map, "208364702");
     mapDestroy(map);
     // mapPut(map, "308324772", "The Night King");

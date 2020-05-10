@@ -3,6 +3,7 @@
 
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 typedef struct node_t
 {
     char *key;
@@ -63,30 +64,59 @@ char *nodeGetData(Node node)
 
 char *nodeSetKey(Node node, const char *key)
 {
-    free(node->key);
-    char *new_key = malloc(sizeof(char) * (1 + strlen(key)));
-    if (new_key == NULL)
+    if (node == NULL)
     {
-        node->key = NULL;
         return NULL;
     }
-    strcpy(new_key, key);
-    node->key = new_key;
-    return new_key;
+    else if (key == NULL)
+    {
+        node->key = NULL;
+    }
+    else
+    {
+        // Allocate new space.
+        char *new_key = malloc(sizeof(char) * (1 + strlen(key)));
+        if (new_key == NULL)
+        {
+            node->key = NULL;
+        }
+        else
+        {
+            strcpy(new_key, key);
+            char *old_key = node->key;
+            node->key = new_key;
+            free(old_key);
+        }
+    }
+    return node->key;
 }
 char *nodeSetData(Node node, const char *data)
 {
-    // Allocate new data.
-    free(node->data);
-    char *new_data = malloc(sizeof(char) * (1 + strlen(data)));
-    if (new_data == NULL)
+    if (node == NULL)
     {
-        node->data = NULL;
         return NULL;
     }
-    strcpy(new_data, data);
-    node->data = new_data;
-    return new_data;
+    else if (data == NULL)
+    {
+        node->data = NULL;
+    }
+    else
+    {
+        // Allocate new space.
+        char *new_data = malloc(sizeof(char) * (1 + strlen(data)));
+        if (new_data == NULL)
+        {
+            node->data = NULL;
+        }
+        else
+        {
+            strcpy(new_data, data);
+            char *old_data = node->data;
+            node->data = new_data;
+            free(old_data);
+        }
+    }
+    return node->data;
 }
 
 Node nodeSetNext(Node node, Node next)
