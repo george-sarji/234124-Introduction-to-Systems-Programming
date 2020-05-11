@@ -2,6 +2,8 @@
 #define ENTITY_H
 
 #include "call_result.h"
+#include "election.h"
+#include "util.h"
 #include <stdlib.h>
 #include <string.h>
 #include <stdbool.h>
@@ -21,6 +23,7 @@ typedef struct entity_t
 } * Entity;
 
 char *getEntityName(Entity entity);
+char *getEntityNameCopy(Entity entity);
 int getEntityId(Entity entity);
 Entity createTribe(int id, const char *name);
 Entity createArea(int id, const char *name);
@@ -31,6 +34,7 @@ bool isEntityIdentical(Entity ent1, Entity ent2);
 bool isSameEntityId(Entity ent1, int id);
 Entity getNextEntity(Entity entity);
 CallResult setNextEntity(Entity entity, Entity next);
+ElectionResult addEntity(Entity entity, int id, const char *name, EntityType type);
 
 CallResult setEntityName(Entity entity, const char *name);
 CallResult setEntityId(Entity entity, int id);
@@ -103,7 +107,7 @@ int getEntityId(Entity entity)
 
 Entity createEntity(int id, const char *name, EntityType type)
 {
-    if (id <= 0 || name == NULL)
+    if (!isLegalId(id) || name == NULL)
     {
         return NULL;
     }
@@ -171,6 +175,61 @@ CallResult setEntityId(Entity entity, int id)
 {
     entity->id = id;
     return ASSIGN_SUCCESS;
+}
+
+ElectionResult addEntity(Entity entity, int id, const char *name, EntityType type)
+{
+    if (entity == NULL || name == NULL)
+    {
+        return ELECTION_NULL_ARGUMENT;
+    }
+    if (!isLegalId(id))
+    {
+        return ELECTION_INVALID_ID;
+    }
+    if (!isLegalName(name))
+    {
+        return ELECTION_INVALID_NAME;
+    }
+    // Go through the entities.
+    Entity current = entity;
+    while (current != NULL)
+    {
+        // Check if they're identical.
+        if (isSameEntityId(current, id))
+        {
+            // Active entity. Return.
+            return type == ENTITY_TRIBE ? ELECTION_TRIBE_ALREADY_EXIST : ELECTION_AREA_ALREADY_EXIST;
+        }
+        if (getNextEntity(current) == NULL)
+        {
+            // Create the new entity.
+            Entity new_entity = createEntity(id, name, type);
+            if (new_entity == NULL)
+            {
+                return ELECTION_OUT_OF_MEMORY;
+            }
+            setNextEntity(current, new_entity);
+            return ELECTION_SUCCESS;
+        }
+    }
+    return ELECTION_SUCCESS;
+}
+
+char *getEntityNameCopy(Entity entity)
+{
+    if (entity == NULL || getEntityName(entity) == NULL)
+    {
+        return NULL;
+    }
+    // Allocate new string.
+    char *new_str = malloc(sizeof(char) * (1 + strlen(getEntityName(entity))));
+    if (new_str == NULL)
+    {
+        return NULL;
+    }
+    strcpy(new_str, getEntityName(entity));
+    return new_str;
 }
 
 #endif // TRIBE_H
