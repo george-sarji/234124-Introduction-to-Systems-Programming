@@ -9,13 +9,15 @@ typedef struct tribe_t
     char *name;
 } * Tribe;
 
-char *tribeGetName(Tribe tribe);
-int tribeGetId(Tribe tribe);
+char *getTribeName(Tribe tribe);
+int getTribeId(Tribe tribe);
+Tribe createTribe(int id, const char *name);
+void destroyTribe(Tribe tribe);
 
-CallResult tribeSetName(Tribe tribe, const char *name);
-CallResult tribeSetId(Tribe tribe, int id);
+CallResult setTribeName(Tribe tribe, const char *name);
+CallResult setTribeId(Tribe tribe, int id);
 
-char *tribeGetName(Tribe tribe)
+char *getTribeName(Tribe tribe)
 {
     if (tribe == NULL)
     {
@@ -33,10 +35,50 @@ int tribeGetId(Tribe tribe)
     return tribe->id;
 }
 
-CallResult tribeSetName(Tribe tribe, const char *name)
+Tribe createTribe(int id, const char *name)
 {
-    if (tribe == NULL || name == NULL)
+    if (id <= 0 || name == NULL)
     {
+        return NULL;
+    }
+    Tribe tribe = malloc(sizeof(*tribe));
+    if (tribe == NULL)
+    {
+        return NULL;
+    }
+    // Set the ID and name.
+    setTribeId(tribe, id);
+    tribe->name = NULL;
+    if (setTribeName(tribe, name) == ASSIGN_MEMORY)
+    {
+        destroyTribe(tribe);
+        return NULL;
+    }
+    return tribe;
+}
+
+void destroyTribe(Tribe tribe)
+{
+    if (tribe == NULL)
+    {
+        return;
+    }
+    // Free the name, id and the tribe.
+    free(tribe->name);
+    tribe->name = NULL;
+    free(tribe);
+    tribe = NULL;
+}
+
+CallResult setTribeName(Tribe tribe, const char *name)
+{
+    if (tribe == NULL)
+    {
+        return ASSIGN_NULL;
+    }
+    else if (name == NULL)
+    {
+        tribe->name = NULL;
         return ASSIGN_NULL;
     }
     // Allocate new char
@@ -45,15 +87,19 @@ CallResult tribeSetName(Tribe tribe, const char *name)
     {
         return ASSIGN_MEMORY;
     }
-    // Copy the string.
-    strcpy(new_name, name);
-    // Assign.
-    free(tribe->name);
-    tribe->name = new_name;
-    return ASSIGN_SUCCESS;
+    else
+    {
+        // Copy the string.
+        strcpy(new_name, name);
+        // Assign.
+        free(tribe->name);
+        tribe->name = new_name;
+        return ASSIGN_SUCCESS;
+    }
+    return ASSIGN_UNK_ERROR;
 }
 
-CallResult tribeSetId(Tribe tribe, int id)
+CallResult setTribeId(Tribe tribe, int id)
 {
     tribe->id = id;
     return ASSIGN_SUCCESS;

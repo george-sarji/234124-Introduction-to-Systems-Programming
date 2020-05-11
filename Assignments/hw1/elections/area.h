@@ -11,13 +11,15 @@ typedef struct area_t
     char *name;
 } * Area;
 
-char *areaGetName(Area area);
-int areaGetId(Area area);
+char *getAreaName(Area area);
+int getAreaId(Area area);
+Area createArea(int id, const char *name);
+void destroyArea(Area area);
 
-CallResult areaSetName(Area area, const char *name);
-CallResult areaSetId(Area area, int id);
+CallResult setAreaName(Area area, const char *name);
+CallResult setAreaId(Area area, int id);
 
-char *areaGetName(Area area)
+char *getAreaName(Area area)
 {
     if (area == NULL)
     {
@@ -26,7 +28,7 @@ char *areaGetName(Area area)
     return area->name;
 }
 
-int areaGetId(Area area)
+int getAreaId(Area area)
 {
     if (area == NULL)
     {
@@ -35,7 +37,7 @@ int areaGetId(Area area)
     return area->id;
 }
 
-CallResult areaSetName(Area area, const char *name)
+CallResult setAreaName(Area area, const char *name)
 {
     if (area == NULL || name == NULL)
     {
@@ -55,9 +57,46 @@ CallResult areaSetName(Area area, const char *name)
     return ASSIGN_SUCCESS;
 }
 
-CallResult areaSetId(Area area, int id)
+CallResult setAreaId(Area area, int id)
 {
     area->id = id;
     return ASSIGN_SUCCESS;
 }
+
+Area createArea(int id, const char *name)
+{
+    if (id <= 0 || name == NULL)
+    {
+        return NULL;
+    }
+    Area area = malloc(sizeof(*area));
+    if (area == NULL)
+    {
+        return NULL;
+    }
+    area->name = NULL;
+    area->id = 0;
+    setAreaId(area, id);
+    if (setAreaName(area, name) != ASSIGN_SUCCESS)
+    {
+        // Destroy and return null.
+        destroyArea(area);
+        return NULL;
+    }
+    return area;
+}
+
+void destroyArea(Area area)
+{
+    if (area == NULL)
+    {
+        return;
+    }
+    // Free the name, id and the area.
+    free(area->name);
+    area->name = NULL;
+    free(area);
+    area = NULL;
+}
+
 #endif // AREA_H

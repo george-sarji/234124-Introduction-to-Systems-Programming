@@ -1,14 +1,7 @@
 #ifndef BALLOT_H
 #define BALLOT_H
 
-#include "tribe.h"
-
-typedef struct ballotBox_t
-{
-    int votes;
-    struct tribe_t *tribe;
-    struct ballotBox_t *next;
-} * BallotBox;
+#include "area.h"
 
 typedef struct areaBallot_t
 {
