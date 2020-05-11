@@ -1,7 +1,7 @@
 #ifndef BALLOTBOX_H
 #define BALLOTBOX_H
 
-#include "tribe.h"
+#include "entity.h"
 #include <stdlib.h>
 
 typedef enum voteResult_t
@@ -14,16 +14,16 @@ typedef enum voteResult_t
 typedef struct ballotBox_t
 {
     int votes;
-    struct tribe_t *tribe;
+    struct entity_t *entity;
     struct ballotBox_t *next;
 } * BallotBox;
 
-BallotBox createBallot(Tribe tribe);
+BallotBox createBallot(Entity entity);
 void destroyBallot(BallotBox ballot);
-CallResult setBallotTribe(BallotBox ballot, Tribe tribe);
+CallResult setBallotEntity(BallotBox ballot, Entity entity);
 CallResult setBallotNext(BallotBox ballot, BallotBox next);
 BallotBox getBallotNext(BallotBox ballot);
-Tribe getBallotTribe(BallotBox ballot);
+Entity getBallotEntity(BallotBox ballot);
 VoteResult addBallotVotes(BallotBox ballot, int votes);
 VoteResult removeBallotVotes(BallotBox ballot, int votes);
 
@@ -47,13 +47,13 @@ VoteResult addBallotVotes(BallotBox ballot, int votes)
     return VOTE_SUCCESS;
 }
 
-Tribe getBallotTribe(BallotBox ballot)
+Entity getBallotEntity(BallotBox ballot)
 {
     if (ballot == NULL)
     {
         return NULL;
     }
-    return ballot->tribe;
+    return ballot->entity;
 }
 BallotBox getBallotNext(BallotBox ballot)
 {
@@ -64,9 +64,9 @@ BallotBox getBallotNext(BallotBox ballot)
     return ballot->next;
 }
 
-BallotBox createBallot(Tribe tribe)
+BallotBox createBallot(Entity entity)
 {
-    if (tribe == NULL)
+    if (entity == NULL)
     {
         return NULL;
     }
@@ -79,7 +79,7 @@ BallotBox createBallot(Tribe tribe)
     }
     ballot->votes = 0;
     ballot->next = NULL;
-    if (setBallotTribe(ballot, tribe) != ASSIGN_SUCCESS)
+    if (setBallotEntity(ballot, entity) != ASSIGN_SUCCESS)
     {
         // Free everything.
         destroyBallot(ballot);
@@ -94,19 +94,19 @@ void destroyBallot(BallotBox ballot)
     {
         return;
     }
-    ballot->tribe = NULL;
+    ballot->entity = NULL;
     ballot->next = NULL;
     free(ballot);
     return;
 }
 
-CallResult setBallotTribe(BallotBox ballot, Tribe tribe)
+CallResult setBallotEntity(BallotBox ballot, Entity entity)
 {
-    if (ballot == NULL || tribe == NULL)
+    if (ballot == NULL || entity == NULL)
     {
         return ASSIGN_NULL;
     }
-    ballot->tribe = tribe;
+    ballot->entity = entity;
     return ASSIGN_SUCCESS;
 }
 

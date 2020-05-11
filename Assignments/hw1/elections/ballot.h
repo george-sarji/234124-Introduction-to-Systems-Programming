@@ -5,7 +5,7 @@
 
 typedef struct areaBallot_t
 {
-    struct area_t *area;
+    struct entity_t *area;
     struct ballotBox_t *boxes;
 } * AreaBallot;
 

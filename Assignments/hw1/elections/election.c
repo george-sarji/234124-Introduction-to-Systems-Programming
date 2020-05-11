@@ -1,6 +1,5 @@
-#include "area.h"
+#include "entity.h"
 #include "call_result.h"
-#include "tribe.h"
 #include "election.h"
 #include "ballot.h"
 #include "ballotbox.h"
@@ -10,21 +9,21 @@
 struct election_t
 {
     struct area_t *areas;
-    struct tribe_t *tribes;
+    struct entity_t *tribes;
     struct areaBallot_t *area_ballots;
 };
 
 int main()
 {
-    Tribe tribe = createTribe(1, "test");
-    printf("%s", getTribeName(tribe));
-    setTribeId(tribe, 5);
-    setTribeName(tribe, "lmao this works");  
+    Entity tribe = createEntity(1, "test");
+    printf("%s", getEntityName(tribe));
+    setEntityId(tribe, 5);
+    setEntityName(tribe, "lmao this works");  
     BallotBox ballot = createBallot(tribe);
     removeBallotVotes(ballot, 50);
     destroyBallot(ballot);
     if(tribe || ballot);
-    destroyTribe(tribe);
+    destroyEntity(tribe);
     tribe = NULL;
 
     Area area = createArea(2, "area");
