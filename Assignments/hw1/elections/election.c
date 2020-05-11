@@ -209,53 +209,53 @@ char *electionGetTribeName(Election election, int tribe_id)
 }
 
 // TODO: Complete function for electionSetTribeName
-ElectionResult setElectionEntityName(Election election, int id, const char *name, EntityType type)
-{
-    if (election == NULL || name == NULL)
-    {
-        return ELECTION_NULL_ARGUMENT;
-    }
-    if (isLegalId(id))
-    {
-        return ELECTION_INVALID_ID;
-    }
-    if (isLegalName(name))
-    {
-        return ELECTION_INVALID_NAME;
-    }
+// ElectionResult setElectionEntityName(Election election, int id, const char *name, EntityType type)
+// {
+//     if (election == NULL || name == NULL)
+//     {
+//         return ELECTION_NULL_ARGUMENT;
+//     }
+//     if (isLegalId(id))
+//     {
+//         return ELECTION_INVALID_ID;
+//     }
+//     if (isLegalName(name))
+//     {
+//         return ELECTION_INVALID_NAME;
+//     }
 
-}
+// }
 
-int main()
-{
-    Election el = electionCreate();
-    Entity tribe = createTribe(1, "test");
-    printf("%s", getEntityName(tribe));
-    setEntityId(tribe, 5);
-    setEntityName(tribe, "lmao this works");
-    BallotBox ballot = createBallot(tribe);
-    removeBallotVotes(ballot, 50);
-    electionAddTribe(el, 10, "Test tribe");
-    char *name = electionGetTribeName(el, 10);
-    assert(strcmp(name, "Test tribe") == 0);
-    printf("%s", name);
-    free(name);
-    electionAddArea(el, 10, "Test tribe");
-    destroyBallot(ballot);
-    destroyEntity(tribe);
-    tribe = NULL;
+// int main()
+// {
+//     Election el = electionCreate();
+//     Entity tribe = createTribe(1, "test");
+//     printf("%s", getEntityName(tribe));
+//     setEntityId(tribe, 5);
+//     setEntityName(tribe, "lmao this works");
+//     BallotBox ballot = createBallot(tribe);
+//     removeBallotVotes(ballot, 50);
+//     electionAddTribe(el, 10, "Test tribe");
+//     char *name = electionGetTribeName(el, 10);
+//     assert(strcmp(name, "Test tribe") == 0);
+//     printf("%s", name);
+//     free(name);
+//     electionAddArea(el, 10, "Test tribe");
+//     destroyBallot(ballot);
+//     destroyEntity(tribe);
+//     tribe = NULL;
 
-    Entity area = createArea(2, "area");
-    printf("%s", getEntityName(area));
-    setEntityId(area, 5);
-    setEntityName(area, "woah");
-    destroyEntity(area);
-    area = NULL;
+//     Entity area = createArea(2, "area");
+//     printf("%s", getEntityName(area));
+//     setEntityId(area, 5);
+//     setEntityName(area, "woah");
+//     destroyEntity(area);
+//     area = NULL;
 
-    electionDestroy(el);
+//     electionDestroy(el);
 
-    assert(isLegalName("test") == true);
-    // printf("%d", isLegalName("test"));
-    // tribe = NULL;
-    return 0;
-}
+//     assert(isLegalName("test") == true);
+//     // printf("%d", isLegalName("test"));
+//     // tribe = NULL;
+//     return 0;
+// }
