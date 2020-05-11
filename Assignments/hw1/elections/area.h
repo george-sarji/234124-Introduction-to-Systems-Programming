@@ -30,7 +30,7 @@ int areaGetId(Area area)
 {
     if (area == NULL)
     {
-        return NULL;
+        return -1;
     }
     return area->id;
 }

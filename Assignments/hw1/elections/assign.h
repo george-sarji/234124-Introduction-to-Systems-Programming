@@ -8,4 +8,4 @@ typedef enum assignResult_t
     ASSIGN_NULL
 } AssignResult;
 
-#endif ASSIGN_H
+#endif // ASSIGN_H

@@ -28,7 +28,7 @@ int tribeGetId(Tribe tribe)
 {
     if (tribe == NULL)
     {
-        return NULL;
+        return -1;
     }
     return tribe->id;
 }
