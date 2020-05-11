@@ -35,14 +35,7 @@ Map mapCreate()
         return NULL;
     }
     // Allocate new node.
-    Node node = nodeCreate();
-    if (node == NULL)
-    {
-        // Free the map.
-        free(map);
-        return NULL;
-    }
-    map->data = node;
+    map->data = NULL;
     map->iterator = NULL;
     return map;
 }
@@ -55,8 +48,15 @@ void mapDestroy(Map map)
     }
     // Free the node.
     map->iterator = NULL;
-    nodeDestroy(map->data);
+    Node current_node = mapGetData(map);
+    while (current_node != NULL)
+    {
+        Node next = nodeGetNext(current_node);
+        nodeDestroy(current_node);
+        current_node = next;
+    }
     free(map);
+    map = NULL;
 }
 
 int mapGetSize(Map map)
@@ -114,23 +114,23 @@ MapResult mapPut(Map map, const char *key, const char *data)
     // Go through the nodes.
     Node current_node = mapGetData(map);
     // Check if the first node is empty.
-    if (current_node == NULL || nodeGetKey(current_node) == NULL)
+    if (current_node == NULL)
     {
         // Create a new pair and add it into the node.
         // Allocate new strings.
-        if (nodeSetKey(current_node, key) == NULL)
+        // Allocate a new node.
+        Node new_node = nodeCreate();
+        if (new_node == NULL || nodeSetKey(new_node, key) == NULL || nodeSetData(new_node, data) == NULL)
         {
             return MAP_OUT_OF_MEMORY;
         }
-        if (nodeSetData(current_node, data) == NULL)
-        {
-            return MAP_OUT_OF_MEMORY;
-        }
+        // Set the data.
+        mapSetData(map, new_node);
         return MAP_SUCCESS;
     }
     while (current_node != NULL)
     {
-        if (strcmp(nodeGetKey(current_node), key) == 0)
+        if (nodeCompareKey(current_node, key))
         {
             // Set the key.
             if (nodeSetKey(current_node, key))
@@ -142,12 +142,9 @@ MapResult mapPut(Map map, const char *key, const char *data)
         else if (nodeGetNext(current_node) == NULL)
         {
             // Last node. Create a new node.
-            Node new_node = nodeCreate();
-            if (new_node == NULL)
-            {
-                return MAP_OUT_OF_MEMORY;
-            }
-            if (nodeSetKey(new_node, key) == NULL || nodeSetData(new_node, data))
+
+            Node new_node = nodeSetNext(current_node, nodeCreate());
+            if (new_node == NULL || nodeSetKey(new_node, key) == NULL || nodeSetData(new_node, data) == NULL)
             {
                 nodeDestroy(new_node);
                 return MAP_OUT_OF_MEMORY;
@@ -293,36 +290,26 @@ char *mapGetNext(Map map)
     {
         return NULL;
     }
-    Node iterator = map->iterator;
-    iterator = nodeGetNext(iterator);
-    return nodeGetKey(iterator);
+    map->iterator = nodeGetNext(map->iterator);
+    return nodeGetKey(map->iterator);
 }
 
-int main()
-{
-    Map map = mapCreate();
-    if (map == NULL)
-    {
-        return 0;
-    }
-    int count = 0;
-    count = mapGetSize(map);
-    printf("%d", count);
-    printf("%d", mapContains(map, "012"));
-    mapPut(map, "308324772", "John Snow");
-    mapPut(map, "208364702", "Sansa Stark");
-    mapGetFirst(map);
-    mapGetNext(map);
-    mapGet(map, "308324772"); // name = "The Night King"
-    mapDestroy(mapCopy(map));
-    mapRemove(map, "208364702");
-    mapClear(map);
-    mapPut(map, "308324772", "The Night King");
-    char *name = mapGet(map, "208364702"); // name = "Sansa Stark"
-    printf("%s", name);
-    bool res = mapContains(map, "108364702"); // res = false
-    mapDestroy(map);
-    if (res)
-        return 1;
-    return 1;
-}
+// int main()
+// {
+//     Map map = mapCreate();
+//     if (map == NULL)
+//     {
+//         return 0;
+//     }
+//     mapPut(map, "308324772", "John Snow");
+//     mapPut(map, "208364702", "Sansa Stark");
+//     mapGetFirst(map);
+//     mapGetNext(map);
+//     mapRemove(map, "208364702");
+//     // mapPut(map, "308324772", "The Night King");
+//     // char *name = mapGet(map, "208364702"); // name = "Sansa Stark"
+//     // printf("%s", name);
+//     // bool res = mapContains(map, "108364702"); // res = false
+//     mapDestroy(map);
+//     return 1;
+// }

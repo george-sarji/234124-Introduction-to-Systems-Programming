@@ -12,6 +12,11 @@
         "istream": "c",
         "ostream": "c",
         "sstream": "c",
-        "string": "c"
+        "string": "c",
+        "deque": "c",
+        "unordered_map": "c",
+        "vector": "c",
+        "initializer_list": "c",
+        "test_utilities.h": "c"
     }
 }

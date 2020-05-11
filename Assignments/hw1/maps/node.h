@@ -34,21 +34,31 @@ void nodeDestroy(Node node)
 {
     if (node == NULL)
         return;
-    free(node->key);
-    free(node->data);
+    if (node->key != NULL)
+    {
+        free(node->key);
+        node->key = NULL;
+    }
+    if (node->data != NULL)
+    {
+        free(node->data);
+        node->data = NULL;
+    }
+    node->next = NULL;
     free(node);
+    node = NULL;
 }
 
 Node nodeGetNext(Node node)
 {
-    if (node == NULL)
+    if (node == NULL || node->next == NULL)
         return NULL;
     return node->next;
 }
 
 char *nodeGetKey(Node node)
 {
-    if (node == NULL)
+    if (node == NULL || node->key == NULL)
         return NULL;
     return node->key;
 }
@@ -129,11 +139,8 @@ Node nodeSetNext(Node node, Node next)
 
 bool nodeCompareKey(Node node, const char *key)
 {
-    if (node == NULL || key == NULL || nodeGetKey(node) == NULL)
-    {
-        return false;
-    }
-    return strcmp(nodeGetKey(node), key) == 0;
+    return node != NULL && key != NULL && nodeGetKey(node) != NULL &&
+           strcmp(nodeGetKey(node), key) == 0;
 }
 
 #endif
