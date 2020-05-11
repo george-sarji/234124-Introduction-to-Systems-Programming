@@ -82,7 +82,7 @@ int mapGetSize(Map map)
 
 bool mapContains(Map map, const char *key)
 {
-    if (map == NULL)
+    if (map == NULL || key == NULL)
     {
         return false;
     }
@@ -133,7 +133,7 @@ MapResult mapPut(Map map, const char *key, const char *data)
         if (nodeCompareKey(current_node, key))
         {
             // Set the key.
-            if (nodeSetKey(current_node, key))
+            if (nodeSetData(current_node, data) == NULL)
             {
                 return MAP_OUT_OF_MEMORY;
             }
@@ -165,7 +165,7 @@ char *mapGet(Map map, const char *key)
     }
     // Get the nodes.
     Node current_node = mapGetData(map);
-    while (current_node != NULL)
+    while (current_node != NULL && nodeGetKey(current_node) != NULL)
     {
         // Compare.
         if (nodeCompareKey(current_node, key))
@@ -184,27 +184,37 @@ MapResult mapRemove(Map map, const char *key)
     {
         return MAP_NULL_ARGUMENT;
     }
-    // Go through the nodes.
+    // Check the nodes, one by one. We also need the pointer to the previous node.
     Node previous_node = mapGetData(map);
+    // Is the first node our hit?
     if (previous_node != NULL && nodeCompareKey(previous_node, key))
     {
-        // Remove the data.
+        // First node needs to be removed.
         mapSetData(map, nodeGetNext(previous_node));
         nodeDestroy(previous_node);
         return MAP_SUCCESS;
     }
+    // Get the second node.
     Node current_node = nodeGetNext(previous_node);
+    // Go through the nodes list.
     while (current_node != NULL)
     {
+        // Compare the key
         if (nodeCompareKey(current_node, key))
         {
-            // Found the key. Remove the node.
+            // We found the node. We have to remove it from the list.
             nodeSetNext(previous_node, nodeGetNext(current_node));
+            // Destroy the current node.
             nodeDestroy(current_node);
+            // Return.
             return MAP_SUCCESS;
         }
-        previous_node = current_node;
-        current_node = nodeGetNext(current_node);
+        else
+        {
+            // Not the key we wanted. Iterate onto the next node.
+            previous_node = current_node;
+            current_node = nodeGetNext(current_node);
+        }
     }
     return MAP_ITEM_DOES_NOT_EXIST;
 }
@@ -226,7 +236,14 @@ Map mapCopy(Map map)
     {
         return new_map;
     }
-    Node node_copy = mapGetData(map);
+    Node node_copy = nodeCreate();
+    if (node_copy == NULL)
+    {
+        // Return.
+        mapDestroy(new_map);
+        return NULL;
+    }
+    new_map->data = node_copy;
     while (original_node != NULL)
     {
         // Copy the data from the original node to the current node.
@@ -294,22 +311,24 @@ char *mapGetNext(Map map)
     return nodeGetKey(map->iterator);
 }
 
-// int main()
-// {
-//     Map map = mapCreate();
-//     if (map == NULL)
-//     {
-//         return 0;
-//     }
-//     mapPut(map, "308324772", "John Snow");
-//     mapPut(map, "208364702", "Sansa Stark");
-//     mapGetFirst(map);
-//     mapGetNext(map);
-//     mapRemove(map, "208364702");
-//     // mapPut(map, "308324772", "The Night King");
-//     // char *name = mapGet(map, "208364702"); // name = "Sansa Stark"
-//     // printf("%s", name);
-//     // bool res = mapContains(map, "108364702"); // res = false
-//     mapDestroy(map);
-//     return 1;
-// }
+int main()
+{
+    Map map = mapCreate();
+    if (map == NULL)
+    {
+        return 0;
+    }
+    mapPut(map, "308324772", "John Snow");
+    mapPut(map, "208364702", "Sansa Stark");
+    mapGetFirst(map);
+    mapGetNext(map);
+    mapRemove(map, "208364702");
+    mapPut(map, "308324772", "The Night King");
+    char *name = mapGet(map, "208364702"); // name = "Sansa Stark"
+    printf("%s", name);
+    bool res = mapContains(map, "108364702"); // res = false
+    if (res)
+        ;
+    mapDestroy(map);
+    return 1;
+}

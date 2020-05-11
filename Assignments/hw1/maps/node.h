@@ -131,6 +131,7 @@ Node nodeSetNext(Node node, Node next)
 {
     if (node == NULL || next == NULL)
     {
+        node->next = NULL;
         return NULL;
     }
     node->next = next;
