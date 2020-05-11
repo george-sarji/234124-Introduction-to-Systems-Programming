@@ -1,7 +1,16 @@
 #include "area.h"
-#include "assign.h"
+#include "call_result.h"
 #include "tribe.h"
+#include "election.h"
 
-int main() {
+struct election_t
+{
+    struct area_t *areas;
+    struct tribe_t *tribes;
+    struct areaBallot_t *area_ballots;
+};
+
+int main()
+{
     return 0;
 }

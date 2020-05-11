@@ -1,7 +1,7 @@
 #ifndef TRIBE_H
 #define TRIBE_H
 
-#include "assign.h"
+#include "call_result.h"
 
 typedef struct tribe_t
 {
@@ -12,8 +12,8 @@ typedef struct tribe_t
 char *tribeGetName(Tribe tribe);
 int tribeGetId(Tribe tribe);
 
-AssignResult tribeSetName(Tribe tribe, const char *name);
-AssignResult tribeSetId(Tribe tribe, int id);
+CallResult tribeSetName(Tribe tribe, const char *name);
+CallResult tribeSetId(Tribe tribe, int id);
 
 char *tribeGetName(Tribe tribe)
 {
@@ -33,7 +33,7 @@ int tribeGetId(Tribe tribe)
     return tribe->id;
 }
 
-AssignResult tribeSetName(Tribe tribe, const char *name)
+CallResult tribeSetName(Tribe tribe, const char *name)
 {
     if (tribe == NULL || name == NULL)
     {
@@ -53,7 +53,7 @@ AssignResult tribeSetName(Tribe tribe, const char *name)
     return ASSIGN_SUCCESS;
 }
 
-AssignResult tribeSetId(Tribe tribe, int id)
+CallResult tribeSetId(Tribe tribe, int id)
 {
     tribe->id = id;
     return ASSIGN_SUCCESS;

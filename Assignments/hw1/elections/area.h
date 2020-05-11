@@ -3,7 +3,7 @@
 
 #include <stdlib.h>
 #include <string.h>
-#include "assign.h"
+#include "call_result.h"
 
 typedef struct area_t
 {
@@ -14,8 +14,8 @@ typedef struct area_t
 char *areaGetName(Area area);
 int areaGetId(Area area);
 
-AssignResult areaSetName(Area area, const char *name);
-AssignResult areaSetId(Area area, int id);
+CallResult areaSetName(Area area, const char *name);
+CallResult areaSetId(Area area, int id);
 
 char *areaGetName(Area area)
 {
@@ -35,7 +35,7 @@ int areaGetId(Area area)
     return area->id;
 }
 
-AssignResult areaSetName(Area area, const char *name)
+CallResult areaSetName(Area area, const char *name)
 {
     if (area == NULL || name == NULL)
     {
@@ -55,7 +55,7 @@ AssignResult areaSetName(Area area, const char *name)
     return ASSIGN_SUCCESS;
 }
 
-AssignResult areaSetId(Area area, int id)
+CallResult areaSetId(Area area, int id)
 {
     area->id = id;
     return ASSIGN_SUCCESS;
