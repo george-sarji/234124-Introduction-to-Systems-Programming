@@ -20,12 +20,19 @@ typedef struct ballotBox_t
 
 BallotBox createBallot(Entity entity);
 void destroyBallot(BallotBox ballot);
+void destroyBallots(BallotBox ballot);
 CallResult setBallotEntity(BallotBox ballot, Entity entity);
 CallResult setBallotNext(BallotBox ballot, BallotBox next);
 BallotBox getBallotNext(BallotBox ballot);
 Entity getBallotEntity(BallotBox ballot);
 VoteResult addBallotVotes(BallotBox ballot, int votes);
 VoteResult removeBallotVotes(BallotBox ballot, int votes);
+bool isSameBallot(BallotBox box1, BallotBox box2);
+
+bool isSameBallot(BallotBox box1, BallotBox box2)
+{
+    return box1 != NULL && box2 != NULL && getBallotEntity(box1) != NULL && getBallotEntity(box2) != NULL && isEntityIdentical(getBallotEntity(box1), getBallotEntity(box2));
+}
 
 VoteResult removeBallotVotes(BallotBox ballot, int votes)
 {
@@ -98,6 +105,21 @@ void destroyBallot(BallotBox ballot)
     ballot->next = NULL;
     free(ballot);
     return;
+}
+
+void destroyBallots(BallotBox ballot)
+{
+    if (ballot == NULL)
+    {
+        return;
+    }
+    BallotBox current = ballot;
+    while (current != NULL)
+    {
+        BallotBox next = getBallotNext(ballot);
+        destroyBallot(current);
+        current = next;
+    }
 }
 
 CallResult setBallotEntity(BallotBox ballot, Entity entity)
