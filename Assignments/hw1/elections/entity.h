@@ -212,6 +212,7 @@ ElectionResult addEntity(Entity entity, int id, const char *name, EntityType typ
             setNextEntity(current, new_entity);
             return ELECTION_SUCCESS;
         }
+        current = getNextEntity(current);
     }
     return ELECTION_SUCCESS;
 }
