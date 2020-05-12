@@ -12,6 +12,7 @@
 
 bool isLegalName(const char *name);
 bool isLegalId(int id);
+int calculateIntegerLength(int id);
 
 bool isLegalName(const char *name)
 {
@@ -34,6 +35,19 @@ bool isLegalName(const char *name)
 bool isLegalId(int id)
 {
     return id >= 0;
+}
+
+int calculateIntegerLength(int id)
+{
+    if (id == 0)
+        return 1;
+    int count = 0;
+    while (id != 0)
+    {
+        count++;
+        id = id / 10;
+    }
+    return count;
 }
 
 #endif

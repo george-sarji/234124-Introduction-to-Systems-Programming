@@ -14,9 +14,9 @@
 #define STRINGIFY(x) #x
 #define TOSTRING(x) STRINGIFY(x)
 
-#define FIRST_TRIBE 5
+#define FIRST_TRIBE 3
 #define SECOND_TRIBE 4
-#define THIRD_TRIBE 3
+#define THIRD_TRIBE 5
 #define FIRST_AREA 1
 #define SECOND_AREA 2 
 #define THIRD_AREA 3   
@@ -69,7 +69,7 @@ bool testElectionRemoveAreas() {
     ASSERT_TEST(electionRemoveAreas(election, deleteOnlyFirstArea) == ELECTION_SUCCESS);
     ASSERT_TEST(electionAddArea(election, SECOND_AREA, "second area") == ELECTION_AREA_ALREADY_EXIST);
     ASSERT_TEST(electionAddArea(election, 3, "THIRD ") == ELECTION_INVALID_NAME);
-    electionDestroy(election); 
+    electionDestroy(election);
     return true;
 }
 bool testElectionRemoveAddtribe()
@@ -96,7 +96,7 @@ bool  testAddRemoveVotes() {
     ASSERT_TEST(electionAddArea(election, SECOND_AREA, "second area") == ELECTION_SUCCESS); //create area 2
     ASSERT_TEST(electionAddTribe(election, FIRST_TRIBE, "first tribe") == ELECTION_SUCCESS); //create tribe 1
     ASSERT_TEST(electionAddTribe(election, SECOND_TRIBE, "second tribe") == ELECTION_SUCCESS); //create tribe 2
-    ASSERT_TEST(electionAddTribe(election, THIRD_TRIBE, "third tribe") == ELECTION_SUCCESS); //create tribe 3 
+    ASSERT_TEST(electionAddTribe(election, THIRD_TRIBE, "third tribe") == ELECTION_SUCCESS); //create tribe 3
     ASSERT_TEST(electionAddVote(election,FIRST_AREA, FIRST_TRIBE, 10) == ELECTION_SUCCESS); //+10 votes: area 1->tribe 1
     ASSERT_TEST(electionAddVote(election, FIRST_AREA,SECOND_TRIBE, 14) == ELECTION_SUCCESS); //+14 votes: area 1->tribe 2
     ASSERT_TEST(electionAddVote(election, SECOND_AREA, FIRST_TRIBE, 17) == ELECTION_SUCCESS); //+17 votes: area 2->tribe 1
@@ -144,13 +144,13 @@ bool testComputeAreasToTribesMapping()
      * MAX VOTES AREA 3: LOWEST ID
      * MAX VOTES AREA 4: SECOND_TRIBE
      * */
-    // Map tester = NULL;
-    // ASSERT_TEST((tester = electionComputeAreasToTribesMapping(election)) != NULL);
-    // ASSERT_TEST(!strcmp(mapGet(tester, TOSTRING(FIRST_AREA)), TOSTRING(FIRST_TRIBE)));
-    // ASSERT_TEST(!strcmp(mapGet(tester, TOSTRING(SECOND_AREA)), TOSTRING(THIRD_TRIBE)));
-    // ASSERT_TEST(!strcmp(mapGet(tester, TOSTRING(THIRD_AREA)), TOSTRING(FIRST_TRIBE)));
-    // ASSERT_TEST(!strcmp(mapGet(tester, TOSTRING(FOURTH_AREA)), TOSTRING(SECOND_TRIBE)));
-    // mapDestroy(tester);
+    Map tester = NULL;
+    ASSERT_TEST((tester = electionComputeAreasToTribesMapping(election)) != NULL);
+    ASSERT_TEST(!strcmp(mapGet(tester, TOSTRING(FIRST_AREA)), TOSTRING(FIRST_TRIBE)));
+    ASSERT_TEST(!strcmp(mapGet(tester, TOSTRING(SECOND_AREA)), TOSTRING(THIRD_TRIBE)));
+    ASSERT_TEST(!strcmp(mapGet(tester, TOSTRING(THIRD_AREA)), TOSTRING(FIRST_TRIBE)));
+    ASSERT_TEST(!strcmp(mapGet(tester, TOSTRING(FOURTH_AREA)), TOSTRING(SECOND_TRIBE)));
+    mapDestroy(tester);
 
     electionDestroy(election);
     return true;
@@ -187,16 +187,16 @@ bool raiseHell()
         {
             id2 = rand_int(NUM_OF_TRIBES-1);
         } while (id2 == id1);
-        ASSERT_TEST(electionRemoveVote(election, i, id2,rand_int(MAX_VOTES) + 1) == ELECTION_SUCCESS);
+        ASSERT_TEST(electionAddVote(election, i, id2,rand_int(MAX_VOTES) + 1) == ELECTION_SUCCESS);
     }
-    // Map statistics1, statistics2;
-    // ASSERT_TEST((statistics1 = electionComputeAreasToTribesMapping(election)) != NULL);
+    Map statistics1, statistics2;
+    ASSERT_TEST((statistics1 = electionComputeAreasToTribesMapping(election)) != NULL);
     ASSERT_TEST(electionAddTribe(election, id1, tmp) == ELECTION_SUCCESS);
     ASSERT_TEST(electionRemoveAreas(election, deleteAllAreas) == ELECTION_SUCCESS);
-    // ASSERT_TEST((statistics2 = electionComputeAreasToTribesMapping(election)) != NULL);
-    // ASSERT_TEST(mapGetFirst(statistics2) == NULL);
-    // mapDestroy(statistics1);
-    // mapDestroy(statistics2);
+    ASSERT_TEST((statistics2 = electionComputeAreasToTribesMapping(election)) != NULL);
+    ASSERT_TEST(mapGetFirst(statistics2) == NULL);
+    mapDestroy(statistics1);
+    mapDestroy(statistics2);
     electionDestroy(election);
     free(tmp);
     return true;

@@ -27,12 +27,14 @@ CallResult setAreaBallotBoxes(AreaBallot ballot, BallotBox box);
 
 AreaBallot getNextAreaBallot(AreaBallot ballot);
 CallResult setNextAreaBallot(AreaBallot ballot, AreaBallot next);
+int getWinningTribe(AreaBallot ballot);
 
 // ! Misc
 CallResult removeAreaBallotBox(AreaBallot ballot, BallotBox box);
 void removeTribeBallots(AreaBallot ballot, int tribe_id);
 CallResult addTribeBoxes(AreaBallot ballot, Entity tribe);
 void insertAreaBallot(AreaBallot ballot, AreaBallot add);
+
 AreaBallot createAreaBallot(Entity area, Entity tribes)
 {
     if (area == NULL)
@@ -245,6 +247,34 @@ CallResult addTribeBoxes(AreaBallot ballot, Entity tribe)
         current = getNextAreaBallot(current);
     }
     return ELECTION_SUCCESS;
+}
+
+int getWinningTribe(AreaBallot ballot)
+{
+    if (ballot == NULL)
+    {
+        return -1;
+    }
+    BallotBox box = getAreaBallotBoxes(ballot);
+    if (box == NULL)
+    {
+        return -1;
+    }
+    // Take the max as first.
+    int max_votes = getBallotVotes(box), max_id = getEntityId(getBallotTribe(box));
+    box = getNextBallot(box);
+    while (box != NULL)
+    {
+        int tribe_id = getEntityId(getBallotTribe(box));
+        int votes = getBallotVotes(box);
+        if ((max_votes == votes && max_id > tribe_id) || max_votes < votes)
+        {
+            max_votes = votes;
+            max_id = tribe_id;
+        }
+        box = getNextBallot(box);
+    }
+    return max_id;
 }
 
 #endif

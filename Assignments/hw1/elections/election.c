@@ -466,6 +466,37 @@ ElectionResult electionRemoveVote(Election election, int area_id, int tribe_id, 
     }
 }
 
+Map electionComputeAreasToTribesMapping(Election election)
+{
+    if (election == NULL)
+    {
+        return NULL;
+    }
+    Map map = mapCreate();
+    // Go through the ballots.
+    AreaBallot ballot = getElectionAreaBallots(election);
+    while (ballot != NULL)
+    {
+        // Get the winning tribe.
+        int tribe = getWinningTribe(ballot);
+        if (tribe == -1)
+        {
+            continue;
+        }
+        int area = getEntityId(getBallotArea(ballot));
+        char *tribe_str = malloc(sizeof(char) * (calculateIntegerLength(tribe) + 1));
+        char *area_str = malloc(sizeof(char) * (calculateIntegerLength(area) + 1));
+        sprintf(tribe_str, "%d", tribe);
+        sprintf(area_str, "%d", area);
+
+        mapPut(map, area_str, tribe_str);
+        free(tribe_str);
+        free(area_str);
+        ballot = getNextAreaBallot(ballot);
+    }
+    return map;
+}
+
 // int main()
 // {
 //     Election election = electionCreate();
