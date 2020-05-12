@@ -1,9 +1,10 @@
 #ifndef BALLOTBOX_H
 #define BALLOTBOX_H
 
-#include "entity.h"
 #include <stdlib.h>
-
+#include <stdbool.h>
+#include "entity.h"
+#include "ballot.h"
 typedef enum voteResult_t
 {
     VOTE_NULL,
@@ -14,132 +15,192 @@ typedef enum voteResult_t
 typedef struct ballotBox_t
 {
     int votes;
-    struct entity_t *entity;
+    struct entity_t *tribe;
     struct ballotBox_t *next;
 } * BallotBox;
 
-BallotBox createBallot(Entity entity);
-void destroyBallot(BallotBox ballot);
-void destroyBallots(BallotBox ballot);
-CallResult setBallotEntity(BallotBox ballot, Entity entity);
-CallResult setBallotNext(BallotBox ballot, BallotBox next);
-BallotBox getBallotNext(BallotBox ballot);
-Entity getBallotEntity(BallotBox ballot);
-VoteResult addBallotVotes(BallotBox ballot, int votes);
-VoteResult removeBallotVotes(BallotBox ballot, int votes);
+// * Declarations
+// ! CREATE/DESTROY
+BallotBox createBallot(Entity tribe);
+void destroyBallot(BallotBox box);
+void destroyBallots(BallotBox box);
+
+// ! GET
+Entity getBallotTribe(BallotBox box);
+BallotBox getNextBallot(BallotBox box);
+int getBallotVotes(BallotBox box);
+
+// ! SET
+void setBallotTribe(BallotBox box, Entity tribe);
+void setNextBallot(BallotBox box, BallotBox next);
+void setBallotVotes(BallotBox box, int votes);
+
+// ! MISC
+ElectionResult addBallotVotes(BallotBox box, int votes);
+ElectionResult removeBallotVotes(BallotBox box, int votes);
+BallotBox removeTribeBallot(BallotBox box, int id);
 bool isSameBallot(BallotBox box1, BallotBox box2);
+
+// * Logic
+BallotBox createBallot(Entity tribe)
+{
+    if (tribe == NULL)
+    {
+        return NULL;
+    }
+    BallotBox box = malloc(sizeof(*box));
+    if (box == NULL)
+    {
+        return NULL;
+    }
+    box->tribe = tribe;
+    box->votes = 0;
+    box->next = NULL;
+    return box;
+}
+
+void destroyBallot(BallotBox box)
+{
+    if (box == NULL)
+    {
+        return;
+    }
+    box->tribe = NULL;
+    box->next = NULL;
+    free(box);
+}
+
+void destroyBallots(BallotBox box)
+{
+    if (box == NULL)
+    {
+        return;
+    }
+    BallotBox current = box;
+    while (current != NULL)
+    {
+        BallotBox to_destroy = current;
+        current = getNextBallot(current);
+        destroyBallot(to_destroy);
+    }
+}
+
+Entity getBallotTribe(BallotBox box)
+{
+    if (box == NULL)
+    {
+        return NULL;
+    }
+    return box->tribe;
+}
+
+BallotBox getNextBallot(BallotBox box)
+{
+    if (box == NULL)
+    {
+        return NULL;
+    }
+    return box->next;
+}
+
+int getBallotVotes(BallotBox box)
+{
+    if (box == NULL)
+    {
+        return -1;
+    }
+    return box->votes;
+}
+
+void setBallotTribe(BallotBox box, Entity tribe)
+{
+    if (box == NULL || tribe == NULL)
+    {
+        return;
+    }
+    box->tribe = tribe;
+}
+
+void setNextBallot(BallotBox box, BallotBox next)
+{
+    if (box == NULL)
+    {
+        return;
+    }
+    box->next = next;
+}
+
+void setBallotVotes(BallotBox box, int votes)
+{
+    if (box == NULL || votes < 0)
+    {
+        return;
+    }
+    box->votes = votes;
+}
+
+ElectionResult addBallotVotes(BallotBox box, int votes)
+{
+    if (box == NULL || votes < 0)
+    {
+        return ELECTION_NULL_ARGUMENT;
+    }
+    setBallotVotes(box, getBallotVotes(box) + votes);
+    return ELECTION_SUCCESS;
+}
+
+ElectionResult removeBallotVotes(BallotBox box, int votes)
+{
+    if (box == NULL || votes < 0)
+    {
+        return ELECTION_NULL_ARGUMENT;
+    }
+    setBallotVotes(box, getBallotVotes(box) - votes);
+    return ELECTION_SUCCESS;
+}
+
+BallotBox removeTribeBallot(BallotBox box, int id)
+{
+    if (box == NULL || !isLegalId(id))
+    {
+        return NULL;
+    }
+    // Go through the ballots.
+    // Is the first box the one we are looking for?
+    if (box != NULL && isSameEntityId(getBallotTribe(box), id))
+    {
+        // We found the box to remove.
+        BallotBox next = getNextBallot(box);
+        // Destroy box and return.
+        destroyBallot(box);
+        return next;
+    }
+    // Get the previous pointer, advance current by one.
+    BallotBox current = box;
+    BallotBox previous = current;
+    current = getNextBallot(current);
+    while (current != NULL)
+    {
+        if (isSameEntityId(getBallotTribe(box), id))
+        {
+            // Remove this one.
+            setNextBallot(previous, getNextBallot(current));
+            destroyBallot(current);
+            return box;
+        }
+        previous = current;
+        current = getNextBallot(current);
+    }
+    return NULL;
+}
 
 bool isSameBallot(BallotBox box1, BallotBox box2)
 {
-    return box1 != NULL && box2 != NULL && getBallotEntity(box1) != NULL && getBallotEntity(box2) != NULL && isEntityIdentical(getBallotEntity(box1), getBallotEntity(box2));
-}
-
-VoteResult removeBallotVotes(BallotBox ballot, int votes)
-{
-    if (ballot == NULL)
+    if (box1 == NULL || box2 == NULL)
     {
-        return VOTE_NULL;
+        return false;
     }
-    ballot->votes -= votes;
-    return VOTE_SUCCESS;
-}
-
-VoteResult addBallotVotes(BallotBox ballot, int votes)
-{
-    if (ballot == NULL)
-    {
-        return VOTE_NULL;
-    }
-    ballot->votes += votes;
-    return VOTE_SUCCESS;
-}
-
-Entity getBallotEntity(BallotBox ballot)
-{
-    if (ballot == NULL)
-    {
-        return NULL;
-    }
-    return ballot->entity;
-}
-BallotBox getBallotNext(BallotBox ballot)
-{
-    if (ballot == NULL)
-    {
-        return NULL;
-    }
-    return ballot->next;
-}
-
-BallotBox createBallot(Entity entity)
-{
-    if (entity == NULL)
-    {
-        return NULL;
-    }
-    // Allocate a ballot.
-    BallotBox ballot = malloc(sizeof(*ballot));
-    if (ballot == NULL)
-    {
-        // Return null.
-        return NULL;
-    }
-    ballot->votes = 0;
-    ballot->next = NULL;
-    if (setBallotEntity(ballot, entity) != ASSIGN_SUCCESS)
-    {
-        // Free everything.
-        destroyBallot(ballot);
-        return NULL;
-    }
-    return ballot;
-}
-
-void destroyBallot(BallotBox ballot)
-{
-    if (ballot == NULL)
-    {
-        return;
-    }
-    ballot->entity = NULL;
-    ballot->next = NULL;
-    free(ballot);
-    return;
-}
-
-void destroyBallots(BallotBox ballot)
-{
-    if (ballot == NULL)
-    {
-        return;
-    }
-    BallotBox current = ballot;
-    while (current != NULL)
-    {
-        BallotBox next = getBallotNext(ballot);
-        destroyBallot(current);
-        current = next;
-    }
-}
-
-CallResult setBallotEntity(BallotBox ballot, Entity entity)
-{
-    if (ballot == NULL || entity == NULL)
-    {
-        return ASSIGN_NULL;
-    }
-    ballot->entity = entity;
-    return ASSIGN_SUCCESS;
-}
-
-CallResult setBallotNext(BallotBox ballot, BallotBox next)
-{
-    if (ballot == NULL || next == NULL)
-    {
-        return ASSIGN_NULL;
-    }
-    ballot->next = next;
-    return ASSIGN_SUCCESS;
+    return &box1 == &box2;
 }
 
 #endif
