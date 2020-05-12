@@ -5,7 +5,7 @@
 #include "test_utilities.h"
 
 /*The number of tests*/
-#define NUMBER_TESTS 3
+#define NUMBER_TESTS 5
 #define MAX_STR_LEN 20 //Must be greater than 1
 #define MAX_VOTES 100 //Must be greater than 1
 #define NUM_OF_AREAS 30 //Do not lower beneath 12
@@ -14,9 +14,9 @@
 #define STRINGIFY(x) #x
 #define TOSTRING(x) STRINGIFY(x)
 
-#define FIRST_TRIBE 3
+#define FIRST_TRIBE 5
 #define SECOND_TRIBE 4
-#define THIRD_TRIBE 5
+#define THIRD_TRIBE 3
 #define FIRST_AREA 1
 #define SECOND_AREA 2 
 #define THIRD_AREA 3   
@@ -100,14 +100,14 @@ bool  testAddRemoveVotes() {
     ASSERT_TEST(electionAddVote(election,FIRST_AREA, FIRST_TRIBE, 10) == ELECTION_SUCCESS); //+10 votes: area 1->tribe 1
     ASSERT_TEST(electionAddVote(election, FIRST_AREA,SECOND_TRIBE, 14) == ELECTION_SUCCESS); //+14 votes: area 1->tribe 2
     ASSERT_TEST(electionAddVote(election, SECOND_AREA, FIRST_TRIBE, 17) == ELECTION_SUCCESS); //+17 votes: area 2->tribe 1
-    // ASSERT_TEST(electionRemoveVote(election,FIRST_AREA, SECOND_TRIBE, 4) == ELECTION_SUCCESS); //-4 votes: area 1->tribe 2 :: TOTAL: 10
-    // ASSERT_TEST(electionAddVote(election, FIRST_AREA, SECOND_TRIBE, -1) == ELECTION_INVALID_VOTES);
-    // ASSERT_TEST(electionAddVote(NULL, SECOND_AREA, SECOND_TRIBE, 3) == ELECTION_NULL_ARGUMENT);
-    // ASSERT_TEST(electionAddVote(election, FIRST_AREA, 7, 27) == ELECTION_TRIBE_NOT_EXIST);
-    // ASSERT_TEST(electionRemoveVote(election, 9, SECOND_TRIBE,6) ==ELECTION_AREA_NOT_EXIST);
-    // ASSERT_TEST(electionRemoveVote(election, FIRST_AREA,THIRD_TRIBE, 6) == ELECTION_SUCCESS); //-6 votes: area 1->tribe 3 :: TOTAL: STAYS 0
-    // ASSERT_TEST(electionAddVote(election, FIRST_AREA, THIRD_TRIBE,5) == ELECTION_SUCCESS); //+5 votes: area1->tribe3 :: TOTAL 5
-    // ASSERT_TEST(electionRemoveVote(election, FIRST_AREA, THIRD_TRIBE, 30) == ELECTION_SUCCESS); //-30 votes: area1->tribe3 :: TOTAL 0
+    ASSERT_TEST(electionRemoveVote(election,FIRST_AREA, SECOND_TRIBE, 4) == ELECTION_SUCCESS); //-4 votes: area 1->tribe 2 :: TOTAL: 10
+    ASSERT_TEST(electionAddVote(election, FIRST_AREA, SECOND_TRIBE, -1) == ELECTION_INVALID_VOTES);
+    ASSERT_TEST(electionAddVote(NULL, SECOND_AREA, SECOND_TRIBE, 3) == ELECTION_NULL_ARGUMENT);
+    ASSERT_TEST(electionAddVote(election, FIRST_AREA, 7, 27) == ELECTION_TRIBE_NOT_EXIST);
+    ASSERT_TEST(electionRemoveVote(election, 9, SECOND_TRIBE,6) ==ELECTION_AREA_NOT_EXIST);
+    ASSERT_TEST(electionRemoveVote(election, FIRST_AREA,THIRD_TRIBE, 6) == ELECTION_SUCCESS); //-6 votes: area 1->tribe 3 :: TOTAL: STAYS 0
+    ASSERT_TEST(electionAddVote(election, FIRST_AREA, THIRD_TRIBE,5) == ELECTION_SUCCESS); //+5 votes: area1->tribe3 :: TOTAL 5
+    ASSERT_TEST(electionRemoveVote(election, FIRST_AREA, THIRD_TRIBE, 30) == ELECTION_SUCCESS); //-30 votes: area1->tribe3 :: TOTAL 0
     electionDestroy(election);
     return true;
 }
@@ -122,21 +122,21 @@ bool testComputeAreasToTribesMapping()
     ASSERT_TEST(electionAddTribe(election, FIRST_TRIBE, "first tribe") == ELECTION_SUCCESS); //create tribe 1
     ASSERT_TEST(electionAddTribe(election, SECOND_TRIBE, "second tribe") == ELECTION_SUCCESS); //create tribe 2
     ASSERT_TEST(electionAddTribe(election, THIRD_TRIBE, "third tribe") == ELECTION_SUCCESS); //create tribe 3
-    // ASSERT_TEST(electionAddVote(election,FIRST_AREA, FIRST_TRIBE, 10) == ELECTION_SUCCESS); //+10 votes: area 1->tribe 1 :: TOTAL: 10
-    // ASSERT_TEST(electionAddVote(election, FIRST_AREA,SECOND_TRIBE, 14) == ELECTION_SUCCESS); //+14 votes: area 1->tribe 2 :: TOTAL: 14
-    // ASSERT_TEST(electionAddVote(election, SECOND_AREA, FIRST_TRIBE, 17) == ELECTION_SUCCESS); //+17 votes: area 2->tribe 1 :: TOTAL: 17
-    // ASSERT_TEST(electionRemoveVote(election,FIRST_AREA, SECOND_TRIBE, 4) == ELECTION_SUCCESS); //-4 votes: area 1->tribe 2 :: TOTAL: 10
-    // ASSERT_TEST(electionAddVote(election, FIRST_AREA, SECOND_TRIBE, -1) == ELECTION_INVALID_VOTES);
-    // ASSERT_TEST(electionAddVote(NULL, SECOND_AREA, SECOND_TRIBE, 3) == ELECTION_NULL_ARGUMENT);
-    // ASSERT_TEST(electionAddVote(election, FIRST_AREA, 7, 27) == ELECTION_TRIBE_NOT_EXIST);
-    // ASSERT_TEST(electionRemoveVote(election, 9, SECOND_TRIBE,6) ==ELECTION_AREA_NOT_EXIST);
-    // ASSERT_TEST(electionRemoveVote(election, FIRST_AREA,THIRD_TRIBE, 6) == ELECTION_SUCCESS); //-6 votes: area 1->tribe 3 :: TOTAL: STAYS 0
-    // ASSERT_TEST(electionAddVote(election, FIRST_AREA, THIRD_TRIBE,5) == ELECTION_SUCCESS); //+5 votes: area 1->tribe 3 :: TOTAL: 5
-    // ASSERT_TEST(electionAddVote(election, FOURTH_AREA, SECOND_TRIBE,10) == ELECTION_SUCCESS); //+10 votes: area 4->tribe 2 :: TOTAL: 10
-    // ASSERT_TEST(electionAddVote(election, FOURTH_AREA, THIRD_TRIBE,50) == ELECTION_SUCCESS); //+50 votes: area 4->tribe 3 :: TOTAL: 50
-    // ASSERT_TEST(electionRemoveVote(election, FOURTH_AREA, THIRD_TRIBE,45) == ELECTION_SUCCESS); //-45 votes: area 4->tribe 3 :: TOTAL: 5
-    // ASSERT_TEST(electionRemoveVote(election, FIRST_AREA, THIRD_TRIBE, 30) == ELECTION_SUCCESS); //-30 votes: area 1->tribe 3 :: TOTAL: 0
-    // ASSERT_TEST(electionAddVote(election, SECOND_AREA, THIRD_TRIBE,200) == ELECTION_SUCCESS); //+200 votes: area 2->tribe 3 :: TOTAL: 200
+    ASSERT_TEST(electionAddVote(election,FIRST_AREA, FIRST_TRIBE, 10) == ELECTION_SUCCESS); //+10 votes: area 1->tribe 1 :: TOTAL: 10
+    ASSERT_TEST(electionAddVote(election, FIRST_AREA,SECOND_TRIBE, 14) == ELECTION_SUCCESS); //+14 votes: area 1->tribe 2 :: TOTAL: 14
+    ASSERT_TEST(electionAddVote(election, SECOND_AREA, FIRST_TRIBE, 17) == ELECTION_SUCCESS); //+17 votes: area 2->tribe 1 :: TOTAL: 17
+    ASSERT_TEST(electionRemoveVote(election,FIRST_AREA, SECOND_TRIBE, 4) == ELECTION_SUCCESS); //-4 votes: area 1->tribe 2 :: TOTAL: 10
+    ASSERT_TEST(electionAddVote(election, FIRST_AREA, SECOND_TRIBE, -1) == ELECTION_INVALID_VOTES);
+    ASSERT_TEST(electionAddVote(NULL, SECOND_AREA, SECOND_TRIBE, 3) == ELECTION_NULL_ARGUMENT);
+    ASSERT_TEST(electionAddVote(election, FIRST_AREA, 7, 27) == ELECTION_TRIBE_NOT_EXIST);
+    ASSERT_TEST(electionRemoveVote(election, 9, SECOND_TRIBE,6) ==ELECTION_AREA_NOT_EXIST);
+    ASSERT_TEST(electionRemoveVote(election, FIRST_AREA,THIRD_TRIBE, 6) == ELECTION_SUCCESS); //-6 votes: area 1->tribe 3 :: TOTAL: STAYS 0
+    ASSERT_TEST(electionAddVote(election, FIRST_AREA, THIRD_TRIBE,5) == ELECTION_SUCCESS); //+5 votes: area 1->tribe 3 :: TOTAL: 5
+    ASSERT_TEST(electionAddVote(election, FOURTH_AREA, SECOND_TRIBE,10) == ELECTION_SUCCESS); //+10 votes: area 4->tribe 2 :: TOTAL: 10
+    ASSERT_TEST(electionAddVote(election, FOURTH_AREA, THIRD_TRIBE,50) == ELECTION_SUCCESS); //+50 votes: area 4->tribe 3 :: TOTAL: 50
+    ASSERT_TEST(electionRemoveVote(election, FOURTH_AREA, THIRD_TRIBE,45) == ELECTION_SUCCESS); //-45 votes: area 4->tribe 3 :: TOTAL: 5
+    ASSERT_TEST(electionRemoveVote(election, FIRST_AREA, THIRD_TRIBE, 30) == ELECTION_SUCCESS); //-30 votes: area 1->tribe 3 :: TOTAL: 0
+    ASSERT_TEST(electionAddVote(election, SECOND_AREA, THIRD_TRIBE,200) == ELECTION_SUCCESS); //+200 votes: area 2->tribe 3 :: TOTAL: 200
     /**
      * LOWEST ID: FIRST_TRIBE
      * MAX VOTES AREA 1: FIRST_TRIBE (same as SECOND_TRIBE)
@@ -163,7 +163,7 @@ bool raiseHell()
     assert(tmp != NULL);
     for(int i = 0; i < NUM_OF_AREAS; i++)
     {
-        // ASSERT_TEST(electionAddArea(election, i, "ooga") == ELECTION_SUCCESS);
+        ASSERT_TEST(electionAddArea(election, i, "ooga") == ELECTION_SUCCESS);
     }
     for(int i = 0; i < NUM_OF_TRIBES; i++)
     {
@@ -171,28 +171,28 @@ bool raiseHell()
         rand_string(tmp, len == 0? 1 : len);
         ASSERT_TEST(electionAddTribe(election, i, tmp) == ELECTION_SUCCESS);
     }
-    // ASSERT_TEST(electionAddArea(election, NUM_OF_AREAS-1, tmp) == ELECTION_AREA_ALREADY_EXIST);
-    // ASSERT_TEST(electionAddTribe(election, NUM_OF_TRIBES-1, tmp) == ELECTION_TRIBE_ALREADY_EXIST);
-    // ASSERT_TEST(electionRemoveAreas(election, deleteEvenNumberAreas) == ELECTION_SUCCESS);
+    ASSERT_TEST(electionAddArea(election, NUM_OF_AREAS-1, tmp) == ELECTION_AREA_ALREADY_EXIST);
+    ASSERT_TEST(electionAddTribe(election, NUM_OF_TRIBES-1, tmp) == ELECTION_TRIBE_ALREADY_EXIST);
+    ASSERT_TEST(electionRemoveAreas(election, deleteEvenNumberAreas) == ELECTION_SUCCESS);
     for(int i = 0; i < NUM_OF_AREAS; i += 2)
     {
         ASSERT_TEST(electionAddArea(election, i, "booga") == ELECTION_SUCCESS);
     }
     int id1 = rand_int(NUM_OF_TRIBES-1);
     int id2 = 0;
-    // ASSERT_TEST(electionRemoveTribe(election, id1) == ELECTION_SUCCESS);
+    ASSERT_TEST(electionRemoveTribe(election, id1) == ELECTION_SUCCESS);
     for(int i = 0; i < NUM_OF_AREAS; i++)
     {
         do
         {
             id2 = rand_int(NUM_OF_TRIBES-1);
         } while (id2 == id1);
-        // ASSERT_TEST(electionAddVote(election, i, id2,rand_int(MAX_VOTES) + 1) == ELECTION_SUCCESS);
+        ASSERT_TEST(electionRemoveVote(election, i, id2,rand_int(MAX_VOTES) + 1) == ELECTION_SUCCESS);
     }
     // Map statistics1, statistics2;
     // ASSERT_TEST((statistics1 = electionComputeAreasToTribesMapping(election)) != NULL);
     ASSERT_TEST(electionAddTribe(election, id1, tmp) == ELECTION_SUCCESS);
-    // ASSERT_TEST(electionRemoveAreas(election, deleteAllAreas) == ELECTION_SUCCESS);
+    ASSERT_TEST(electionRemoveAreas(election, deleteAllAreas) == ELECTION_SUCCESS);
     // ASSERT_TEST((statistics2 = electionComputeAreasToTribesMapping(election)) != NULL);
     // ASSERT_TEST(mapGetFirst(statistics2) == NULL);
     // mapDestroy(statistics1);
@@ -206,9 +206,9 @@ bool raiseHell()
 bool (*tests[]) (void) = {
                         testElectionRemoveAreas,
                         testElectionRemoveAddtribe,
-                        testAddRemoveVotes
-                        // testComputeAreasToTribesMapping,
-                        // raiseHell
+                        testAddRemoveVotes,
+                        testComputeAreasToTribesMapping,
+                        raiseHell
 };
 
 /*The names of the test functions should be added here*/
