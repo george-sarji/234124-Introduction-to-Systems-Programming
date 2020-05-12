@@ -60,14 +60,10 @@ void setElectionEntities(Election election, Entity entity, EntityType type)
     }
     if (type == ENTITY_TRIBE)
     {
-        free(election->tribes);
-        election->tribes = NULL;
         election->tribes = entity;
     }
     else
     {
-        free(election->areas);
-        election->areas = NULL;
         election->areas = entity;
     }
 }
@@ -341,34 +337,46 @@ ElectionResult electionRemoveTribe(Election election, int tribe_id)
     }
     // Go over the tribes and remove the given tribe.
     Entity tribe = getElectionTribes(election);
-    while (tribe != NULL)
+    AreaBallot ballot = getElectionAreaBallots(election);
+    removeTribeBallots(ballot, tribe_id);
+    // Find the tribe. Check if first?
+    if (tribe != NULL && isSameEntityId(tribe, tribe_id))
     {
-        if (isSameEntityId(tribe, tribe_id))
-        {
-            // We found the tribe. Destroy it and destroy the related ballots.
-            AreaBallot ballot = getElectionAreaBallots(election);
-            removeTribeBallots(ballot, tribe_id);
-            destroyEntity(tribe);
-            return ELECTION_SUCCESS;
-        }
-        tribe = getNextEntity(tribe);
+        // Remove first tribe.
+        setElectionEntities(election, getNextEntity(tribe), ENTITY_TRIBE);
+        destroyEntity(tribe);
+        return ELECTION_SUCCESS;
     }
+    // Entity previous = tribe;
+    tribe = getNextEntity(tribe);
+    // while (tribe != NULL)
+    // {
+    //     if (tribe != NULL && isSameEntityId(tribe, tribe_id))
+    //     {
+    //         // Remove the tribe from the chain.
+    //         setNextEntity(previous, getNextEntity(tribe));
+    //         destroyEntity(tribe);
+    //         return ELECTION_SUCCESS;
+    //     }
+    //     previous = tribe;
+    //     tribe = getNextEntity(tribe);
+    // }
     return ELECTION_TRIBE_NOT_EXIST;
 }
 
-int main()
-{
-    Election election = electionCreate();
-    electionAddTribe(election, 1, "tribe");
-    electionAddTribe(election, 2, "tribe");
-    electionAddArea(election, 1, "area");
-    assert(electionAddArea(election, 2, "second area") == ELECTION_SUCCESS);
-    // assert(electionRemoveTribe(election, 2) == ELECTION_SUCCESS);
-    electionSetTribeName(election, 1, "tribe name changed");
-    char *name = electionGetTribeName(election, 1);
-    assert(strcmp(name, "tribe name changed") == 0);
-    electionDestroy(election);
-    free(name);
-    election = NULL;
-    return 0;
-}
+// int main()
+// {
+//     Election election = electionCreate();
+//     electionAddTribe(election, 1, "tribe");
+//     electionAddTribe(election, 2, "tribe");
+//     electionAddArea(election, 1, "area");
+//     assert(electionAddArea(election, 2, "second area") == ELECTION_SUCCESS);
+//     // assert(electionRemoveTribe(election, 2) == ELECTION_SUCCESS);
+//     electionSetTribeName(election, 1, "tribe name changed");
+//     char *name = electionGetTribeName(election, 1);
+//     assert(strcmp(name, "tribe name changed") == 0);
+//     electionDestroy(election);
+//     free(name);
+//     election = NULL;
+//     return 0;
+// }
