@@ -209,22 +209,43 @@ char *electionGetTribeName(Election election, int tribe_id)
 }
 
 // TODO: Complete function for electionSetTribeName
-// ElectionResult setElectionEntityName(Election election, int id, const char *name, EntityType type)
-// {
-//     if (election == NULL || name == NULL)
-//     {
-//         return ELECTION_NULL_ARGUMENT;
-//     }
-//     if (isLegalId(id))
-//     {
-//         return ELECTION_INVALID_ID;
-//     }
-//     if (isLegalName(name))
-//     {
-//         return ELECTION_INVALID_NAME;
-//     }
-
-// }
+ElectionResult electionSetTribeName(Election election, int tribe_id, const char *tribe_name)
+{
+    // Check if any are null.
+    if (election == NULL || tribe_name == NULL)
+    {
+        return ELECTION_NULL_ARGUMENT;
+    }
+    if (!isLegalName(tribe_name))
+    {
+        return ELECTION_INVALID_NAME;
+    }
+    if (!isLegalId(tribe_id))
+    {
+        return ELECTION_INVALID_ID;
+    }
+    // Go through the entities.
+    Entity current = getElectionTribes(election);
+    while (current != NULL)
+    {
+        // Compare the ID.
+        if (isSameEntityId(current, tribe_id))
+        {
+            // We found the tribe. Set the name and return.
+            if (setEntityName(current, tribe_name) == ASSIGN_SUCCESS)
+            {
+                return ELECTION_SUCCESS;
+            }
+            else
+            {
+                return ELECTION_OUT_OF_MEMORY;
+            }
+        }
+        // Go through to the next.
+        current = getNextEntity(current);
+    }
+    return ELECTION_TRIBE_NOT_EXIST;
+}
 
 // int main()
 // {

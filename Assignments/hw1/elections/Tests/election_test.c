@@ -77,16 +77,16 @@ bool testElectionRemoveAddtribe()
     Election election = electionCreate();
     ASSERT_TEST(electionAddTribe(election, FIRST_TRIBE, "first tribe") == ELECTION_SUCCESS);
     ASSERT_TEST(electionAddTribe(election, SECOND_TRIBE, "second tribe") == ELECTION_SUCCESS);
-    // ASSERT_TEST(electionSetTribeName(election, FIRST_TRIBE , "first") == ELECTION_SUCCESS);
+    ASSERT_TEST(electionSetTribeName(election, FIRST_TRIBE , "first") == ELECTION_SUCCESS);
     char *name = NULL;
     ASSERT_TEST((name = electionGetTribeName(election, 4)) != NULL);
     ASSERT_TEST(strcmp(name, "second tribe") == 0);
     free(name);
-    // ASSERT_TEST(electionSetTribeName(election, 2, "first") == ELECTION_TRIBE_NOT_EXIST);
+    ASSERT_TEST(electionSetTribeName(election, 2, "first") == ELECTION_TRIBE_NOT_EXIST);
     // ASSERT_TEST(electionRemoveTribe(election, FIRST_TRIBE) == ELECTION_SUCCESS);
     // ASSERT_TEST(electionRemoveTribe(election,FIRST_TRIBE) == ELECTION_TRIBE_NOT_EXIST);
-    // ASSERT_TEST(electionSetTribeName(election, -2, "third") == ELECTION_INVALID_ID);
-    // ASSERT_TEST(electionSetTribeName(election, SECOND_TRIBE, "SECOND") == ELECTION_INVALID_NAME);
+    ASSERT_TEST(electionSetTribeName(election, -2, "third") == ELECTION_INVALID_ID);
+    ASSERT_TEST(electionSetTribeName(election, SECOND_TRIBE, "SECOND") == ELECTION_INVALID_NAME);
     electionDestroy(election);
     return true;
 }
