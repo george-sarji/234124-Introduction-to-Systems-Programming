@@ -29,6 +29,7 @@ void destroyBallots(BallotBox box);
 Entity getBallotTribe(BallotBox box);
 BallotBox getNextBallot(BallotBox box);
 int getBallotVotes(BallotBox box);
+BallotBox getTribeBallotBox(BallotBox box, int tribe);
 
 // ! SET
 void setBallotTribe(BallotBox box, Entity tribe);
@@ -111,6 +112,24 @@ int getBallotVotes(BallotBox box)
         return -1;
     }
     return box->votes;
+}
+
+BallotBox getTribeBallotBox(BallotBox box, int tribe)
+{
+    if (box == NULL || !isLegalId(tribe))
+    {
+        return NULL;
+    }
+    BallotBox current = box;
+    while (current != NULL)
+    {
+        if (isSameEntityId(getBallotTribe(current), tribe))
+        {
+            return current;
+        }
+        current = getNextBallot(current);
+    }
+    return NULL;
 }
 
 void setBallotTribe(BallotBox box, Entity tribe)

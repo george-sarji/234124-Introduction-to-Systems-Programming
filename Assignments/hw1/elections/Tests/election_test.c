@@ -5,7 +5,7 @@
 #include "test_utilities.h"
 
 /*The number of tests*/
-#define NUMBER_TESTS 2
+#define NUMBER_TESTS 3
 #define MAX_STR_LEN 20 //Must be greater than 1
 #define MAX_VOTES 100 //Must be greater than 1
 #define NUM_OF_AREAS 30 //Do not lower beneath 12
@@ -96,10 +96,10 @@ bool  testAddRemoveVotes() {
     ASSERT_TEST(electionAddArea(election, SECOND_AREA, "second area") == ELECTION_SUCCESS); //create area 2
     ASSERT_TEST(electionAddTribe(election, FIRST_TRIBE, "first tribe") == ELECTION_SUCCESS); //create tribe 1
     ASSERT_TEST(electionAddTribe(election, SECOND_TRIBE, "second tribe") == ELECTION_SUCCESS); //create tribe 2
-    ASSERT_TEST(electionAddTribe(election, THIRD_TRIBE, "third tribe") == ELECTION_SUCCESS); //create tribe 3
-    // ASSERT_TEST(electionAddVote(election,FIRST_AREA, FIRST_TRIBE, 10) == ELECTION_SUCCESS); //+10 votes: area 1->tribe 1
-    // ASSERT_TEST(electionAddVote(election, FIRST_AREA,SECOND_TRIBE, 14) == ELECTION_SUCCESS); //+14 votes: area 1->tribe 2
-    // ASSERT_TEST(electionAddVote(election, SECOND_AREA, FIRST_TRIBE, 17) == ELECTION_SUCCESS); //+17 votes: area 2->tribe 1
+    ASSERT_TEST(electionAddTribe(election, THIRD_TRIBE, "third tribe") == ELECTION_SUCCESS); //create tribe 3 
+    ASSERT_TEST(electionAddVote(election,FIRST_AREA, FIRST_TRIBE, 10) == ELECTION_SUCCESS); //+10 votes: area 1->tribe 1
+    ASSERT_TEST(electionAddVote(election, FIRST_AREA,SECOND_TRIBE, 14) == ELECTION_SUCCESS); //+14 votes: area 1->tribe 2
+    ASSERT_TEST(electionAddVote(election, SECOND_AREA, FIRST_TRIBE, 17) == ELECTION_SUCCESS); //+17 votes: area 2->tribe 1
     // ASSERT_TEST(electionRemoveVote(election,FIRST_AREA, SECOND_TRIBE, 4) == ELECTION_SUCCESS); //-4 votes: area 1->tribe 2 :: TOTAL: 10
     // ASSERT_TEST(electionAddVote(election, FIRST_AREA, SECOND_TRIBE, -1) == ELECTION_INVALID_VOTES);
     // ASSERT_TEST(electionAddVote(NULL, SECOND_AREA, SECOND_TRIBE, 3) == ELECTION_NULL_ARGUMENT);
@@ -205,8 +205,8 @@ bool raiseHell()
 /*The functions for the tests should be added here*/
 bool (*tests[]) (void) = {
                         testElectionRemoveAreas,
-                        testElectionRemoveAddtribe
-                        // testAddRemoveVotes,
+                        testElectionRemoveAddtribe,
+                        testAddRemoveVotes
                         // testComputeAreasToTribesMapping,
                         // raiseHell
 };

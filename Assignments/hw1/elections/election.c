@@ -184,6 +184,7 @@ ElectionResult electionAddEntity(Election election, int id, const char *name, En
             return ELECTION_OUT_OF_MEMORY;
         }
         setElectionEntities(election, new_entry, type);
+        // Add logic here.
     }
     else
     {
@@ -402,6 +403,43 @@ ElectionResult electionRemoveAreas(Election election, AreaConditionFunction shou
         area = getNextEntity(area);
     }
     return ELECTION_SUCCESS;
+}
+
+ElectionResult electionAddVote(Election election, int area_id, int tribe_id, int num_of_votes)
+{
+    if (election == NULL)
+    {
+        return ELECTION_NULL_ARGUMENT;
+    }
+    else if (!isLegalId(area_id) || !isLegalId(tribe_id))
+    {
+        return ELECTION_INVALID_ID;
+    }
+    else if (num_of_votes < 0)
+    {
+        return ELECTION_INVALID_VOTES;
+    }
+    else
+    {
+        // We need to get the area.
+        AreaBallot ballot = getElectionAreaBallots(election);
+        while (ballot != NULL)
+        {
+            if (isSameEntityId(getBallotArea(ballot), area_id))
+            {
+                // Add votes to this ballot.
+                BallotBox box = getTribeBallotBox(getAreaBallotBoxes(ballot), tribe_id);
+                if (box == NULL)
+                {
+                    return ELECTION_TRIBE_NOT_EXIST;
+                }
+                // Add the votes and return.
+                return addBallotVotes(box, num_of_votes);
+            }
+            ballot = getNextAreaBallot(ballot);
+        }
+        return ELECTION_AREA_NOT_EXIST;
+    }
 }
 
 // int main()

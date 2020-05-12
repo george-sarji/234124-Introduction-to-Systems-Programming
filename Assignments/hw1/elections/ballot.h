@@ -102,7 +102,7 @@ void destroyAreaBallots(AreaBallot ballot)
     AreaBallot current = ballot;
     while (current != NULL)
     {
-        AreaBallot next = ballot->next;
+        AreaBallot next = getNextAreaBallot(current);
         destroyAreaBallot(current);
         current = next;
     }
@@ -114,8 +114,20 @@ CallResult addAreaBallotBox(AreaBallot ballot, BallotBox box)
     {
         return ASSIGN_NULL;
     }
-    setNextBallot(box, getAreaBallotBoxes(ballot));
-    setAreaBallotBoxes(ballot, box);
+    // Get the current boxes.
+    BallotBox current = getAreaBallotBoxes(ballot);
+    // Is this the first box we add?
+    if (current == NULL)
+    {
+        // Set the ballot's boxes.
+        setAreaBallotBoxes(ballot, box);
+    }
+    else
+    {
+        // Insert it at the front.
+        setNextBallot(box, current);
+        setAreaBallotBoxes(ballot, box);
+    }
     return ASSIGN_SUCCESS;
 }
 
