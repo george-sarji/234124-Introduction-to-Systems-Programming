@@ -293,12 +293,10 @@ void electionDestroy(Election election)
     election = NULL;
 }
 
-// TODO: Add the ballot boxes
 ElectionResult electionAddTribe(Election election, int tribe_id, const char *tribe_name)
 {
     return electionAddEntity(election, tribe_id, tribe_name, ENTITY_TRIBE);
 }
-// TODO: Add the area ballots
 ElectionResult electionAddArea(Election election, int area_id, const char *area_name)
 {
     return electionAddEntity(election, area_id, area_name, ENTITY_AREA);
@@ -309,7 +307,6 @@ char *electionGetTribeName(Election election, int tribe_id)
     return getSpecificEntityName(election, tribe_id, ENTITY_TRIBE);
 }
 
-// TODO: Complete function for electionSetTribeName
 ElectionResult electionSetTribeName(Election election, int tribe_id, const char *tribe_name)
 {
     // Check if any are null.
@@ -502,20 +499,3 @@ Map electionComputeAreasToTribesMapping(Election election)
     }
     return map;
 }
-
-// int main()
-// {
-//     Election election = electionCreate();
-//     electionAddTribe(election, 1, "tribe");
-//     electionAddTribe(election, 2, "tribe");
-//     electionAddArea(election, 1, "area");
-//     assert(electionAddArea(election, 2, "second area") == ELECTION_SUCCESS);
-//     assert(electionRemoveTribe(election, 2) == ELECTION_SUCCESS);
-//     electionSetTribeName(election, 1, "tribe name changed");
-//     char *name = electionGetTribeName(election, 1);
-//     assert(strcmp(name, "tribe name changed") == 0);
-//     electionDestroy(election);
-//     free(name);
-//     election = NULL;
-//     return 0;
-// }

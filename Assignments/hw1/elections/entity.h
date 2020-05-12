@@ -22,22 +22,29 @@ typedef struct entity_t
     struct entity_t *next;
 } * Entity;
 
-char *getEntityName(Entity entity);
-char *getEntityNameCopy(Entity entity);
-int getEntityId(Entity entity);
+// * Declarations
+// ! Create/Destroy
 Entity createTribe(int id, const char *name);
 Entity createArea(int id, const char *name);
 Entity createEntity(int id, const char *name, EntityType type);
 void destroyEntity(Entity entity);
-EntityType getEntityType(Entity entity);
-bool isEntityIdentical(Entity ent1, Entity ent2);
-bool isSameEntityId(Entity ent1, int id);
-Entity getNextEntity(Entity entity);
-CallResult setNextEntity(Entity entity, Entity next);
-ElectionResult addEntity(Entity entity, int id, const char *name, EntityType type, Entity *entity_ptr);
 
+// ! Get
+char *getEntityName(Entity entity);
+char *getEntityNameCopy(Entity entity);
+int getEntityId(Entity entity);
+EntityType getEntityType(Entity entity);
+Entity getNextEntity(Entity entity);
+
+// ! Set
 CallResult setEntityName(Entity entity, const char *name);
 CallResult setEntityId(Entity entity, int id);
+CallResult setNextEntity(Entity entity, Entity next);
+
+// ! Misc
+bool isEntityIdentical(Entity ent1, Entity ent2);
+bool isSameEntityId(Entity ent1, int id);
+ElectionResult addEntity(Entity entity, int id, const char *name, EntityType type, Entity *entity_ptr);
 
 Entity getNextEntity(Entity entity)
 {
