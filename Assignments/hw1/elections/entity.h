@@ -138,7 +138,6 @@ void destroyEntity(Entity entity)
     // Free the name, id and the entity.
     free(entity->name);
     entity->name = NULL;
-    entity->id = 0;
     entity->next = NULL;
     entity->type = ENTITY_NULL;
     free(entity);

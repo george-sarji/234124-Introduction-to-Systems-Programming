@@ -205,7 +205,7 @@ BallotBox removeTribeBallot(BallotBox box, int id)
     current = getNextBallot(current);
     while (current != NULL)
     {
-        if (isSameEntityId(getBallotTribe(box), id))
+        if (isSameEntityId(getBallotTribe(current), id))
         {
             // Remove this one.
             setNextBallot(previous, getNextBallot(current));

@@ -55,7 +55,7 @@ void destroyElectionEntities(Entity entity)
 
 void setElectionEntities(Election election, Entity entity, EntityType type)
 {
-    if (election == NULL || entity == NULL)
+    if (election == NULL)
     {
         return;
     }
@@ -188,7 +188,6 @@ ElectionResult electionAddEntity(Election election, int id, const char *name, En
             return ELECTION_OUT_OF_MEMORY;
         }
         setElectionEntities(election, new_entry, type);
-        // Add logic here.
     }
     else
     {
@@ -403,14 +402,11 @@ ElectionResult electionRemoveAreas(Election election, AreaConditionFunction shou
         Entity next = getNextEntity(area);
         removeAreaBallots(election, getElectionAreaBallots(election), getEntityId(area));
         destroyEntity(area);
+        area = NULL;
         setElectionEntities(election, next, ENTITY_AREA);
         area = next;
     }
     Entity previous = area;
-    if (area == NULL && getNextEntity(area) == NULL)
-    {
-        return ELECTION_SUCCESS;
-    }
     area = getNextEntity(area);
     while (previous != NULL && area != NULL)
     {
