@@ -34,7 +34,7 @@ bool isEntityIdentical(Entity ent1, Entity ent2);
 bool isSameEntityId(Entity ent1, int id);
 Entity getNextEntity(Entity entity);
 CallResult setNextEntity(Entity entity, Entity next);
-ElectionResult addEntity(Entity entity, int id, const char *name, EntityType type);
+ElectionResult addEntity(Entity entity, int id, const char *name, EntityType type, Entity *entity_ptr);
 
 CallResult setEntityName(Entity entity, const char *name);
 CallResult setEntityId(Entity entity, int id);
@@ -184,7 +184,7 @@ CallResult setEntityId(Entity entity, int id)
     return ASSIGN_SUCCESS;
 }
 
-ElectionResult addEntity(Entity entity, int id, const char *name, EntityType type)
+ElectionResult addEntity(Entity entity, int id, const char *name, EntityType type, Entity *entity_ptr)
 {
     if (entity == NULL || name == NULL)
     {
@@ -216,6 +216,7 @@ ElectionResult addEntity(Entity entity, int id, const char *name, EntityType typ
             {
                 return ELECTION_OUT_OF_MEMORY;
             }
+            *entity_ptr = new_entity;
             setNextEntity(current, new_entity);
             return ELECTION_SUCCESS;
         }

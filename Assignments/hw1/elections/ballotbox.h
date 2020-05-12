@@ -157,6 +157,10 @@ void setBallotVotes(BallotBox box, int votes)
         return;
     }
     box->votes = votes;
+    if (box->votes < 0)
+    {
+        box->votes = 0;
+    }
 }
 
 ElectionResult addBallotVotes(BallotBox box, int votes)
