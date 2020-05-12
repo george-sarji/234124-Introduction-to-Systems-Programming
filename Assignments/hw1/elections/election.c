@@ -10,6 +10,7 @@
 #include <stdlib.h>
 #include <assert.h>
 #include <stdbool.h>
+#include "mtm_map/map.h"
 
 struct election_t
 {

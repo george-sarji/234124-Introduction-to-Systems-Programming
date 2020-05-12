@@ -4,7 +4,6 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include "entity.h"
-#include "ballot.h"
 typedef enum voteResult_t
 {
     VOTE_NULL,

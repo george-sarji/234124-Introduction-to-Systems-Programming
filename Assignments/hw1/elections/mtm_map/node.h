@@ -16,6 +16,7 @@ Node nodeCreate();
 Node nodeGetNext(Node node);
 char *nodeGetData(Node node);
 char *nodeSetData(Node node, const char *data);
+char *nodeGetKey(Node node);
 char *nodeSetKey(Node node, const char *key);
 Node nodeSetNext(Node node, Node next);
 bool nodeCompareKey(Node node, const char *key);

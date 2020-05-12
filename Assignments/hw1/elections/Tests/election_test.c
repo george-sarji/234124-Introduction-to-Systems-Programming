@@ -2,7 +2,7 @@
 #include <time.h>
 #include <assert.h>
 #include "../election.h"
-#include "test_utilities.h"
+#include "../test_utilities.h"
 
 /*The number of tests*/
 #define NUMBER_TESTS 5
