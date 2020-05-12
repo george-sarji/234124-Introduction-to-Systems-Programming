@@ -311,24 +311,24 @@ char *mapGetNext(Map map)
     return nodeGetKey(map->iterator);
 }
 
-int main()
-{
-    Map map = mapCreate();
-    if (map == NULL)
-    {
-        return 0;
-    }
-    mapPut(map, "308324772", "John Snow");
-    mapPut(map, "208364702", "Sansa Stark");
-    mapGetFirst(map);
-    mapGetNext(map);
-    mapRemove(map, "208364702");
-    mapPut(map, "308324772", "The Night King");
-    char *name = mapGet(map, "208364702"); // name = "Sansa Stark"
-    printf("%s", name);
-    bool res = mapContains(map, "108364702"); // res = false
-    if (res)
-        ;
-    mapDestroy(map);
-    return 1;
-}
+// int main()
+// {
+//     Map map = mapCreate();
+//     if (map == NULL)
+//     {
+//         return 0;
+//     }
+//     mapPut(map, "308324772", "John Snow");
+//     mapPut(map, "208364702", "Sansa Stark");
+//     mapGetFirst(map);
+//     mapGetNext(map);
+//     mapRemove(map, "208364702");
+//     mapPut(map, "308324772", "The Night King");
+//     char *name = mapGet(map, "208364702"); // name = "Sansa Stark"
+//     printf("%s", name);
+//     bool res = mapContains(map, "108364702"); // res = false
+//     if (res)
+//         ;
+//     mapDestroy(map);
+//     return 1;
+// }

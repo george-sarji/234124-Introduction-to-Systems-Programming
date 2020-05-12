@@ -17,6 +17,10 @@
         "unordered_map": "c",
         "vector": "c",
         "initializer_list": "c",
-        "test_utilities.h": "c"
+        "test_utilities.h": "c",
+        "utils.h": "c",
+        "tribe.h": "c",
+        "call_result.h": "c",
+        "entity.h": "c"
     }
 }

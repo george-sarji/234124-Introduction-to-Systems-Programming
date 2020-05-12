@@ -67,9 +67,9 @@ bool testElectionRemoveAreas() {
     ASSERT_TEST(electionAddArea(election, FIRST_AREA, "first area") == ELECTION_SUCCESS);
     ASSERT_TEST(electionAddArea(election, SECOND_AREA, "second area") == ELECTION_SUCCESS); 
     // ASSERT_TEST(electionRemoveAreas(election, deleteOnlyFirstArea) == ELECTION_SUCCESS);
-    ASSERT_TEST(electionAddArea(election, SECOND_AREA, "second area") == ELECTION_AREA_ALREADY_EXIST);
+    // ASSERT_TEST(electionAddArea(election, SECOND_AREA, "second area") == ELECTION_AREA_ALREADY_EXIST);
     ASSERT_TEST(electionAddArea(election, 3, "THIRD ") == ELECTION_INVALID_NAME);
-    electionDestroy(election);
+    electionDestroy(election); 
     return true;
 }
 bool testElectionRemoveAddtribe()
@@ -83,8 +83,8 @@ bool testElectionRemoveAddtribe()
     ASSERT_TEST(strcmp(name, "second tribe") == 0);
     free(name);
     ASSERT_TEST(electionSetTribeName(election, 2, "first") == ELECTION_TRIBE_NOT_EXIST);
-    // ASSERT_TEST(electionRemoveTribe(election, FIRST_TRIBE) == ELECTION_SUCCESS);
-    // ASSERT_TEST(electionRemoveTribe(election,FIRST_TRIBE) == ELECTION_TRIBE_NOT_EXIST);
+    ASSERT_TEST(electionRemoveTribe(election, FIRST_TRIBE) == ELECTION_SUCCESS);
+    ASSERT_TEST(electionRemoveTribe(election,FIRST_TRIBE) == ELECTION_TRIBE_NOT_EXIST);
     ASSERT_TEST(electionSetTribeName(election, -2, "third") == ELECTION_INVALID_ID);
     ASSERT_TEST(electionSetTribeName(election, SECOND_TRIBE, "SECOND") == ELECTION_INVALID_NAME);
     electionDestroy(election);

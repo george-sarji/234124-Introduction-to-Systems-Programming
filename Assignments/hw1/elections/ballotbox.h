@@ -68,6 +68,7 @@ void destroyBallot(BallotBox box)
     box->tribe = NULL;
     box->next = NULL;
     free(box);
+    box = NULL;
 }
 
 void destroyBallots(BallotBox box)
@@ -79,9 +80,9 @@ void destroyBallots(BallotBox box)
     BallotBox current = box;
     while (current != NULL)
     {
-        BallotBox to_destroy = current;
-        current = getNextBallot(current);
-        destroyBallot(to_destroy);
+        BallotBox next = getNextBallot(current);
+        destroyBallot(current);
+        current = next;
     }
 }
 

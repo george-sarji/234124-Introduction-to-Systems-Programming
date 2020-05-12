@@ -31,53 +31,52 @@ CallResult setNextAreaBallot(AreaBallot ballot, AreaBallot next);
 // ! Misc
 CallResult removeAreaBallotBox(AreaBallot ballot, BallotBox box);
 void removeTribeBallots(AreaBallot ballot, int tribe_id);
-
+CallResult addTribeBoxes(AreaBallot ballot, Entity tribe);
+void insertAreaBallot(AreaBallot ballot, AreaBallot add);
 AreaBallot createAreaBallot(Entity area, Entity tribes)
 {
     if (area == NULL)
     {
         return NULL;
     }
-    // Allocate new area ballot.
+    // Allocate new area ballot
     AreaBallot ballot = malloc(sizeof(*ballot));
     if (ballot == NULL)
     {
         return NULL;
     }
-    ballot->next = NULL;
     ballot->area = area;
-    // Create the new ballot boxes for the area ballot.
-    if (tribes == NULL)
+    ballot->boxes = NULL;
+    ballot->next = NULL;
+
+    // Go through the tribes.
+    BallotBox box = NULL, current = box;
+    while (tribes != NULL)
     {
-        ballot->boxes = NULL;
-        return ballot;
-    }
-    else
-    {
-        // We have active tribes. Create the first box for the chain.
-        BallotBox current_box = createBallot(tribes);
-        if (current_box == NULL)
+        BallotBox new_box = createBallot(tribes);
+        if (new_box == NULL)
         {
-            destroyAreaBallot(ballot);
+            // Destroy the area ballot.
+            destroyAreaBallots(ballot);
+            destroyBallots(box);
+            box = NULL;
+            ballot = NULL;
             return NULL;
         }
-        ballot->boxes = current_box;
-        Entity current = getNextEntity(tribes);
-        while (current != NULL)
+        if (box == NULL)
         {
-            // Create a new box for this tribe.
-            BallotBox box = createBallot(current);
-            if (box == NULL)
-            {
-                destroyAreaBallot(ballot);
-                return NULL;
-            }
-            setNextBallot(current_box, box);
-            current_box = getNextBallot(current_box);
-            current = getNextEntity(current);
+            // First box.
+            box = current = new_box;
         }
-        return ballot;
+        else
+        {
+            setNextBallot(current, new_box);
+            current = getNextBallot(current);
+            tribes = getNextEntity(tribes);
+        }
     }
+    ballot->boxes = box;
+    return ballot;
 }
 
 void destroyAreaBallot(AreaBallot ballot)
@@ -87,7 +86,7 @@ void destroyAreaBallot(AreaBallot ballot)
         return;
     }
     ballot->area = NULL;
-    destroyBallots(getAreaBallotBoxes(ballot));
+    destroyBallots(ballot->boxes);
     ballot->boxes = NULL;
     free(ballot);
     ballot = NULL;
@@ -195,6 +194,44 @@ void removeTribeBallots(AreaBallot ballot, int tribe_id)
         setAreaBallotBoxes(current, new_chain);
         current = getNextAreaBallot(current);
     }
+}
+
+void insertAreaBallot(AreaBallot ballot, AreaBallot add)
+{
+    if (ballot == NULL || add == NULL)
+    {
+        return;
+    }
+    while (ballot != NULL)
+    {
+        if (getNextAreaBallot(ballot) == NULL)
+        {
+            setNextAreaBallot(ballot, add);
+            return;
+        }
+        ballot = getNextAreaBallot(ballot);
+    }
+}
+
+CallResult addTribeBoxes(AreaBallot ballot, Entity tribe)
+{
+    if (ballot == NULL)
+    {
+        return ASSIGN_NULL;
+    }
+    // Iterate through the ballots.
+    AreaBallot current = ballot;
+    while (current != NULL)
+    {
+        BallotBox box = createBallot(tribe);
+        if (box == NULL)
+        {
+            return ASSIGN_MEMORY;
+        }
+        addAreaBallotBox(current, box);
+        current = getNextAreaBallot(current);
+    }
+    return ELECTION_SUCCESS;
 }
 
 #endif

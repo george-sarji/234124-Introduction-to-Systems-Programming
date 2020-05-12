@@ -138,6 +138,9 @@ void destroyEntity(Entity entity)
     // Free the name, id and the entity.
     free(entity->name);
     entity->name = NULL;
+    entity->id = 0;
+    entity->next = NULL;
+    entity->type = ENTITY_NULL;
     free(entity);
     entity = NULL;
 }
@@ -150,6 +153,7 @@ CallResult setEntityName(Entity entity, const char *name)
     }
     else if (name == NULL)
     {
+        free(entity->name);
         entity->name = NULL;
         return ASSIGN_NULL;
     }
@@ -165,9 +169,12 @@ CallResult setEntityName(Entity entity, const char *name)
         strcpy(new_name, name);
         // Assign.
         free(entity->name);
+        entity->name = NULL;
         entity->name = new_name;
         return ASSIGN_SUCCESS;
     }
+    free(entity->name);
+    entity->name = NULL;
     return ASSIGN_UNK_ERROR;
 }
 
@@ -201,7 +208,7 @@ ElectionResult addEntity(Entity entity, int id, const char *name, EntityType typ
             // Active entity. Return.
             return type == ENTITY_TRIBE ? ELECTION_TRIBE_ALREADY_EXIST : ELECTION_AREA_ALREADY_EXIST;
         }
-        if (getNextEntity(current) == NULL)
+        else if (getNextEntity(current) == NULL)
         {
             // Create the new entity.
             Entity new_entity = createEntity(id, name, type);
