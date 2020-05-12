@@ -39,7 +39,7 @@ void setBallotVotes(BallotBox box, int votes);
 // ! MISC
 ElectionResult addBallotVotes(BallotBox box, int votes);
 ElectionResult removeBallotVotes(BallotBox box, int votes);
-BallotBox removeTribeBallot(BallotBox box, int id);
+CallResult removeTribeBallot(BallotBox box, int id, BallotBox *ptr);
 bool isSameBallot(BallotBox box1, BallotBox box2);
 
 // * Logic
@@ -66,8 +66,6 @@ void destroyBallot(BallotBox box)
     {
         return;
     }
-    box->tribe = NULL;
-    box->next = NULL;
     free(box);
     box = NULL;
 }
@@ -183,21 +181,23 @@ ElectionResult removeBallotVotes(BallotBox box, int votes)
     return ELECTION_SUCCESS;
 }
 
-BallotBox removeTribeBallot(BallotBox box, int id)
+CallResult removeTribeBallot(BallotBox box, int id, BallotBox *ptr)
 {
     if (box == NULL || !isLegalId(id))
     {
-        return NULL;
+        return ASSIGN_NULL;
     }
     // Go through the ballots.
     // Is the first box the one we are looking for?
-    if (box != NULL && isSameEntityId(getBallotTribe(box), id))
+    if (box != NULL && getBallotTribe(box) != NULL && isSameEntityId(getBallotTribe(box), id))
     {
         // We found the box to remove.
         BallotBox next = getNextBallot(box);
         // Destroy box and return.
         destroyBallot(box);
-        return next;
+        box = NULL;
+        *ptr = next;
+        return ASSIGN_SUCCESS;
     }
     // Get the previous pointer, advance current by one.
     BallotBox current = box;
@@ -210,12 +210,13 @@ BallotBox removeTribeBallot(BallotBox box, int id)
             // Remove this one.
             setNextBallot(previous, getNextBallot(current));
             destroyBallot(current);
-            return box;
+            *ptr = box;
+            return ASSIGN_SUCCESS;
         }
         previous = current;
         current = getNextBallot(current);
     }
-    return NULL;
+    return ASSIGN_NULL;
 }
 
 bool isSameBallot(BallotBox box1, BallotBox box2)

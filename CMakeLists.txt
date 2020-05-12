@@ -18,7 +18,7 @@ add_executable(hw1-maps-test ${MTM_MAPS}/map_example_test.c ${MTM_MAPS}/map.h ${
 add_executable(hw1-maps-test1 ${MTM_MAPS}/Test_1/map_tests.c ${MTM_MAPS}/map.h ${MTM_MAPS}/map.c ${MTM_MAPS}/node.h ${MTM_MAPS}/Test_1/test_utilities.h ${MTM_MAPS}/Test_1/utils.c ${MTM_MAPS}/Test_1/utils.h)
 
 link_directories(.)
-add_executable(hw1-elections  ${MTM_MAPS}/map.c ${MTM_ELECTIONS}/election.h ${MTM_ELECTIONS}/election.c ${MTM_ELECTIONS}/map.h ${MTM_ELECTIONS}/entity.h ${MTM_ELECTIONS}/call_result.h ${MTM_ELECTIONS}/util.h)
-add_executable(hw1-elections-test ${MTM_MAPS}/map.c ${MTM_ELECTIONS}/election.h ${MTM_ELECTIONS}/election.c ${MTM_ELECTIONS}/map.h ${MTM_ELECTIONS}/entity.h ${MTM_ELECTIONS}/call_result.h ${MTM_ELECTIONS}/util.h ${MTM_ELECTIONS}/Tests/election_test.c)
-
+add_executable(hw1-elections  ${MTM_ELECTIONS}/mtm_map/map.c ${MTM_ELECTIONS}/election.h ${MTM_ELECTIONS}/election.c ${MTM_ELECTIONS}/mtm_map/map.h ${MTM_ELECTIONS}/entity.h ${MTM_ELECTIONS}/call_result.h ${MTM_ELECTIONS}/util.h)
+add_executable(hw1-elections-test ${MTM_ELECTIONS}/mtm_map/map.c ${MTM_ELECTIONS}/election.h ${MTM_ELECTIONS}/election.c ${MTM_ELECTIONS}/mtm_map/map.c ${MTM_ELECTIONS}/entity.h ${MTM_ELECTIONS}/call_result.h ${MTM_ELECTIONS}/util.h ${MTM_ELECTIONS}/test.c)
+add_executable(hw1-elections-test2 ${MTM_ELECTIONS}/mtm_map/map.c ${MTM_ELECTIONS}/election.h ${MTM_ELECTIONS}/election.c ${MTM_ELECTIONS}/mtm_map/map.h ${MTM_ELECTIONS}/entity.h ${MTM_ELECTIONS}/call_result.h ${MTM_ELECTIONS}/util.h ${MTM_ELECTIONS}/Tests/election_tests.c ${MTM_ELECTIONS}/Tests/test_utilities.h ${MTM_ELECTIONS}/Tests/utils.c ${MTM_ELECTIONS}/Tests/utils.h)
 # target_link_libraries(hw1-elections ${MTM_ELECTIONS}/libmap.a)

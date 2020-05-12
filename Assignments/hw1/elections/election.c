@@ -168,10 +168,6 @@ ElectionResult electionAddEntity(Election election, int id, const char *name, En
     {
         return ELECTION_NULL_ARGUMENT;
     }
-    else if (!isLegalName(name))
-    {
-        return ELECTION_INVALID_NAME;
-    }
     else if (!isLegalId(id))
     {
         return ELECTION_INVALID_ID;
@@ -287,9 +283,9 @@ void electionDestroy(Election election)
         return;
     }
     // Destroy the entities.
+    destroyAreaBallots(getElectionAreaBallots(election));
     destroyElectionEntities(getElectionTribes(election));
     destroyElectionEntities(getElectionAreas(election));
-    destroyAreaBallots(getElectionAreaBallots(election));
     election->area_ballots = NULL;
     election->areas = NULL;
     election->tribes = NULL;
@@ -321,10 +317,6 @@ ElectionResult electionSetTribeName(Election election, int tribe_id, const char 
     {
         return ELECTION_NULL_ARGUMENT;
     }
-    if (!isLegalName(tribe_name))
-    {
-        return ELECTION_INVALID_NAME;
-    }
     if (!isLegalId(tribe_id))
     {
         return ELECTION_INVALID_ID;
@@ -337,6 +329,10 @@ ElectionResult electionSetTribeName(Election election, int tribe_id, const char 
         if (isSameEntityId(current, tribe_id))
         {
             // We found the tribe. Set the name and return.
+            if (!isLegalName(tribe_name))
+            {
+                return ELECTION_INVALID_NAME;
+            }
             if (setEntityName(current, tribe_name) != ASSIGN_SUCCESS)
             {
                 return ELECTION_OUT_OF_MEMORY;
@@ -346,7 +342,14 @@ ElectionResult electionSetTribeName(Election election, int tribe_id, const char 
         // Go through to the next.
         current = getNextEntity(current);
     }
-    return ELECTION_TRIBE_NOT_EXIST;
+    if (current == NULL)
+    {
+        return ELECTION_TRIBE_NOT_EXIST;
+    }
+    else
+    {
+        return ELECTION_INVALID_NAME;
+    }
 }
 
 ElectionResult electionRemoveTribe(Election election, int tribe_id)
@@ -369,6 +372,7 @@ ElectionResult electionRemoveTribe(Election election, int tribe_id)
         // Remove first tribe.
         setElectionEntities(election, getNextEntity(tribe), ENTITY_TRIBE);
         destroyEntity(tribe);
+        tribe = NULL;
         return ELECTION_SUCCESS;
     }
     Entity previous = tribe;
@@ -380,6 +384,7 @@ ElectionResult electionRemoveTribe(Election election, int tribe_id)
             // Remove the tribe from the chain.
             setNextEntity(previous, getNextEntity(tribe));
             destroyEntity(tribe);
+            tribe = NULL;
             return ELECTION_SUCCESS;
         }
         previous = tribe;
@@ -481,6 +486,7 @@ Map electionComputeAreasToTribesMapping(Election election)
         int tribe = getWinningTribe(ballot);
         if (tribe == -1)
         {
+            ballot = getNextAreaBallot(ballot);
             continue;
         }
         int area = getEntityId(getBallotArea(ballot));

@@ -137,9 +137,6 @@ void destroyEntity(Entity entity)
     }
     // Free the name, id and the entity.
     free(entity->name);
-    entity->name = NULL;
-    entity->next = NULL;
-    entity->type = ENTITY_NULL;
     free(entity);
     entity = NULL;
 }
@@ -193,10 +190,6 @@ ElectionResult addEntity(Entity entity, int id, const char *name, EntityType typ
     {
         return ELECTION_INVALID_ID;
     }
-    if (!isLegalName(name))
-    {
-        return ELECTION_INVALID_NAME;
-    }
     // Go through the entities.
     Entity current = entity;
     while (current != NULL)
@@ -209,6 +202,10 @@ ElectionResult addEntity(Entity entity, int id, const char *name, EntityType typ
         }
         else if (getNextEntity(current) == NULL)
         {
+            if (!isLegalName(name))
+            {
+                return ELECTION_INVALID_NAME;
+            }
             // Create the new entity.
             Entity new_entity = createEntity(id, name, type);
             if (new_entity == NULL)

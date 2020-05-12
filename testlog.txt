@@ -1,0 +1,403 @@
+
+
+*************************************************************
+	Test date and time: Tue May 12 18:51:19 2020
+*************************************************************
+
+Srand() seed: 1589298679
+
+- Function: "mapRemove" -> received error: "MAP_ITEM_DOES_NOT_EXIST"
+	Key used: ""
+	Value used: ""
+
+- Function: "mapRemove" -> received error: "MAP_ITEM_DOES_NOT_EXIST"
+	Key used: ""
+	Value used: ""
+
+- Function: "mapRemove" -> received error: "MAP_ITEM_DOES_NOT_EXIST"
+	Key used: ""
+	Value used: ""
+
+- Function: "mapRemove" -> received error: "MAP_ITEM_DOES_NOT_EXIST"
+	Key used: ""
+	Value used: ""
+
+- Function: "mapRemove" -> received error: "MAP_ITEM_DOES_NOT_EXIST"
+	Key used: ""
+	Value used: ""
+
+- Function: "mapRemove" -> received error: "MAP_ITEM_DOES_NOT_EXIST"
+	Key used: ""
+	Value used: ""
+
+- Function: "mapRemove" -> received error: "MAP_ITEM_DOES_NOT_EXIST"
+	Key used: ""
+	Value used: ""
+
+- Function: "mapRemove" -> received error: "MAP_ITEM_DOES_NOT_EXIST"
+	Key used: ""
+	Value used: ""
+
+- Function: "mapRemove" -> received error: "MAP_ITEM_DOES_NOT_EXIST"
+	Key used: ""
+	Value used: ""
+
+- Function: "mapRemove" -> received error: "MAP_ITEM_DOES_NOT_EXIST"
+	Key used: ""
+	Value used: ""
+
+- Function: "mapRemove" -> received error: "MAP_ITEM_DOES_NOT_EXIST"
+	Key used: ""
+	Value used: ""
+
+- Function: "mapRemove" -> received error: "MAP_ITEM_DOES_NOT_EXIST"
+	Key used: ""
+	Value used: ""
+
+- Function: "mapRemove" -> received error: "MAP_ITEM_DOES_NOT_EXIST"
+	Key used: ""
+	Value used: ""
+
+- Function: "mapRemove" -> received error: "MAP_ITEM_DOES_NOT_EXIST"
+	Key used: ""
+	Value used: ""
+
+- Function: "mapRemove" -> received error: "MAP_ITEM_DOES_NOT_EXIST"
+	Key used: ""
+	Value used: ""
+
+- Function: "mapRemove" -> received error: "MAP_ITEM_DOES_NOT_EXIST"
+	Key used: ""
+	Value used: ""
+
+- Function: "mapRemove" -> received error: "MAP_ITEM_DOES_NOT_EXIST"
+	Key used: ""
+	Value used: ""
+
+- Function: "mapRemove" -> received error: "MAP_ITEM_DOES_NOT_EXIST"
+	Key used: ""
+	Value used: ""
+
+- Function: "mapRemove" -> received error: "MAP_ITEM_DOES_NOT_EXIST"
+	Key used: ""
+	Value used: ""
+
+- Function: "mapRemove" -> received error: "MAP_ITEM_DOES_NOT_EXIST"
+	Key used: ""
+	Value used: ""
+
+- Function: "mapRemove" -> received error: "MAP_ITEM_DOES_NOT_EXIST"
+	Key used: ""
+	Value used: ""
+
+- Function: "mapRemove" -> received error: "MAP_ITEM_DOES_NOT_EXIST"
+	Key used: ""
+	Value used: ""
+
+- Function: "mapRemove" -> received error: "MAP_ITEM_DOES_NOT_EXIST"
+	Key used: ""
+	Value used: ""
+
+- Function: "mapRemove" -> received error: "MAP_ITEM_DOES_NOT_EXIST"
+	Key used: ""
+	Value used: ""
+
+- Function: "mapRemove" -> received error: "MAP_ITEM_DOES_NOT_EXIST"
+	Key used: ""
+	Value used: ""
+
+- Function: "mapRemove" -> received error: "MAP_ITEM_DOES_NOT_EXIST"
+	Key used: ""
+	Value used: ""
+
+- Function: "mapRemove" -> received error: "MAP_ITEM_DOES_NOT_EXIST"
+	Key used: ""
+	Value used: ""
+
+- Function: "mapRemove" -> received error: "MAP_ITEM_DOES_NOT_EXIST"
+	Key used: ""
+	Value used: ""
+
+- Function: "mapRemove" -> received error: "MAP_ITEM_DOES_NOT_EXIST"
+	Key used: ""
+	Value used: ""
+
+- Function: "mapRemove" -> received error: "MAP_ITEM_DOES_NOT_EXIST"
+	Key used: ""
+	Value used: ""
+
+- Function: "mapRemove" -> received error: "MAP_ITEM_DOES_NOT_EXIST"
+	Key used: ""
+	Value used: ""
+
+- Function: "mapRemove" -> received error: "MAP_ITEM_DOES_NOT_EXIST"
+	Key used: ""
+	Value used: ""
+
+- Function: "mapRemove" -> received error: "MAP_ITEM_DOES_NOT_EXIST"
+	Key used: ""
+	Value used: ""
+
+- Function: "mapRemove" -> received error: "MAP_ITEM_DOES_NOT_EXIST"
+	Key used: ""
+	Value used: ""
+
+- Function: "mapRemove" -> received error: "MAP_ITEM_DOES_NOT_EXIST"
+	Key used: ""
+	Value used: ""
+
+- Function: "mapRemove" -> received error: "MAP_ITEM_DOES_NOT_EXIST"
+	Key used: ""
+	Value used: ""
+
+- Function: "mapRemove" -> received error: "MAP_ITEM_DOES_NOT_EXIST"
+	Key used: ""
+	Value used: ""
+
+- Function: "mapRemove" -> received error: "MAP_ITEM_DOES_NOT_EXIST"
+	Key used: ""
+	Value used: ""
+
+- Function: "mapRemove" -> received error: "MAP_ITEM_DOES_NOT_EXIST"
+	Key used: ""
+	Value used: ""
+
+- Function: "mapRemove" -> received error: "MAP_ITEM_DOES_NOT_EXIST"
+	Key used: ""
+	Value used: ""
+
+- Function: "mapRemove" -> received error: "MAP_ITEM_DOES_NOT_EXIST"
+	Key used: ""
+	Value used: ""
+
+- Function: "mapRemove" -> received error: "MAP_ITEM_DOES_NOT_EXIST"
+	Key used: ""
+	Value used: ""
+
+- Function: "mapRemove" -> received error: "MAP_ITEM_DOES_NOT_EXIST"
+	Key used: ""
+	Value used: ""
+
+- Function: "mapRemove" -> received error: "MAP_ITEM_DOES_NOT_EXIST"
+	Key used: ""
+	Value used: ""
+
+- Function: "mapRemove" -> received error: "MAP_ITEM_DOES_NOT_EXIST"
+	Key used: ""
+	Value used: ""
+
+- Function: "mapRemove" -> received error: "MAP_ITEM_DOES_NOT_EXIST"
+	Key used: ""
+	Value used: ""
+
+- Function: "mapRemove" -> received error: "MAP_ITEM_DOES_NOT_EXIST"
+	Key used: ""
+	Value used: ""
+
+- Function: "mapRemove" -> received error: "MAP_ITEM_DOES_NOT_EXIST"
+	Key used: ""
+	Value used: ""
+
+- Function: "mapRemove" -> received error: "MAP_ITEM_DOES_NOT_EXIST"
+	Key used: ""
+	Value used: ""
+
+- Function: "mapRemove" -> received error: "MAP_ITEM_DOES_NOT_EXIST"
+	Key used: ""
+	Value used: ""
+
+- Function: "mapRemove" -> received error: "MAP_ITEM_DOES_NOT_EXIST"
+	Key used: ""
+	Value used: ""
+
+- Function: "mapRemove" -> received error: "MAP_ITEM_DOES_NOT_EXIST"
+	Key used: ""
+	Value used: ""
+
+- Function: "mapRemove" -> received error: "MAP_ITEM_DOES_NOT_EXIST"
+	Key used: ""
+	Value used: ""
+
+- Function: "mapRemove" -> received error: "MAP_ITEM_DOES_NOT_EXIST"
+	Key used: ""
+	Value used: ""
+
+- Function: "mapRemove" -> received error: "MAP_ITEM_DOES_NOT_EXIST"
+	Key used: ""
+	Value used: ""
+
+- Function: "mapRemove" -> received error: "MAP_ITEM_DOES_NOT_EXIST"
+	Key used: ""
+	Value used: ""
+
+- Function: "mapRemove" -> received error: "MAP_ITEM_DOES_NOT_EXIST"
+	Key used: ""
+	Value used: ""
+
+- Function: "mapRemove" -> received error: "MAP_ITEM_DOES_NOT_EXIST"
+	Key used: ""
+	Value used: ""
+
+- Function: "mapRemove" -> received error: "MAP_ITEM_DOES_NOT_EXIST"
+	Key used: ""
+	Value used: ""
+
+- Function: "mapRemove" -> received error: "MAP_ITEM_DOES_NOT_EXIST"
+	Key used: ""
+	Value used: ""
+
+- Function: "mapRemove" -> received error: "MAP_ITEM_DOES_NOT_EXIST"
+	Key used: ""
+	Value used: ""
+
+- Function: "mapRemove" -> received error: "MAP_ITEM_DOES_NOT_EXIST"
+	Key used: ""
+	Value used: ""
+
+- Function: "mapRemove" -> received error: "MAP_ITEM_DOES_NOT_EXIST"
+	Key used: ""
+	Value used: ""
+
+- Function: "mapRemove" -> received error: "MAP_ITEM_DOES_NOT_EXIST"
+	Key used: ""
+	Value used: ""
+
+- Function: "mapRemove" -> received error: "MAP_ITEM_DOES_NOT_EXIST"
+	Key used: ""
+	Value used: ""
+
+- Function: "mapRemove" -> received error: "MAP_ITEM_DOES_NOT_EXIST"
+	Key used: ""
+	Value used: ""
+
+- Function: "mapRemove" -> received error: "MAP_ITEM_DOES_NOT_EXIST"
+	Key used: ""
+	Value used: ""
+
+- Function: "mapRemove" -> received error: "MAP_ITEM_DOES_NOT_EXIST"
+	Key used: ""
+	Value used: ""
+
+- Function: "mapRemove" -> received error: "MAP_ITEM_DOES_NOT_EXIST"
+	Key used: ""
+	Value used: ""
+
+- Function: "mapRemove" -> received error: "MAP_ITEM_DOES_NOT_EXIST"
+	Key used: ""
+	Value used: ""
+
+- Function: "mapRemove" -> received error: "MAP_ITEM_DOES_NOT_EXIST"
+	Key used: ""
+	Value used: ""
+
+- Function: "mapRemove" -> received error: "MAP_ITEM_DOES_NOT_EXIST"
+	Key used: ""
+	Value used: ""
+
+- Function: "mapRemove" -> received error: "MAP_ITEM_DOES_NOT_EXIST"
+	Key used: ""
+	Value used: ""
+
+- Function: "mapRemove" -> received error: "MAP_ITEM_DOES_NOT_EXIST"
+	Key used: ""
+	Value used: ""
+
+- Function: "mapRemove" -> received error: "MAP_ITEM_DOES_NOT_EXIST"
+	Key used: ""
+	Value used: ""
+
+- Function: "mapRemove" -> received error: "MAP_ITEM_DOES_NOT_EXIST"
+	Key used: ""
+	Value used: ""
+
+- Function: "mapRemove" -> received error: "MAP_ITEM_DOES_NOT_EXIST"
+	Key used: ""
+	Value used: ""
+
+- Function: "mapRemove" -> received error: "MAP_ITEM_DOES_NOT_EXIST"
+	Key used: ""
+	Value used: ""
+
+- Function: "mapRemove" -> received error: "MAP_ITEM_DOES_NOT_EXIST"
+	Key used: ""
+	Value used: ""
+
+- Function: "mapRemove" -> received error: "MAP_ITEM_DOES_NOT_EXIST"
+	Key used: ""
+	Value used: ""
+
+- Function: "mapRemove" -> received error: "MAP_ITEM_DOES_NOT_EXIST"
+	Key used: ""
+	Value used: ""
+
+- Function: "mapRemove" -> received error: "MAP_ITEM_DOES_NOT_EXIST"
+	Key used: ""
+	Value used: ""
+
+- Function: "mapRemove" -> received error: "MAP_ITEM_DOES_NOT_EXIST"
+	Key used: ""
+	Value used: ""
+
+- Function: "mapRemove" -> received error: "MAP_ITEM_DOES_NOT_EXIST"
+	Key used: ""
+	Value used: ""
+
+- Function: "mapRemove" -> received error: "MAP_ITEM_DOES_NOT_EXIST"
+	Key used: ""
+	Value used: ""
+
+- Function: "mapRemove" -> received error: "MAP_ITEM_DOES_NOT_EXIST"
+	Key used: ""
+	Value used: ""
+
+- Function: "mapRemove" -> received error: "MAP_ITEM_DOES_NOT_EXIST"
+	Key used: ""
+	Value used: ""
+
+- Function: "mapRemove" -> received error: "MAP_ITEM_DOES_NOT_EXIST"
+	Key used: ""
+	Value used: ""
+
+- Function: "mapRemove" -> received error: "MAP_ITEM_DOES_NOT_EXIST"
+	Key used: ""
+	Value used: ""
+
+- Function: "mapRemove" -> received error: "MAP_ITEM_DOES_NOT_EXIST"
+	Key used: ""
+	Value used: ""
+
+- Function: "mapRemove" -> received error: "MAP_ITEM_DOES_NOT_EXIST"
+	Key used: ""
+	Value used: ""
+
+- Function: "mapRemove" -> received error: "MAP_ITEM_DOES_NOT_EXIST"
+	Key used: ""
+	Value used: ""
+
+- Function: "mapRemove" -> received error: "MAP_ITEM_DOES_NOT_EXIST"
+	Key used: ""
+	Value used: ""
+
+- Function: "mapRemove" -> received error: "MAP_ITEM_DOES_NOT_EXIST"
+	Key used: ""
+	Value used: ""
+
+- Function: "mapRemove" -> received error: "MAP_ITEM_DOES_NOT_EXIST"
+	Key used: ""
+	Value used: ""
+
+- Function: "mapRemove" -> received error: "MAP_ITEM_DOES_NOT_EXIST"
+	Key used: ""
+	Value used: ""
+
+- Function: "mapRemove" -> received error: "MAP_ITEM_DOES_NOT_EXIST"
+	Key used: ""
+	Value used: ""
+
+- Function: "mapRemove" -> received error: "MAP_ITEM_DOES_NOT_EXIST"
+	Key used: ""
+	Value used: ""
+
+- Function: "mapRemove" -> received error: "MAP_ITEM_DOES_NOT_EXIST"
+	Key used: ""
+	Value used: ""

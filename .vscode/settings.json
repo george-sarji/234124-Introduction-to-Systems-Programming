@@ -21,6 +21,8 @@
         "utils.h": "c",
         "tribe.h": "c",
         "call_result.h": "c",
-        "entity.h": "c"
+        "entity.h": "c",
+        "map.h": "c",
+        "algorithm": "c"
     }
 }

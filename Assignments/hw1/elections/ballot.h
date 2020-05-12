@@ -68,14 +68,15 @@ AreaBallot createAreaBallot(Entity area, Entity tribes)
         if (box == NULL)
         {
             // First box.
-            box = current = new_box;
+            box = new_box;
+            current = new_box;
         }
         else
         {
             setNextBallot(current, new_box);
             current = getNextBallot(current);
-            tribes = getNextEntity(tribes);
         }
+        tribes = getNextEntity(tribes);
     }
     ballot->boxes = box;
     return ballot;
@@ -163,7 +164,7 @@ BallotBox getAreaBallotBoxes(AreaBallot ballot)
 
 CallResult setAreaBallotBoxes(AreaBallot ballot, BallotBox box)
 {
-    if (box == NULL || ballot == NULL)
+    if (ballot == NULL)
     {
         return ASSIGN_NULL;
     }
@@ -201,8 +202,9 @@ void removeTribeBallots(AreaBallot ballot, int tribe_id)
     while (current != NULL)
     {
         // Remove the tribe ballots.
-        BallotBox new_chain = removeTribeBallot(getAreaBallotBoxes(current), tribe_id);
-        if (new_chain == NULL)
+        BallotBox new_chain = NULL;
+        CallResult result = removeTribeBallot(getAreaBallotBoxes(current), tribe_id, &new_chain);
+        if (result == ASSIGN_NULL)
         {
             return;
         }
