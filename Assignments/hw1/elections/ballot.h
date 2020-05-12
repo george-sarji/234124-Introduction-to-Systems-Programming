@@ -88,6 +88,7 @@ void destroyAreaBallot(AreaBallot ballot)
     ballot->area = NULL;
     destroyBallots(ballot->boxes);
     ballot->boxes = NULL;
+    ballot->next = NULL;
     free(ballot);
     ballot = NULL;
 }

@@ -66,8 +66,8 @@ bool testElectionRemoveAreas() {
     Election election = electionCreate();
     ASSERT_TEST(electionAddArea(election, FIRST_AREA, "first area") == ELECTION_SUCCESS);
     ASSERT_TEST(electionAddArea(election, SECOND_AREA, "second area") == ELECTION_SUCCESS); 
-    // ASSERT_TEST(electionRemoveAreas(election, deleteOnlyFirstArea) == ELECTION_SUCCESS);
-    // ASSERT_TEST(electionAddArea(election, SECOND_AREA, "second area") == ELECTION_AREA_ALREADY_EXIST);
+    ASSERT_TEST(electionRemoveAreas(election, deleteOnlyFirstArea) == ELECTION_SUCCESS);
+    ASSERT_TEST(electionAddArea(election, SECOND_AREA, "second area") == ELECTION_AREA_ALREADY_EXIST);
     ASSERT_TEST(electionAddArea(election, 3, "THIRD ") == ELECTION_INVALID_NAME);
     electionDestroy(election); 
     return true;

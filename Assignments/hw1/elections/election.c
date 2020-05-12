@@ -199,6 +199,7 @@ ElectionResult electionAddEntity(Election election, int id, const char *name, En
         }
     }
     // Add a new area ballot or a new ballot box in each area.
+    entities = getElectionEntities(election, type);
     while (entities != NULL)
     {
         if (isSameEntityId(entities, id))
@@ -347,21 +348,60 @@ ElectionResult electionRemoveTribe(Election election, int tribe_id)
         destroyEntity(tribe);
         return ELECTION_SUCCESS;
     }
-    // Entity previous = tribe;
+    Entity previous = tribe;
     tribe = getNextEntity(tribe);
-    // while (tribe != NULL)
-    // {
-    //     if (tribe != NULL && isSameEntityId(tribe, tribe_id))
-    //     {
-    //         // Remove the tribe from the chain.
-    //         setNextEntity(previous, getNextEntity(tribe));
-    //         destroyEntity(tribe);
-    //         return ELECTION_SUCCESS;
-    //     }
-    //     previous = tribe;
-    //     tribe = getNextEntity(tribe);
-    // }
+    while (tribe != NULL)
+    {
+        if (tribe != NULL && isSameEntityId(tribe, tribe_id))
+        {
+            // Remove the tribe from the chain.
+            setNextEntity(previous, getNextEntity(tribe));
+            destroyEntity(tribe);
+            return ELECTION_SUCCESS;
+        }
+        previous = tribe;
+        tribe = getNextEntity(tribe);
+    }
     return ELECTION_TRIBE_NOT_EXIST;
+}
+
+ElectionResult electionRemoveAreas(Election election, AreaConditionFunction should_delete_area)
+{
+    if (election == NULL || should_delete_area == NULL)
+    {
+        return ELECTION_NULL_ARGUMENT;
+    }
+    Entity area = getElectionAreas(election);
+    // Check if the first area is what we want.
+    while (area != NULL && should_delete_area(getEntityId(area)))
+    {
+        // Delete this area.
+        Entity next = getNextEntity(area);
+        removeAreaBallots(election, getElectionAreaBallots(election), getEntityId(area));
+        destroyEntity(area);
+        setElectionEntities(election, next, ENTITY_AREA);
+        area = next;
+    }
+    Entity previous = area;
+    if (area == NULL && getNextEntity(area) == NULL)
+    {
+        return ELECTION_SUCCESS;
+    }
+    area = getNextEntity(area);
+    while (previous != NULL && area != NULL)
+    {
+        if (should_delete_area(getEntityId(area)))
+        {
+            removeAreaBallots(election, getElectionAreaBallots(election), getEntityId(area));
+            setNextEntity(previous, getNextEntity(area));
+            destroyEntity(area);
+            area = getNextEntity(previous);
+            continue;
+        }
+        previous = area;
+        area = getNextEntity(area);
+    }
+    return ELECTION_SUCCESS;
 }
 
 // int main()
@@ -371,7 +411,7 @@ ElectionResult electionRemoveTribe(Election election, int tribe_id)
 //     electionAddTribe(election, 2, "tribe");
 //     electionAddArea(election, 1, "area");
 //     assert(electionAddArea(election, 2, "second area") == ELECTION_SUCCESS);
-//     // assert(electionRemoveTribe(election, 2) == ELECTION_SUCCESS);
+//     assert(electionRemoveTribe(election, 2) == ELECTION_SUCCESS);
 //     electionSetTribeName(election, 1, "tribe name changed");
 //     char *name = electionGetTribeName(election, 1);
 //     assert(strcmp(name, "tribe name changed") == 0);
