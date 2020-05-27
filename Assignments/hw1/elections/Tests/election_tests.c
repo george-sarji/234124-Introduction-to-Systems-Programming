@@ -9,7 +9,7 @@
 // Allow malloc to be unstable
 #define malloc xmalloc
 
-#define STRESS_INVERTALS_MODIFIER 10000
+#define STRESS_INVERTALS_MODIFIER 500
 
 #ifdef __unix__
 #define WITH_FORK
