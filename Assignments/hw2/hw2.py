@@ -102,8 +102,35 @@ def calcCompetitionsResults(competitors_in_competitions):
         [competition_name, winning_gold_country, winning_silver_country, winning_bronze_country]
     '''
     competitions_champs = []
-    # TODO Part A, Task 3.5
+    competitions = {}
+    # Check all the competitions.
 
+    for competitor in sorted(competitors_in_competitions,
+                             key=lambda c: c['result'], reverse=True):
+        # print(competitor)
+        competition = competitor['competition name']
+        if(competition not in competitions):
+            # Add the competition and update the results
+            competitions[competition] = {
+                'gold': 'undef_country', 'silver': 'undef_country', 'bronze': 'undef_country'}
+        # Check if result is better than current gold/silver/bronze.
+        # Check which spots are not taken.
+        if(competitions[competition]['gold'] == 'undef_country'):
+            # Set into gold.
+            competitions[competition]['gold'] = competitor['competitor country']
+        elif(competitions[competition]['silver'] == 'undef_country'):
+            competitions[competition]['silver'] = competitor['competitor country']
+        elif(competitions[competition]['bronze'] == 'undef_country'):
+            competitions[competition]['bronze'] = competitor['competitor country']
+
+    for competition in competitions:
+        current = competitions[competition]
+        # print(current)
+        if(current['gold'] == 'undef_country'):
+            continue
+        competitions_champs.append([competition, current['gold'],
+                                    current['silver'], current['bronze']])
+    # TODO Part A, Task 3.5
     return competitions_champs
 
 
