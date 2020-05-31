@@ -110,14 +110,11 @@ def calcCompetitionsResults(competitors_in_competitions):
         # Get the current competition and country name
         country = competitor['competitor country']
         competition = competitor['competition name']
-        print(f'{competition} {country}')
         # Check if already eliminated.
         if(country in elimination[competition]):
-            print(f'{country} was previously eliminated from {competition}')
             continue
         elif(country in competitions[competition]):
             # Eliminate country.
-            print(f'eliminated {country} from {competition}')
             elimination[competition].append(country)
             # Remove current entry.
             competitions[competition].remove(country)
@@ -137,8 +134,6 @@ def calcCompetitionsResults(competitors_in_competitions):
             champs = [name]
             champs.extend(countries)
             competitions_champs.append(champs)
-    print(competitions)
-    print(competitions_champs)
     # TODO Part A, Task 3.5
     return competitions_champs
 
