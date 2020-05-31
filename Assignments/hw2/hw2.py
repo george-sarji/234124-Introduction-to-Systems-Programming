@@ -102,34 +102,43 @@ def calcCompetitionsResults(competitors_in_competitions):
         [competition_name, winning_gold_country, winning_silver_country, winning_bronze_country]
     '''
     competitions_champs = []
-    competitions = {}
-    # Check all the competitions.
-
-    for competitor in sorted(competitors_in_competitions,
-                             key=lambda c: c['result'], reverse=True):
-        # print(competitor)
+    elimination = {competitor['competition name']: []
+                   for competitor in competitors_in_competitions}
+    competitions = {competitor['competition name']: ['undef_country', 'undef_country', 'undef_country']
+                    for competitor in sorted(competitors_in_competitions, key=lambda i: i['competition name'])}
+    for competitor in sorted(competitors_in_competitions, key=lambda i: i['result']):
+        # Get the current competition and country name
+        country = competitor['competitor country']
         competition = competitor['competition name']
-        if(competition not in competitions):
-            # Add the competition and update the results
-            competitions[competition] = {
-                'gold': 'undef_country', 'silver': 'undef_country', 'bronze': 'undef_country'}
-        # Check if result is better than current gold/silver/bronze.
-        # Check which spots are not taken.
-        if(competitions[competition]['gold'] == 'undef_country'):
-            # Set into gold.
-            competitions[competition]['gold'] = competitor['competitor country']
-        elif(competitions[competition]['silver'] == 'undef_country'):
-            competitions[competition]['silver'] = competitor['competitor country']
-        elif(competitions[competition]['bronze'] == 'undef_country'):
-            competitions[competition]['bronze'] = competitor['competitor country']
-
-    for competition in competitions:
-        current = competitions[competition]
-        # print(current)
-        if(current['gold'] == 'undef_country'):
+        print(f'{competition} {country}')
+        # Check if already eliminated.
+        if(country in elimination[competition]):
+            print(f'{country} was previously eliminated from {competition}')
             continue
-        competitions_champs.append([competition, current['gold'],
-                                    current['silver'], current['bronze']])
+        elif(country in competitions[competition]):
+            # Eliminate country.
+            print(f'eliminated {country} from {competition}')
+            elimination[competition].append(country)
+            # Remove current entry.
+            competitions[competition].remove(country)
+            competitions[competition].append('undef_country')
+            continue
+
+        for medal in range(3):
+            if(competitions[competition][medal] == 'undef_country'):
+                competitions[competition][medal] = country
+                break
+
+    for name, countries in competitions.items():
+        # Check if we have no gold medal
+        if(countries[0] == 'undef_country'):
+            continue
+        else:
+            champs = [name]
+            champs.extend(countries)
+            competitions_champs.append(champs)
+    print(competitions)
+    print(competitions_champs)
     # TODO Part A, Task 3.5
     return competitions_champs
 
@@ -163,7 +172,7 @@ if __name__ == "__main__":
 
     To run only a single part, comment the line below which correspondes to the part you don't want to run.
     '''
-    file_name = './Tests/in/test1.txt'
+    file_name = './tests/in/test2.txt'
 
     partA(file_name)
     partB(file_name)
