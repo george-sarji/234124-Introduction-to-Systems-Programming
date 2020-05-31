@@ -66,7 +66,7 @@ def readParseData(file_name):
         line = line.split(" ")
         if(line[0] == 'competitor'):
             # Create a new competitor object.
-            new_competitor = {'competitor id': line[1], 'competitor country': line[2],
+            new_competitor = {'competitor id': line[1], 'competitor country': line[2].replace('\n', ''),
                               'competition type': '', 'competition name': 'NONE', 'result': 0}
             competitors_in_competitions.append(new_competitor)
 
