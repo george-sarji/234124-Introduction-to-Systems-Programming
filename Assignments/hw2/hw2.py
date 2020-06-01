@@ -1,4 +1,3 @@
-import Olympics
 def printCompetitor(competitor):
     '''
     Given the data of a competitor, the function prints it in a specific format.
@@ -63,7 +62,7 @@ def readParseData(file_name):
     file = open(file_name, "r+")
 
     lines = file.readlines()
-    for line in sorted(lines, key=lambda i: i.split(' ')[0] == 'competitor', reverse = True):
+    for line in sorted(lines, key=lambda i: i.split(' ')[0] == 'competitor', reverse=True):
         line = line.split(' ')
         # Check the beginning of each line:
         line[-1] = line[-1].replace('\n', '')
@@ -115,45 +114,7 @@ def calcCompetitionsResults(competitors_in_competitions):
         [competition_name, winning_gold_country, winning_silver_country, winning_bronze_country]
     '''
     competitions_champs = []
-    elimination = {competitor['competition name']: []
-                   for competitor in competitors_in_competitions}
-    competitions = {competitor['competition name']: ['undef_country', 'undef_country', 'undef_country']
-                    for competitor in sorted(competitors_in_competitions, key=lambda i: i['competition name'])}
-    for competitor in sorted(competitors_in_competitions, key=lambda i: i['result'] if(i['competition type'] == 'untimed')
-                             else -i['result'], reverse=True):
-        # print(f'Current competitor: {competitor}')
-        # Get the current competition and country name
-        competition = competitor['competition name']
-        id = competitor['competitor id']
-        country = (competitor['competitor country'], id)
-        # Check if already eliminated.
-        if(id in elimination[competition]):
-            continue
-        elif(country in competitions[competition]):
-            # Eliminate country.
-            elimination[competition].append(id)
-            # Remove current entry.
-            competitions[competition].remove(country)
-            competitions[competition].append('undef_country')
-            continue
-
-        for medal in range(3):
-            if(competitions[competition][medal] == 'undef_country'):
-                competitions[competition][medal] = country
-                break
-
-    for name, countries in competitions.items():
-        # Check if we have no gold medal
-        if(countries[0] == 'undef_country'):
-            continue
-        else:
-            champs = [name]
-            for country in countries:
-                if(country == 'undef_country'):
-                    champs.append('undef_country')
-                    continue
-                champs.append(country[0])
-            competitions_champs.append(champs)
+    # 
     # TODO Part A, Task 3.5
     return competitions_champs
 
@@ -176,10 +137,12 @@ def partA(file_name='input.txt', allow_prints=True):
 
 
 def partB(file_name='input.txt'):
+    import Olympics
     competitions_results = partA(file_name, allow_prints=False)
     o = Olympics.OlympicsCreate()
     for competition in competitions_results:
-        Olympics.OlympicsUpdateCompetitionResults(o, str(competition[1]), str(competition[2]), str(competition[3]))
+        Olympics.OlympicsUpdateCompetitionResults(
+            o, str(competition[1]), str(competition[2]), str(competition[3]))
     Olympics.OlympicsWinningCountry(o)
     Olympics.OlympicsDestroy(o)
     # TODO Part B
@@ -192,7 +155,7 @@ if __name__ == "__main__":
 
     To run only a single part, comment the line below which correspondes to the part you don't want to run.
     '''
-    file_name = './tests/in/test1.txt'
+    file_name = 'tests/in/test4.txt'
 
     partA(file_name)
     partB(file_name)
