@@ -105,14 +105,17 @@ def calcCompetitionsResults(competitors_in_competitions):
 
     competitions_champs = []
     completed = []
+    # Go through the competitions according to names.
     for competition in sorted(competitors_in_competitions, key=lambda i: i['competition name']):
         name = competition['competition name']
+        # Check if we already announced results for this competition.
         if(name in completed):
             continue
         comp_type = competition['competition type']
-        # Get the relevant list.
+        # Get the relevant list of competitors
         competitors = [
             comp for comp in competitors_in_competitions if comp['competition name'] == name]
+        # Sort the competitors according to the competition type and the result
         if(comp_type == 'untimed'):
             competitors = sorted(competitors,
                                  key=lambda i: i['result'], reverse=True)
@@ -124,31 +127,40 @@ def calcCompetitionsResults(competitors_in_competitions):
         disqualification = []
         winners_id = []
         winners = []
+        # Go through the competitors for this competition
         for competitor in competitors:
             id = competitor['competitor id']
             country = competitor['competitor country']
+            # Check if the current ID is disqualified.
             if(id in disqualification):
                 continue
+            # Check if the current ID is already in the winners list for this competition
             elif(id in winners_id):
+                # Disqualify the current ID, duplicate entries int this competition.
                 disqualification.append(id)
                 index = winners_id.index(id)
                 winners_id.remove(id)
                 winners.pop(index)
+            # Legal entry. Add to the winners.
             else:
                 winners.append(country)
                 winners_id.append(id)
         # Use the first 3.
         final = [name]
+        # Are there no winners? If so, continue, do not add this to the competition champs.
         if(len(winners) == 0):
             continue
+        # Add the first 3 winners we have.
         final.extend(winners[0:3])
+        # Check if we have enough winners in the array. If not, add undef_country until we have enough.
         while(len(final)<4):
             final.append('undef_country')
+        # Add the final list of winners to the competition champs
         competitions_champs.append(final)
+        # Add the name of the competition into the list of completed competitions
         completed.append(name)
 
         # Go along the competitors and add them.
-    # TODO Part A, Task 3.5
     return competitions_champs
 
 
