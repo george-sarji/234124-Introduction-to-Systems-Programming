@@ -1,3 +1,4 @@
+import Olympics
 def printCompetitor(competitor):
     '''
     Given the data of a competitor, the function prints it in a specific format.
@@ -6,7 +7,6 @@ def printCompetitor(competitor):
                         'competitor id': competitor_id, 'competitor country': competitor_country,
                         'result': result}
     '''
-    file = open('out.txt', 'a')
     competition_name = competitor['competition name']
     competition_type = competitor['competition type']
     competitor_id = competitor['competitor id']
@@ -17,8 +17,6 @@ def printCompetitor(competitor):
     assert(isinstance(result, int))
 
     print(f'Competitor {competitor_id} from {competitor_country} participated in {competition_name} ({competition_type}) and scored {result}')
-    file.write(
-        f'Competitor {competitor_id} from {competitor_country} participated in {competition_name} ({competition_type}) and scored {result}\n')
 
 
 def printCompetitionResults(competition_name, winning_gold_country, winning_silver_country, winning_bronze_country):
@@ -29,14 +27,11 @@ def printCompetitionResults(competition_name, winning_gold_country, winning_silv
         competition_name: the competition name
         winning_gold_country, winning_silver_country, winning_bronze_country: the champs countries
     '''
-    file = open('out.txt', 'a')
     undef_country = 'undef_country'
     countries = [country for country in [winning_gold_country,
                                          winning_silver_country, winning_bronze_country] if country != undef_country]
     print(
         f'The winning competitors in {competition_name} are from: {countries}')
-    file.write(
-        f'The winning competitors in {competition_name} are from: {countries}' + '\n')
 
 
 def key_sort_competitor(competitor):
@@ -182,6 +177,11 @@ def partA(file_name='input.txt', allow_prints=True):
 
 def partB(file_name='input.txt'):
     competitions_results = partA(file_name, allow_prints=False)
+    o = Olympics.OlympicsCreate()
+    for competition in competitions_results:
+        Olympics.OlympicsUpdateCompetitionResults(o, str(competition[1]), str(competition[2]), str(competition[3]))
+    Olympics.OlympicsWinningCountry(o)
+    Olympics.OlympicsDestroy(o)
     # TODO Part B
 
 
@@ -192,10 +192,7 @@ if __name__ == "__main__":
 
     To run only a single part, comment the line below which correspondes to the part you don't want to run.
     '''
-    file_name = 'input.txt'
-    file = open('out.txt', 'a')
-    file.truncate(0)
-    file.close()
+    file_name = './tests/in/test1.txt'
 
     partA(file_name)
     partB(file_name)
