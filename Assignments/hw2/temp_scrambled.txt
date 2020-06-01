@@ -1,0 +1,12 @@
+competition road_bike 2 timed 300
+competition high_jump 2 untimed 102
+competition swimming 2 timed 101
+competitor 1 Israel
+competitor 2 USA
+competition swimming 3 timed 96
+competition road_bike 1 timed 100
+competition high_jump 1 untimed 100
+competitor 3 China
+competition road_bike 3 timed 200
+competition swimming 1 timed 100
+competition high_jump 3 untimed 90

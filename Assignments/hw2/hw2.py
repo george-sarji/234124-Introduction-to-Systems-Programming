@@ -64,28 +64,29 @@ def readParseData(file_name):
     lines = file.readlines()
     for line in lines:
         line = line.split(" ")
-        if(line[0] == 'competitor'):
-            # Create a new competitor object.
-            new_competitor = {'competitor id': line[1], 'competitor country': line[2].replace('\n', ''),
-                              'competition type': '', 'competition name': 'NONE', 'result': 0}
-            competitors_in_competitions.append(new_competitor)
+        # Check the beginning of each line:
+        # if(line[0] == 'competitor'):
+        #     # Create a new competitor object.
+        #     new_competitor = {'competitor id': line[1], 'competitor country': line[2].replace('\n', ''),
+        #                       'competition type': '', 'competition name': 'NONE', 'result': 0}
+        #     competitors_in_competitions.append(new_competitor)
 
-        elif(line[0] == 'competition'):
-            id = line[2]
-            # Find the competitor we're after.
-            for competitor in competitors_in_competitions:
-                if(competitor['competitor id'] == id):
-                    if(competitor['competition name'] != 'NONE'):
-                        # Create a new competitor.
-                        new_competitor = {'competitor id': competitor['competitor id'], 'competitor country': competitor[
-                            'competitor country'], 'competition type': line[3], 'competition name': line[1], 'result': int(line[4])}
-                        competitors_in_competitions.append(new_competitor)
-                        break
-                    # We found the competitor.
-                    competitor['competition name'] = line[1]
-                    competitor['competition type'] = line[3]
-                    competitor['result'] = int(line[4])
-                    break
+        # elif(line[0] == 'competition'):
+        #     id = line[2]
+        #     # Find the competitor we're after.
+        #     for competitor in competitors_in_competitions:
+        #         if(competitor['competitor id'] == id):
+        #             if(competitor['competition name'] != 'NONE'):
+        #                 # Create a new competitor.
+        #                 new_competitor = {'competitor id': competitor['competitor id'], 'competitor country': competitor[
+        #                     'competitor country'], 'competition type': line[3], 'competition name': line[1], 'result': int(line[4])}
+        #                 competitors_in_competitions.append(new_competitor)
+        #                 break
+        #             # We found the competitor.
+        #             competitor['competition name'] = line[1]
+        #             competitor['competition type'] = line[3]
+        #             competitor['result'] = int(line[4])
+        #             break
     # TODO Part A, Task 3.4
     return competitors_in_competitions
 

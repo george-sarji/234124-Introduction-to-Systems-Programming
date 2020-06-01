@@ -8,6 +8,6 @@ typedef struct olympics* Olympics;
 
 Olympics OlympicsCreate();
 
-TODO : insert more code here. add missing functions.
+// TODO : insert more code here. add missing functions.
 
 void OlympicsDestroy(Olympics o);
