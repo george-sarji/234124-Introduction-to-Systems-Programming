@@ -6,6 +6,7 @@ def printCompetitor(competitor):
                         'competitor id': competitor_id, 'competitor country': competitor_country,
                         'result': result}
     '''
+    file = open('out.txt', 'a')
     competition_name = competitor['competition name']
     competition_type = competitor['competition type']
     competitor_id = competitor['competitor id']
@@ -16,6 +17,8 @@ def printCompetitor(competitor):
     assert(isinstance(result, int))
 
     print(f'Competitor {competitor_id} from {competitor_country} participated in {competition_name} ({competition_type}) and scored {result}')
+    file.write(
+        f'Competitor {competitor_id} from {competitor_country} participated in {competition_name} ({competition_type}) and scored {result}\n')
 
 
 def printCompetitionResults(competition_name, winning_gold_country, winning_silver_country, winning_bronze_country):
@@ -26,11 +29,14 @@ def printCompetitionResults(competition_name, winning_gold_country, winning_silv
         competition_name: the competition name
         winning_gold_country, winning_silver_country, winning_bronze_country: the champs countries
     '''
+    file = open('out.txt', 'a')
     undef_country = 'undef_country'
     countries = [country for country in [winning_gold_country,
                                          winning_silver_country, winning_bronze_country] if country != undef_country]
     print(
         f'The winning competitors in {competition_name} are from: {countries}')
+    file.write(
+        f'The winning competitors in {competition_name} are from: {countries}' + '\n')
 
 
 def key_sort_competitor(competitor):
@@ -62,31 +68,42 @@ def readParseData(file_name):
     file = open(file_name, "r+")
 
     lines = file.readlines()
-    for line in lines:
-        line = line.split(" ")
+    for line in sorted(lines, key=lambda i: i.split(' ')[0] == 'competitor', reverse = True):
+        line = line.split(' ')
         # Check the beginning of each line:
-        # if(line[0] == 'competitor'):
-        #     # Create a new competitor object.
-        #     new_competitor = {'competitor id': line[1], 'competitor country': line[2].replace('\n', ''),
-        #                       'competition type': '', 'competition name': 'NONE', 'result': 0}
-        #     competitors_in_competitions.append(new_competitor)
-
-        # elif(line[0] == 'competition'):
-        #     id = line[2]
-        #     # Find the competitor we're after.
-        #     for competitor in competitors_in_competitions:
-        #         if(competitor['competitor id'] == id):
-        #             if(competitor['competition name'] != 'NONE'):
-        #                 # Create a new competitor.
-        #                 new_competitor = {'competitor id': competitor['competitor id'], 'competitor country': competitor[
-        #                     'competitor country'], 'competition type': line[3], 'competition name': line[1], 'result': int(line[4])}
-        #                 competitors_in_competitions.append(new_competitor)
-        #                 break
-        #             # We found the competitor.
-        #             competitor['competition name'] = line[1]
-        #             competitor['competition type'] = line[3]
-        #             competitor['result'] = int(line[4])
-        #             break
+        line[-1] = line[-1].replace('\n', '')
+        if(line[0] == 'competitor'):
+            # Create competitor
+            new_competitor = {
+                'competitor id': line[1],
+                'competitor country': line[2],
+                'competition type': '',
+                'competition name': '',
+                'result': -1
+            }
+            # print(f'Added new competitor: {new_competitor}')
+            competitors_in_competitions.append(new_competitor)
+        elif(line[0] == 'competition'):
+            # Create competition (update competitor?)
+            id = line[2]
+            for competitor in competitors_in_competitions:
+                if(competitor['competitor id'] == id):
+                    if(competitor['competition name'] != ''):
+                        new_competitor = {
+                            'competitor id': id,
+                            'competitor country': competitor['competitor country'],
+                            'competition type': line[3],
+                            'competition name': line[1],
+                            'result': int(line[4])
+                        }
+                        # print(f'Added new competition: {new_competitor}')
+                        competitors_in_competitions.append(new_competitor)
+                    else:
+                        competitor['competition name'] = line[1]
+                        competitor['competition type'] = line[3]
+                        competitor['result'] = int(line[4])
+                        # print(f'Updated competitor: {competitor}')
+                    break
     # TODO Part A, Task 3.4
     return competitors_in_competitions
 
@@ -107,16 +124,19 @@ def calcCompetitionsResults(competitors_in_competitions):
                    for competitor in competitors_in_competitions}
     competitions = {competitor['competition name']: ['undef_country', 'undef_country', 'undef_country']
                     for competitor in sorted(competitors_in_competitions, key=lambda i: i['competition name'])}
-    for competitor in sorted(competitors_in_competitions, key=lambda i: i['result']):
+    for competitor in sorted(competitors_in_competitions, key=lambda i: i['result'] if(i['competition type'] == 'untimed')
+                             else -i['result'], reverse=True):
+        # print(f'Current competitor: {competitor}')
         # Get the current competition and country name
-        country = competitor['competitor country']
         competition = competitor['competition name']
+        id = competitor['competitor id']
+        country = (competitor['competitor country'], id)
         # Check if already eliminated.
-        if(country in elimination[competition]):
+        if(id in elimination[competition]):
             continue
         elif(country in competitions[competition]):
             # Eliminate country.
-            elimination[competition].append(country)
+            elimination[competition].append(id)
             # Remove current entry.
             competitions[competition].remove(country)
             competitions[competition].append('undef_country')
@@ -133,7 +153,11 @@ def calcCompetitionsResults(competitors_in_competitions):
             continue
         else:
             champs = [name]
-            champs.extend(countries)
+            for country in countries:
+                if(country == 'undef_country'):
+                    champs.append('undef_country')
+                    continue
+                champs.append(country[0])
             competitions_champs.append(champs)
     # TODO Part A, Task 3.5
     return competitions_champs
@@ -168,7 +192,10 @@ if __name__ == "__main__":
 
     To run only a single part, comment the line below which correspondes to the part you don't want to run.
     '''
-    file_name = './tests/in/test2.txt'
+    file_name = 'tests/in/test6.txt'
+    file = open('out.txt', 'a')
+    file.truncate(0)
+    file.close()
 
     partA(file_name)
     partB(file_name)
