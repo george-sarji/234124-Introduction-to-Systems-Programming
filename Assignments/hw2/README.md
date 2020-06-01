@@ -1,44 +1,12 @@
-# How to use
-This tester aims to cover as many edge cases as possible whilst giving convinient testing results.
+# Homework 2
 
-## So what's it testing
- - [x] All test files located in the `in` folder (assuming there's a matching output file in the `out` folder)
- - [x] Testing `partA`
- - [x] Testing `partB`
- - [ ] Automagically create SWIG compiled files from .i .h and .o files
- - [ ] Automagically generates random tests
- - [ ] Automagically fetches tests with edge cases from the internet
+Transaction summary:
+Date:	1/6/2020, 19:32:41
+Assignment:	HW2
+Course:	234124 (מבוא לתכנות מערכות)
+Semester:	Spring 2020
+Submitted by:	207534744, xxxxxxx
+File name:	Submission.zip
+File size:	2,835B
 
-
-## Prerequisites
-1. Python3.6+ (`sudo apt install python3 python3-pip` on Ubuntu)
-2. `termcolor` library (you can install it by typing `pip install termcolor`)
-3. Have a few test files
-
-## Folder structure
-You must have the following folder structure to be able to run the tester
-
-project:
- * ex2_tester.py
- * hw2.py
- * Olympics.py
- * Olympics.so
- * tests:
-   * in:
-     * test1.txt
-     * test2.txt
-     * ...
-   * out:
-     * out1.txt
-     * out2.txt
-     * ...
-
-## How to run
-On your computer you will likely be able to run it with
-```python
-python3 ex2_tester.py
-```
-On the CSL3 server, the default Python3 version is 3.4 so you will need to
-```python
-python3.6 ex2_tester.py
-```
+Confirmation code:	234124-201902-xxxxxxx-9777620
