@@ -1,3 +1,47 @@
+def readParseData(file_name):
+    '''
+    Given a file name, the function returns a list of competitors.
+    Arguments:
+        file_name: the input file name. Assume that the input file is in the directory of this script.
+    Return value:
+        A list of competitors, such that every record is a dictionary, in the following format:
+            {'competition name': competition_name, 'competition type': competition_type,
+                'competitor id': competitor_id, 'competitor country': competitor_country,
+                'result': result}
+    '''
+    competitors_in_competitions = []
+    file = open(file_name, 'r')
+    lines = file.readlines()
+    competitors = []
+    for line in sorted(lines, key=lambda i: i.replace('\n', '').split(' ')[0] == 'competitor', reverse=True):
+        line = line.replace('\n', '').split(' ')
+        if(line[0] == 'competitor'):
+            competitor = {
+                'competitor country': line[2],
+                'competitor id': int(line[1]),
+                'competition name': '',
+                'competition type': '',
+                'result': -1
+            }
+            competitors.append(competitor)
+        elif(line[0] == 'competition'):
+            # Check if we have the current competitor without an assigned competition.
+            id = int(line[2])
+            exists = False
+            for competitor in competitors:
+                if(competitor['competitor id'] == id):
+                    exists = True
+                    new_entry = competitor.copy()
+                    new_entry['competition name'] = line[1]
+                    new_entry['competition type'] = line[3]
+                    new_entry['result'] = int(line[4])
+                    competitors_in_competitions.append(new_entry)
+                    break
+                # Create a new competitor with all the info we need.
+                # * TODO Part A, Task 3.4
+    return competitors_in_competitions
+
+
 def printCompetitor(competitor):
     '''
     Given the data of a competitor, the function prints it in a specific format.
@@ -47,61 +91,6 @@ def key_sort_competitor(competitor):
     return (competition_name, result)
 
 
-def readParseData(file_name):
-    '''
-    Given a file name, the function returns a list of competitors.
-    Arguments:
-        file_name: the input file name. Assume that the input file is in the directory of this script.
-    Return value:
-        A list of competitors, such that every record is a dictionary, in the following format:
-            {'competition name': competition_name, 'competition type': competition_type,
-                'competitor id': competitor_id, 'competitor country': competitor_country,
-                'result': result}
-    '''
-    competitors_in_competitions = []
-    file = open(file_name, "r+")
-
-    lines = file.readlines()
-    for line in sorted(lines, key=lambda i: i.split(' ')[0] == 'competitor', reverse=True):
-        line = line.split(' ')
-        # Check the beginning of each line:
-        line[-1] = line[-1].replace('\n', '')
-        if(line[0] == 'competitor'):
-            # Create competitor
-            new_competitor = {
-                'competitor id': line[1],
-                'competitor country': line[2],
-                'competition type': '',
-                'competition name': '',
-                'result': -1
-            }
-            # print(f'Added new competitor: {new_competitor}')
-            competitors_in_competitions.append(new_competitor)
-        elif(line[0] == 'competition'):
-            # Create competition (update competitor?)
-            id = line[2]
-            for competitor in competitors_in_competitions:
-                if(competitor['competitor id'] == id):
-                    if(competitor['competition name'] != ''):
-                        new_competitor = {
-                            'competitor id': id,
-                            'competitor country': competitor['competitor country'],
-                            'competition type': line[3],
-                            'competition name': line[1],
-                            'result': int(line[4])
-                        }
-                        # print(f'Added new competition: {new_competitor}')
-                        competitors_in_competitions.append(new_competitor)
-                    else:
-                        competitor['competition name'] = line[1]
-                        competitor['competition type'] = line[3]
-                        competitor['result'] = int(line[4])
-                        # print(f'Updated competitor: {competitor}')
-                    break
-    # TODO Part A, Task 3.4
-    return competitors_in_competitions
-
-
 def calcCompetitionsResults(competitors_in_competitions):
     '''
     Given the data of the competitors, the function returns the champs countries for each competition.
@@ -113,8 +102,52 @@ def calcCompetitionsResults(competitors_in_competitions):
         Every record in the list contains the competition name and the champs, in the following format:
         [competition_name, winning_gold_country, winning_silver_country, winning_bronze_country]
     '''
+
     competitions_champs = []
-    # 
+    completed = []
+    for competition in sorted(competitors_in_competitions, key=lambda i: i['competition name']):
+        name = competition['competition name']
+        if(name in completed):
+            continue
+        comp_type = competition['competition type']
+        # Get the relevant list.
+        competitors = [
+            comp for comp in competitors_in_competitions if comp['competition name'] == name]
+        if(comp_type == 'untimed'):
+            competitors = sorted(competitors,
+                                 key=lambda i: i['result'], reverse=True)
+        else:
+            competitors = sorted(competitors,
+                                 key=lambda i: i['result'])
+        # We got the competitors for this specific competition, sorted according to the proper results.
+        # Now we need to assign the winners to each medal, and to make sure there's no illegal entries.
+        disqualification = []
+        winners_id = []
+        winners = []
+        for competitor in competitors:
+            id = competitor['competitor id']
+            country = competitor['competitor country']
+            if(id in disqualification):
+                continue
+            elif(id in winners_id):
+                disqualification.append(id)
+                index = winners_id.index(id)
+                winners_id.remove(id)
+                winners.pop(index)
+            else:
+                winners.append(country)
+                winners_id.append(id)
+        # Use the first 3.
+        final = [name]
+        if(len(winners) == 0):
+            continue
+        final.extend(winners[0:3])
+        while(len(final)<4):
+            final.append('undef_country')
+        competitions_champs.append(final)
+        completed.append(name)
+
+        # Go along the competitors and add them.
     # TODO Part A, Task 3.5
     return competitions_champs
 
@@ -145,7 +178,6 @@ def partB(file_name='input.txt'):
             o, str(competition[1]), str(competition[2]), str(competition[3]))
     Olympics.OlympicsWinningCountry(o)
     Olympics.OlympicsDestroy(o)
-    # TODO Part B
 
 
 if __name__ == "__main__":
@@ -155,7 +187,7 @@ if __name__ == "__main__":
 
     To run only a single part, comment the line below which correspondes to the part you don't want to run.
     '''
-    file_name = 'tests/in/test4.txt'
+    file_name = 'input.txt'
 
     partA(file_name)
     partB(file_name)

@@ -81,8 +81,8 @@ def get_competition_result(competition_name, winning_gold_country, winning_silve
 
 
 def generate_test_file(test_file_path, out_file_path):
-    places = random.sample(PLACES, k=random.randint(1, 12))
-    activities = random.sample(ACTIVITIES, k=random.randint(0, 20))
+    places = random.sample(PLACES, k=random.randint(1, 5))
+    activities = random.sample(ACTIVITIES, k=random.randint(0, 5))
     activities_types = [random.choice(TYPES) for _ in activities]
 
     competitors = []
