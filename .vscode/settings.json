@@ -25,5 +25,5 @@
         "map.h": "c",
         "algorithm": "c"
     },
-    "python.pythonPath": "/usr/local/bin/python3.6"
+    "python.pythonPath": "/usr/bin/python3"
 }
