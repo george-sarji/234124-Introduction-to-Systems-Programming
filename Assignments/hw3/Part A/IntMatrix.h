@@ -18,6 +18,8 @@ namespace mtm
         IntMatrix(Dimensions dims, int value = 0);
         // Copy constructor
         IntMatrix(const IntMatrix&);
+        // Destructor
+        ~IntMatrix();
 
         // ! Functions
         // Function to create identity matrices.
@@ -28,13 +30,15 @@ namespace mtm
         // ! Operator overloads
         // Operator + overload for matrices addition
         IntMatrix operator+(const IntMatrix& matrix);
-        // Operator - overload for matrices subtraction
-        IntMatrix operator-(const IntMatrix& matrix);
         // operator + overload for scalar addition (matrix+scalar)
         IntMatrix operator+(const int& number);
         // operator += overload for scalar addition (matrix+=scalar)
         IntMatrix operator+=(const int& number);
 
+        // Operator - overload for matrices subtraction
+        IntMatrix operator-(const IntMatrix& matrix);
+        // Operator - overload for matrix value inversion (-matrix)
+        IntMatrix operator-();
         // ! Getters
         // Getter to get the cell at (row, col)
         int getCell(int row, int col) const;

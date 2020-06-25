@@ -3,6 +3,9 @@
 
 namespace mtm
 {
+    // ! Constructors
+
+    // Constructor with value (defaulted to 0)
     mtm::IntMatrix::IntMatrix(Dimensions dims, int value)
     {
         // Get the row and column dimensions.
@@ -23,6 +26,7 @@ namespace mtm
         }
     }
 
+    // Copy constructor
     mtm::IntMatrix::IntMatrix(const IntMatrix &intMatrix)
     {
         // Assign the dims.
@@ -40,6 +44,19 @@ namespace mtm
                 matrix[row][col] = intMatrix.getCell(row, col);
             }
         }
+    }
+
+    // Destructor
+    mtm::IntMatrix::~IntMatrix()
+    {
+        // Go through the actual matrix array and delete each row matrix.
+        for (int i = 0; i < height(); i++)
+        {
+            // Delete the current row.
+            delete[] matrix[i];
+        }
+        // Delete the actual matrix array.
+        delete matrix;
     }
 
     // ! Functions
@@ -166,6 +183,24 @@ namespace mtm
             {
                 // Change the current cell (i,j) into original(i,j)-matrix(i,j)
                 result.setCell(i, j, getCell(i, j) - matrix.getCell(i, j));
+            }
+        }
+        // Return the result matrix.
+        return result;
+    }
+
+    // Operator overload for matrix value inversion (-matrix)
+    IntMatrix mtm::IntMatrix::operator-()
+    {
+        // Create a result matrix as a copy of the current.
+        IntMatrix result = *this;
+        // Iterate through the current matrix.
+        for (int i = 0; i < height(); i++)
+        {
+            for (int j = 0; j < width(); j++)
+            {
+                // Set the (i,j) cell to be -cell(i,j)
+                result.setCell(i, j - getCell(i, j));
             }
         }
         // Return the result matrix.
