@@ -82,16 +82,15 @@ namespace mtm
     }
 
     // ! Operator overloads
+
     IntMatrix mtm::IntMatrix::operator+(const IntMatrix &matrix)
     {
-        // Get the matrices dimensions. (We assume they're the same dimensions)
-        Dimensions dims = getDimensions();
-        // Create a new matrix according to the given dimensions.
-        IntMatrix result(dims);
+        // Create a new matrix that's a copy of the current..
+        IntMatrix result = *this;
         // Iterate through the matrices and start assigning the proper values.
-        for (int i = 0; i < dims.getRow(); i++)
+        for (int i = 0; i < height(); i++)
         {
-            for (int j = 0; j < dims.getCol(); j++)
+            for (int j = 0; j < width(); j++)
             {
                 // Set the current cell into the result of original(i,j) + matrix(i,j).
                 result.setCell(i, j, getCell(i, j) + matrix.getCell(i, j));
@@ -103,14 +102,12 @@ namespace mtm
 
     IntMatrix mtm::IntMatrix::operator-(const IntMatrix &matrix)
     {
-        // Get the dimensions of the matrices. (Assume same dimensions)
-        Dimensions dims = getDimensions();
-        // Create the result matrix.
-        IntMatrix result(dims);
+        // Create a new matrix that's a copy of the current.
+        IntMatrix result = *this;
         // Iterate through the matrices.
-        for (int i = 0; i < dims.getRow(); i++)
+        for (int i = 0; i < height(); i++)
         {
-            for (int j = 0; j < dims.getCol(); j++)
+            for (int j = 0; j < width(); j++)
             {
                 // Change the current cell (i,j) into original(i,j)-matrix(i,j)
                 result.setCell(i, j, getCell(i, j) - matrix.getCell(i, j));
@@ -122,14 +119,12 @@ namespace mtm
 
     IntMatrix mtm::IntMatrix::operator+(const int &number)
     {
-        // Get the dimensions of our current matrix.
-        Dimensions dims = getDimensions();
-        // Create the result matrix.
-        IntMatrix result(dims);
+        // Create a new matrix that's a copy of the current.
+        IntMatrix result = *this;
         // Iterate through the current matrix.
-        for (int i = 0; i < dims.getRow(); i++)
+        for (int i = 0; i < height(); i++)
         {
-            for (int j = 0; j < dims.getCol(); j++)
+            for (int j = 0; j < width(); j++)
             {
                 // Add the scalar to the current cell (i,j)
                 result.setCell(i, j, getCell(i, j) + number);
