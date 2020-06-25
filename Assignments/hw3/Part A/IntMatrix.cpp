@@ -83,9 +83,10 @@ namespace mtm
 
     // ! Operator overloads
 
+    // Operator overload for matrix addition.
     IntMatrix mtm::IntMatrix::operator+(const IntMatrix &matrix)
     {
-        // Create a new matrix that's a copy of the current..
+        // Create a new matrix that's a copy of the current.
         IntMatrix result = *this;
         // Iterate through the matrices and start assigning the proper values.
         for (int i = 0; i < height(); i++)
@@ -100,23 +101,7 @@ namespace mtm
         return result;
     }
 
-    IntMatrix mtm::IntMatrix::operator-(const IntMatrix &matrix)
-    {
-        // Create a new matrix that's a copy of the current.
-        IntMatrix result = *this;
-        // Iterate through the matrices.
-        for (int i = 0; i < height(); i++)
-        {
-            for (int j = 0; j < width(); j++)
-            {
-                // Change the current cell (i,j) into original(i,j)-matrix(i,j)
-                result.setCell(i, j, getCell(i, j) - matrix.getCell(i, j));
-            }
-        }
-        // Return the result matrix.
-        return result;
-    }
-
+    // Operator overload for matrix and scalar addition (matrix+scalar)
     IntMatrix mtm::IntMatrix::operator+(const int &number)
     {
         // Create a new matrix that's a copy of the current.
@@ -131,6 +116,59 @@ namespace mtm
             }
         }
         // Return the result.
+        return result;
+    }
+
+    // Operator overload for matrix and scalar addition (scalar+matrix)
+    IntMatrix operator+(int number, const IntMatrix &matrix)
+    {
+        // Create a new matrix that's a copy of the current matrix.
+        IntMatrix result = matrix;
+        // Go through the current matrix.
+        for (int i = 0; i < matrix.height(); i++)
+        {
+            for (int j = 0; j < matrix.width(); j++)
+            {
+                // Set the current cell (i,j) to matrix(i,j) + scalar
+                result.setCell(i, j, result.getCell(i, j) + number);
+            }
+        }
+        // Return the result matrix.
+        return result;
+    }
+
+    // Operator overload for matrix and scalar addition (matrix+=scalar)
+    IntMatrix mtm::IntMatrix::operator+=(const int &number)
+    {
+        // Modify the current matrix instead of a new one.
+        // Go through the matrix itself.
+        for (int i = 0; i < height(); i++)
+        {
+            for (int j = 0; j < width(); j++)
+            {
+                // Set the current cell (i,j) to current(i,j) + scalar
+                setCell(i, j, getCell(i, j) + number);
+            }
+        }
+        // Return the current matrix.
+        return *this;
+    }
+
+    // Operator overload for matrix subtraction
+    IntMatrix mtm::IntMatrix::operator-(const IntMatrix &matrix)
+    {
+        // Create a new matrix that's a copy of the current.
+        IntMatrix result = *this;
+        // Iterate through the matrices.
+        for (int i = 0; i < height(); i++)
+        {
+            for (int j = 0; j < width(); j++)
+            {
+                // Change the current cell (i,j) into original(i,j)-matrix(i,j)
+                result.setCell(i, j, getCell(i, j) - matrix.getCell(i, j));
+            }
+        }
+        // Return the result matrix.
         return result;
     }
 

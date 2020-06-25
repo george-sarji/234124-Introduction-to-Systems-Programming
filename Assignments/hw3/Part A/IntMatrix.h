@@ -26,12 +26,14 @@ namespace mtm
         IntMatrix transpose();
 
         // ! Operator overloads
-        // Operator + overload for matrix addition
+        // Operator + overload for matrices addition
         IntMatrix operator+(const IntMatrix& matrix);
-        // Operator - overload for matrix subtraction
+        // Operator - overload for matrices subtraction
         IntMatrix operator-(const IntMatrix& matrix);
-        // operator + overload for scalar addition
+        // operator + overload for scalar addition (matrix+scalar)
         IntMatrix operator+(const int& number);
+        // operator += overload for scalar addition (matrix+=scalar)
+        IntMatrix operator+=(const int& number);
 
         // ! Getters
         // Getter to get the cell at (row, col)
