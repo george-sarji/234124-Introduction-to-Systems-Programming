@@ -207,6 +207,13 @@ namespace mtm
         return result;
     }
 
+    // Operator overload for matrix output
+    std::ostream& operator<<(std::ostream& stream, const IntMatrix& matrix) {
+        // Create an array with the size of the matrix.
+        int cells = new int[matrix.size()];
+        // TODO: Iterate and convert
+    }
+
     // * Getters
     int mtm::IntMatrix::height() const
     {

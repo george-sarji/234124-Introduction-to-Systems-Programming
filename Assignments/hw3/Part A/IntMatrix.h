@@ -29,16 +29,21 @@ namespace mtm
 
         // ! Operator overloads
         // Operator + overload for matrices addition
-        IntMatrix operator+(const IntMatrix& matrix);
+        IntMatrix operator+(const IntMatrix&);
         // operator + overload for scalar addition (matrix+scalar)
-        IntMatrix operator+(const int& number);
+        IntMatrix operator+(const int&);
         // operator += overload for scalar addition (matrix+=scalar)
-        IntMatrix operator+=(const int& number);
+        IntMatrix operator+=(const int&);
 
         // Operator - overload for matrices subtraction
-        IntMatrix operator-(const IntMatrix& matrix);
+        IntMatrix operator-(const IntMatrix&);
         // Operator - overload for matrix value inversion (-matrix)
         IntMatrix operator-();
+
+        // Operator << overload for output
+        friend std::ostream& operator<<(std::ostream&, const IntMatrix&);
+
+        
         // ! Getters
         // Getter to get the cell at (row, col)
         int getCell(int row, int col) const;

@@ -23,7 +23,8 @@
         "call_result.h": "c",
         "entity.h": "c",
         "map.h": "c",
-        "algorithm": "c"
+        "algorithm": "c",
+        "iosfwd": "cpp"
     },
     "python.pythonPath": "/usr/bin/python3",
     "cmake.configureOnOpen": false
