@@ -46,6 +46,9 @@ namespace mtm
         // Operator () overload for cell usage
         int operator()(int row, int col) const;
 
+        // Assignment operator overload
+        IntMatrix& operator=(const IntMatrix&);
+
         
         // ! Getters
         // Getter to get the row numbers (height)

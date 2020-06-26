@@ -238,6 +238,33 @@ namespace mtm
         return matrix[row][col];
     }
 
+    // Assignment operator overload
+    IntMatrix& mtm::IntMatrix::operator=(const IntMatrix& copy) {
+        // Clear the current matrix.
+        for(int i=0;i<rows;i++) {
+            // Free current row data.
+            delete[] matrix[i];
+        }
+        // Delete the matrix leftovers.
+        delete[] matrix;
+
+        // Get the proper dimensions from the copy.
+        rows = copy.rows;
+        cols = copy.cols;
+        // Create a new array for the matrix accordingly.
+        matrix = new int*[rows];
+        for(int i=0;i<rows;i++) {
+            // Create the row data array.
+            matrix[i] = new int[cols];
+            // Iterate through and assign values.
+            for(int j=0;j<cols;j++) {
+                matrix[i][j] = copy(i,j);
+            }
+        }
+        // Return the matrix.
+        return *this;
+    }
+
     // * Getters
     int mtm::IntMatrix::height() const
     {
