@@ -17,7 +17,7 @@ namespace mtm
         // Constructor, defaults values to 0
         IntMatrix(Dimensions dims, int value = 0);
         // Copy constructor
-        IntMatrix(const IntMatrix&);
+        IntMatrix(const IntMatrix &);
         // Destructor
         ~IntMatrix();
 
@@ -29,27 +29,27 @@ namespace mtm
 
         // ! Operator overloads
         // Operator + overload for matrices addition
-        IntMatrix operator+(const IntMatrix&);
+        IntMatrix operator+(const IntMatrix &);
         // operator + overload for scalar addition (matrix+scalar)
-        IntMatrix operator+(const int&);
+        IntMatrix operator+(const int &);
         // Operator + overload for scalar addition (scalar + matrix)
-        friend IntMatrix operator+(int, const IntMatrix&);
+        friend IntMatrix operator+(int, const IntMatrix &);
         // operator += overload for scalar addition (matrix+=scalar)
-        IntMatrix operator+=(const int&);
+        IntMatrix operator+=(const int &);
 
         // Operator - overload for matrices subtraction
-        IntMatrix operator-(const IntMatrix&);
+        IntMatrix operator-(const IntMatrix &);
         // Operator - overload for matrix value inversion (-matrix)
         IntMatrix operator-() const;
 
         // Operator << overload for output
-        friend std::ostream& operator<<(std::ostream&, const IntMatrix&);
+        friend std::ostream &operator<<(std::ostream &, const IntMatrix &);
 
         // Operator () overload for cell usage
-        int& operator()(int, int) const;
+        int &operator()(int, int) const;
 
         // Assignment operator overload
-        IntMatrix& operator=(const IntMatrix&);
+        IntMatrix &operator=(const IntMatrix &);
 
         // Logical operators overload
         // <
@@ -65,9 +65,6 @@ namespace mtm
         // !=
         IntMatrix operator!=(const int);
 
-
-
-        
         // ! Getters
         // Getter to get the row numbers (height)
         int height() const;
