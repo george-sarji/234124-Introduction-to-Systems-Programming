@@ -208,10 +208,29 @@ namespace mtm
     }
 
     // Operator overload for matrix output
-    std::ostream& operator<<(std::ostream& stream, const IntMatrix& matrix) {
+    std::ostream &operator<<(std::ostream &stream, const IntMatrix &matrix)
+    {
         // Create an array with the size of the matrix.
-        int cells = new int[matrix.size()];
-        // TODO: Iterate and convert
+        int *cells = new int[matrix.size()];
+        // Create an index to iterate through the new cells array
+        int index = 0;
+        // Each row starts iterating from (row*columns - 1).
+        for (int i = 0; i < matrix.height(); i++)
+        {
+            for (int j = 0; j < matrix.width(); j++)
+            {
+                // Set the current index into the cell contents in (i,j).
+                cells[index] = matrix.getCell(i, j);
+                // Add the index by 1
+                index++;
+            }
+        }
+        // Create the required dimensions for printMatrix.
+        Dimensions dims(matrix.height(), matrix.width());
+        // Add the printMatrix output to stream.
+        stream << printMatrix(cells, dims);
+        // Return the new stream.
+        return stream;
     }
 
     // * Getters
