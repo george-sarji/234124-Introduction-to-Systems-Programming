@@ -3,7 +3,7 @@
 #include <iostream>
 #include "../IntMatrix.h"
 
-#define NUMBER_OF_TESTS 3
+#define NUMBER_OF_TESTS 4
 using namespace mtm;
 
 void test_print_matrix(std::string title, const mtm::IntMatrix &mat)
@@ -78,25 +78,25 @@ bool test_3(){
     return true;
 }
 
-// bool test_4(){
-//     mtm::Dimensions dim(2 ,3);
-//     const mtm::IntMatrix mat_1 = mtm::IntMatrix::Identity(6);
-//     mtm::IntMatrix mat_2(dim,1);
-//     if(mtm::all(mat_1)){
-//         return false;
-//     }
-//     if(mtm::any(mat_2==0)){
-//         return false;
-//     }
-//     int counter = 0;
-//     for(int i = 0;i<dim.getRow();++i){
-//         for(int j = 0;j<dim.getCol();++j){
-//             mat_2(i,j)=counter;
-//             ++counter;
-//         }
-//     }
-//     return true;
-// }
+bool test_4(){
+    mtm::Dimensions dim(2 ,3);
+    const mtm::IntMatrix mat_1 = mtm::IntMatrix::Identity(6);
+    mtm::IntMatrix mat_2(dim,1);
+    if(mtm::all(mat_1)){
+        return false;
+    }
+    if(mtm::any(mat_2==0)){
+        return false;
+    }
+    int counter = 0;
+    for(int i = 0;i<dim.getRow();++i){
+        for(int j = 0;j<dim.getCol();++j){
+            mat_2(i,j)=counter;
+            ++counter;
+        }
+    }
+    return true;
+}
 
 // bool test_5(){
 //     mtm::Dimensions dim(2 ,3);
@@ -129,7 +129,7 @@ void run_test(std::function<bool()> test, std::string test_name)
 
 int main()
 {
-    std::function<bool()> tests[NUMBER_OF_TESTS] = {test_1, test_2 ,test_3/**,test_4,test_5**/};
+    std::function<bool()> tests[NUMBER_OF_TESTS] = {test_1, test_2 ,test_3,test_4/**,test_5**/};
     for (int i = 0; i < NUMBER_OF_TESTS; ++i)
     {
         run_test(tests[i], "Test " + std::to_string(i + 1));
