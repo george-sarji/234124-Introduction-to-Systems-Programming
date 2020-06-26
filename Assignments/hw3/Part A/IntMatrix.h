@@ -46,7 +46,7 @@ namespace mtm
         friend std::ostream& operator<<(std::ostream&, const IntMatrix&);
 
         // Operator () overload for cell usage
-        int operator()(int row, int col) const;
+        int& operator()(int row, int col) const;
 
         // Assignment operator overload
         IntMatrix& operator=(const IntMatrix&);

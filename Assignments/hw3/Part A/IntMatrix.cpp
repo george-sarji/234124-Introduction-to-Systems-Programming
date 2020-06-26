@@ -234,7 +234,7 @@ namespace mtm
     }
 
     // Operator () overload for cell recovery
-    int mtm::IntMatrix::operator()(int row, int col) const
+    int& mtm::IntMatrix::operator()(int row, int col) const
     {
         return matrix[row][col];
     }
