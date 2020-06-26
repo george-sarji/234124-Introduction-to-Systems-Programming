@@ -79,6 +79,11 @@ namespace mtm
         int setRows();
         int setCols();
         void setCell(int row, int col, int val);
+
+        // ! Iterator
+        class Iterator;
+        Iterator begin() const;
+        Iterator end() const;
     };
     bool all(const IntMatrix);
     bool any(const IntMatrix);
