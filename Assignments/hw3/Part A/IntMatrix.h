@@ -33,7 +33,7 @@ namespace mtm
         // operator + overload for scalar addition (matrix+scalar)
         IntMatrix operator+(const int&);
         // Operator + overload for scalar addition (scalar + matrix)
-        friend IntMatrix operator+(int number, const IntMatrix&);
+        friend IntMatrix operator+(int, const IntMatrix&);
         // operator += overload for scalar addition (matrix+=scalar)
         IntMatrix operator+=(const int&);
 
@@ -46,10 +46,24 @@ namespace mtm
         friend std::ostream& operator<<(std::ostream&, const IntMatrix&);
 
         // Operator () overload for cell usage
-        int& operator()(int row, int col) const;
+        int& operator()(int, int) const;
 
         // Assignment operator overload
         IntMatrix& operator=(const IntMatrix&);
+
+        // Logical operators overload
+        // <
+        IntMatrix operator<(const int);
+        // <=
+        IntMatrix operator<=(const int);
+        // >
+        IntMatrix operator>(const int);
+        // >=
+        IntMatrix operator>=(const int);
+        // ==
+        IntMatrix operator==(const int);
+        // !=
+        IntMatrix operator!=(const int);
 
 
 
@@ -69,5 +83,7 @@ namespace mtm
         int setCols();
         void setCell(int row, int col, int val);
     };
+    bool all(const IntMatrix);
+    bool any(const IntMatrix);
 } // namespace mtm
 #endif

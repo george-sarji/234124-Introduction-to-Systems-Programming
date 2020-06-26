@@ -97,6 +97,47 @@ namespace mtm
         return transposed;
     }
 
+    // Function checks if all cells in matrix are non-zero.
+    bool all(const IntMatrix matrix)
+    {
+        // Iterate through the current matrix.
+        for (int i = 0; i < matrix.height(); i++)
+        {
+            for (int j = 0; j < matrix.width(); j++)
+            {
+                // Check if the current cell is zero.
+                if (matrix(i, j) == 0)
+                {
+                    // Return false.
+                    return false;
+                }
+            }
+        }
+        // We did not find any zeros. Return true.
+        return true;
+    }
+
+    // Function checks if at least one cell in the matrix is non-zero.
+    bool any(const IntMatrix matrix)
+    {
+        // Create a flag to show that we received no zeros in the matrix. Defaults to false.
+        bool non_zero = false;
+        // Iterate through the matrix.
+        for (int i = 0; i < matrix.height(); i++)
+        {
+            for (int j = 0; j < matrix.width(); j++)
+            {
+                if (matrix(i, j) != 0)
+                {
+                    // Switch the flag to true.
+                    non_zero = true;
+                }
+            }
+        }
+        // Return the flag.
+        return non_zero;
+    }
+
     // ! Operator overloads
 
     // Operator overload for matrix addition.
@@ -234,15 +275,17 @@ namespace mtm
     }
 
     // Operator () overload for cell recovery
-    int& mtm::IntMatrix::operator()(int row, int col) const
+    int &mtm::IntMatrix::operator()(int row, int col) const
     {
         return matrix[row][col];
     }
 
     // Assignment operator overload
-    IntMatrix& mtm::IntMatrix::operator=(const IntMatrix& copy) {
+    IntMatrix &mtm::IntMatrix::operator=(const IntMatrix &copy)
+    {
         // Clear the current matrix.
-        for(int i=0;i<rows;i++) {
+        for (int i = 0; i < rows; i++)
+        {
             // Free current row data.
             delete[] matrix[i];
         }
@@ -253,17 +296,103 @@ namespace mtm
         rows = copy.rows;
         cols = copy.cols;
         // Create a new array for the matrix accordingly.
-        matrix = new int*[rows];
-        for(int i=0;i<rows;i++) {
+        matrix = new int *[rows];
+        for (int i = 0; i < rows; i++)
+        {
             // Create the row data array.
             matrix[i] = new int[cols];
             // Iterate through and assign values.
-            for(int j=0;j<cols;j++) {
-                matrix[i][j] = copy(i,j);
+            for (int j = 0; j < cols; j++)
+            {
+                matrix[i][j] = copy(i, j);
             }
         }
         // Return the matrix.
         return *this;
+    }
+
+    // < operator overload
+    IntMatrix mtm::IntMatrix::operator<(const int number)
+    {
+        // Create a new matrix as the result.
+        IntMatrix result(getDimensions());
+        // We have to iterate through the array.
+        for (int i = 0; i < rows; i++)
+        {
+            for (int j = 0; j < cols; j++)
+            {
+                // Check if the current object is smaller.
+                if ((*this)(i, j) < number)
+                {
+                    // If it is, switch the result object to 1.
+                    result(i, j) = 1;
+                }
+            }
+        }
+        // Return the result.
+        return result;
+    }
+
+    // <= operator overload
+    IntMatrix mtm::IntMatrix::operator<=(const int number)
+    {
+        return *this < (number + 1);
+    }
+
+    // > operator overload
+    IntMatrix mtm::IntMatrix::operator>(const int number)
+    {
+        // Create a result matrix.
+        IntMatrix result(getDimensions());
+        // Iterate through the current matrix.
+        for (int i = 0; i < rows; i++)
+        {
+            for (int j = 0; j < cols; j++)
+            {
+                // Check if the current cell is bigger than the number.
+                if ((*this)(i, j) > number)
+                {
+                    result(i, j) = 1;
+                }
+            }
+        }
+        return result;
+    }
+
+    // >= operator overload
+    IntMatrix mtm::IntMatrix::operator>=(const int number)
+    {
+        // Use the regular overload (>) to get the proper result to avoid code duplication.
+        return (*this) > (number - 1);
+    }
+
+    // == operator overload
+    IntMatrix mtm::IntMatrix::operator==(const int number)
+    {
+        // Create a result matrix.
+        IntMatrix result(getDimensions());
+        // Iterate through the matrix.
+        for (int i = 0; i < rows; i++)
+        {
+            for (int j = 0; j < cols; j++)
+            {
+                // Check if the current cell equals the given number.
+                if ((*this)(i, j) == number)
+                {
+                    // If so, assign current cell in result to 1.
+                    result(i, j) = 1;
+                }
+            }
+        }
+        // Return the result.
+        return result;
+    }
+
+    //  != operator overload
+    IntMatrix mtm::IntMatrix::operator!=(const int number)
+    {
+        // We can utilize the == operator overload. Just invert the numbers from 1 to 0.
+        return ((*this) == number) == 0;
     }
 
     // * Getters
