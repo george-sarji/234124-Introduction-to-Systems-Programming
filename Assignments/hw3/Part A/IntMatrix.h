@@ -25,7 +25,7 @@ namespace mtm
         // Function to create identity matrices.
         static IntMatrix Identity(int dim);
         // Function to perform transpose on matrices.
-        IntMatrix transpose();
+        IntMatrix transpose() const;
 
         // ! Operator overloads
         // Operator + overload for matrices addition
@@ -38,15 +38,16 @@ namespace mtm
         // Operator - overload for matrices subtraction
         IntMatrix operator-(const IntMatrix&);
         // Operator - overload for matrix value inversion (-matrix)
-        IntMatrix operator-();
+        IntMatrix operator-() const;
 
         // Operator << overload for output
         friend std::ostream& operator<<(std::ostream&, const IntMatrix&);
 
+        // Operator () overload for cell usage
+        int operator()(int row, int col) const;
+
         
         // ! Getters
-        // Getter to get the cell at (row, col)
-        int getCell(int row, int col) const;
         // Getter to get the row numbers (height)
         int height() const;
         // Getter to get the col numbers (width)

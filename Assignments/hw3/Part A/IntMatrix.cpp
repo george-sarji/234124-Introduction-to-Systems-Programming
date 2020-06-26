@@ -1,4 +1,3 @@
-#include "Auxiliaries.h"
 #include "IntMatrix.h"
 
 namespace mtm
@@ -37,11 +36,11 @@ namespace mtm
         matrix = new int *[rows];
         for (int row = 0; row < rows; row++)
         {
-            matrix = new int *[cols];
+            matrix[row] = new int[cols];
             // Iterate through the items, assign the values.
-            for (int col = 0; cols < col; col++)
+            for (int col = 0; col < cols; col++)
             {
-                matrix[row][col] = intMatrix.getCell(row, col);
+                matrix[row][col] = intMatrix(row, col);
             }
         }
     }
@@ -56,7 +55,7 @@ namespace mtm
             delete[] matrix[i];
         }
         // Delete the actual matrix array.
-        delete matrix;
+        delete[] matrix;
     }
 
     // ! Functions
@@ -77,7 +76,7 @@ namespace mtm
         return matrix;
     }
 
-    IntMatrix mtm::IntMatrix::transpose()
+    IntMatrix mtm::IntMatrix::transpose() const
     {
         // Get the matrix dimensions.
         int rows = height();
@@ -92,7 +91,7 @@ namespace mtm
             {
                 // Assign the proper values.
                 // Set the (i, j) in the original matrix into the (j, i).
-                transposed.setCell(j, i, getCell(i, j));
+                transposed.setCell(j, i, (*this)(i, j));
             }
         }
         return transposed;
@@ -111,7 +110,7 @@ namespace mtm
             for (int j = 0; j < width(); j++)
             {
                 // Set the current cell into the result of original(i,j) + matrix(i,j).
-                result.setCell(i, j, getCell(i, j) + matrix.getCell(i, j));
+                result.setCell(i, j, (*this)(i, j) + matrix(i, j));
             }
         }
         // Return the result.
@@ -129,7 +128,7 @@ namespace mtm
             for (int j = 0; j < width(); j++)
             {
                 // Add the scalar to the current cell (i,j)
-                result.setCell(i, j, getCell(i, j) + number);
+                result.setCell(i, j, (*this)(i, j) + number);
             }
         }
         // Return the result.
@@ -147,7 +146,7 @@ namespace mtm
             for (int j = 0; j < matrix.width(); j++)
             {
                 // Set the current cell (i,j) to matrix(i,j) + scalar
-                result.setCell(i, j, result.getCell(i, j) + number);
+                result.setCell(i, j, result(i, j) + number);
             }
         }
         // Return the result matrix.
@@ -164,7 +163,7 @@ namespace mtm
             for (int j = 0; j < width(); j++)
             {
                 // Set the current cell (i,j) to current(i,j) + scalar
-                setCell(i, j, getCell(i, j) + number);
+                (*this).setCell(i, j, (*this)(i, j) + number);
             }
         }
         // Return the current matrix.
@@ -182,7 +181,7 @@ namespace mtm
             for (int j = 0; j < width(); j++)
             {
                 // Change the current cell (i,j) into original(i,j)-matrix(i,j)
-                result.setCell(i, j, getCell(i, j) - matrix.getCell(i, j));
+                result.setCell(i, j, (*this)(i, j) - matrix(i, j));
             }
         }
         // Return the result matrix.
@@ -190,17 +189,17 @@ namespace mtm
     }
 
     // Operator overload for matrix value inversion (-matrix)
-    IntMatrix mtm::IntMatrix::operator-()
+    IntMatrix mtm::IntMatrix::operator-() const
     {
         // Create a result matrix as a copy of the current.
-        IntMatrix result = *this;
+        IntMatrix result = (*this);
         // Iterate through the current matrix.
         for (int i = 0; i < height(); i++)
         {
             for (int j = 0; j < width(); j++)
             {
                 // Set the (i,j) cell to be -cell(i,j)
-                result.setCell(i, j - getCell(i, j));
+                result.setCell(i, j, -(*this)(i, j));
             }
         }
         // Return the result matrix.
@@ -220,7 +219,7 @@ namespace mtm
             for (int j = 0; j < matrix.width(); j++)
             {
                 // Set the current index into the cell contents in (i,j).
-                cells[index] = matrix.getCell(i, j);
+                cells[index] = matrix(i, j);
                 // Add the index by 1
                 index++;
             }
@@ -231,6 +230,12 @@ namespace mtm
         stream << printMatrix(cells, dims);
         // Return the new stream.
         return stream;
+    }
+
+    // Operator () overload for cell recovery
+    int mtm::IntMatrix::operator()(int row, int col) const
+    {
+        return matrix[row][col];
     }
 
     // * Getters
@@ -247,11 +252,6 @@ namespace mtm
     int mtm::IntMatrix::size() const
     {
         return width() * height();
-    }
-
-    int mtm::IntMatrix::getCell(int row, int col) const
-    {
-        return matrix[row][col];
     }
 
     Dimensions mtm::IntMatrix::getDimensions() const
