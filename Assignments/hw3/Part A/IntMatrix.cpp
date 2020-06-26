@@ -229,6 +229,7 @@ namespace mtm
         // Add the printMatrix output to stream.
         stream << printMatrix(cells, dims);
         // Return the new stream.
+        delete[] cells;
         return stream;
     }
 

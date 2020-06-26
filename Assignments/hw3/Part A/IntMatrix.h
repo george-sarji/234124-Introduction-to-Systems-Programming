@@ -32,6 +32,8 @@ namespace mtm
         IntMatrix operator+(const IntMatrix&);
         // operator + overload for scalar addition (matrix+scalar)
         IntMatrix operator+(const int&);
+        // Operator + overload for scalar addition (scalar + matrix)
+        friend IntMatrix operator+(int number, const IntMatrix&);
         // operator += overload for scalar addition (matrix+=scalar)
         IntMatrix operator+=(const int&);
 
@@ -48,6 +50,8 @@ namespace mtm
 
         // Assignment operator overload
         IntMatrix& operator=(const IntMatrix&);
+
+
 
         
         // ! Getters
