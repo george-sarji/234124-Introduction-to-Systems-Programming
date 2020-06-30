@@ -35,7 +35,6 @@ namespace mtm
 
         // ! Functions
 
-
         /***********************************************
          * Creates an identity matrix according to the given dimensions
          * 
@@ -106,29 +105,36 @@ namespace mtm
         void setCell(int row, int col, int val);
 
         // ! Iterator
-        class Iterator;
-        Iterator begin() const;
-        Iterator end() const;
+        class iterator;
+        iterator begin() const;
+        iterator end() const;
     };
     bool all(const IntMatrix);
     bool any(const IntMatrix);
 
-    class IntMatrix::Iterator
+    class IntMatrix::iterator
     {
         int row, col;
-        IntMatrix *matrix;
+        const IntMatrix *matrix;
+        iterator(const IntMatrix *matrix);
         friend class IntMatrix;
-        Iterator(const IntMatrix *matrix, int row, int col);
 
     public:
+        ~iterator();
         // Operator overload for value retrieval
-        const int &operator*() const;
+        int &operator*() const;
         // Operator overload for advancing the iterator
-        Iterator &operator++();
+        iterator& operator++();
+        // Postfix iterator advancement operator
+        iterator operator++(int);
         // Operator overload for assignment
-        Iterator &operator=(const Iterator &);
+        iterator &operator=(const iterator &);
         // Operator overload for going backwards in the iterator
-        Iterator &operator--();
+        iterator &operator--();
+        // Operator overload for comparison (!=)
+        bool operator!=(const iterator &);
+        // Operator overload for comparison (==)
+        bool operator==(const iterator &);
     };
 } // namespace mtm
 #endif

@@ -42,6 +42,12 @@ namespace mtm
             }
         }
     }
+    mtm::IntMatrix::iterator::iterator(const IntMatrix *matrix)
+    {
+        row = 0;
+        col = 0;
+        (*this).matrix = matrix;
+    }
 
     mtm::IntMatrix::~IntMatrix()
     {
@@ -53,6 +59,11 @@ namespace mtm
         }
         // Delete the actual matrix array.
         delete[] matrix;
+    }
+
+    mtm::IntMatrix::iterator::~iterator()
+    {
+        matrix = NULL;
     }
 
     // ! Functions
@@ -363,7 +374,6 @@ namespace mtm
         return (*this) > (number - 1);
     }
 
-
     IntMatrix mtm::IntMatrix::operator==(const int number)
     {
         // Create a result matrix.
@@ -418,6 +428,73 @@ namespace mtm
     void mtm::IntMatrix::setCell(int row, int col, int val)
     {
         matrix[row][col] = val;
+    }
+
+    // ! Iterator functions
+    mtm::IntMatrix::iterator mtm::IntMatrix::begin() const
+    {
+        const IntMatrix *matrix = this;
+        iterator iterator(matrix);
+        return iterator;
+    }
+
+    mtm::IntMatrix::iterator mtm::IntMatrix::end() const
+    {
+        const mtm::IntMatrix *matrix = this;
+        iterator iterator(matrix);
+        // Change the iterator's row and col.
+        iterator.row = height();
+        return iterator;
+    }
+
+    int &mtm::IntMatrix::iterator::operator*() const
+    {
+        int &element = (*matrix)(row, col);
+        return element;
+    }
+
+    mtm::IntMatrix::iterator &mtm::IntMatrix::iterator::operator++()
+    {
+        // Check if we have reached the end.
+        if ((*matrix).width() - 1 == col)
+        {
+            // Go down to a new row.
+            row++;
+            col = 0;
+        }
+        else
+        {
+            col++;
+        }
+
+        return (*this);
+    }
+
+    mtm::IntMatrix::iterator mtm::IntMatrix::iterator::operator++(int num)
+    {
+        iterator iterator = *this;
+        ++*this;
+        return iterator;
+    }
+
+    mtm::IntMatrix::iterator &mtm::IntMatrix::iterator::operator=(const iterator &iterator)
+    {
+        // Use the current row and col.
+        row = iterator.row;
+        col = iterator.col;
+        // Change the matrix pointer.
+        matrix = iterator.matrix;
+        return *this;
+    }
+
+    bool mtm::IntMatrix::iterator::operator==(const iterator &iterator)
+    {
+        return row == iterator.row && col == iterator.col && matrix == iterator.matrix;
+    }
+
+    bool mtm::IntMatrix::iterator::operator!=(const iterator &iterator)
+    {
+        return !((*this) == iterator);
     }
 
 } // namespace mtm

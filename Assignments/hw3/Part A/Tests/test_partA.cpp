@@ -3,7 +3,7 @@
 #include <iostream>
 #include "../IntMatrix.h"
 
-#define NUMBER_OF_TESTS 4
+#define NUMBER_OF_TESTS 5
 using namespace mtm;
 
 void test_print_matrix(std::string title, const mtm::IntMatrix &mat)
@@ -108,24 +108,28 @@ bool test_4()
     return true;
 }
 
-// bool test_5(){
-//     mtm::Dimensions dim(2 ,3);
-//     mtm::IntMatrix mat_1(dim);
-//     int counter = 0;
-//     for(mtm::IntMatrix::iterator it =mat_1.begin();it != mat_1.end();it++){
-//         *it=counter;
-//         ++counter;
-//     }
-//     const mtm::IntMatrix mat_2(mat_1);
-//     int sum_elements = 0;
-//     for(mtm::IntMatrix::const_iterator it =mat_2.begin();it != mat_2.end();++it){
-//         sum_elements+=*it;
-//     }
-//     if(sum_elements!=15){
-//         return false;
-//     }
-//     return true;
-// }
+bool test_5()
+{
+    mtm::Dimensions dim(2, 3);
+    mtm::IntMatrix mat_1(dim);
+    int counter = 0;
+    for (mtm::IntMatrix::iterator it = mat_1.begin(); it != mat_1.end(); it++)
+    {
+        *it = counter;
+        ++counter;
+    }
+    // const mtm::IntMatrix mat_2(mat_1);
+    // int sum_elements = 0;
+    // for (mtm::IntMatrix::const_iterator it = mat_2.begin(); it != mat_2.end(); ++it)
+    // {
+    //     sum_elements += *it;
+    // }
+    // if (sum_elements != 15)
+    // {
+    //     return false;
+    // }
+    return true;
+}
 
 void run_test(std::function<bool()> test, std::string test_name)
 {
@@ -139,7 +143,7 @@ void run_test(std::function<bool()> test, std::string test_name)
 
 int main()
 {
-    std::function<bool()> tests[NUMBER_OF_TESTS] = {test_1, test_2, test_3, test_4 /**,test_5**/};
+    std::function<bool()> tests[NUMBER_OF_TESTS] = {test_1, test_2, test_3, test_4, test_5};
     for (int i = 0; i < NUMBER_OF_TESTS; ++i)
     {
         run_test(tests[i], "Test " + std::to_string(i + 1));
