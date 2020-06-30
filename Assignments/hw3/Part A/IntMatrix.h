@@ -14,17 +14,43 @@ namespace mtm
     public:
         // ! Constructors
 
-        // Constructor, defaults values to 0
+        /***********************************************
+         * Initializes the IntMatrix with a default value of 0
+         * 
+         * @param dims (Dimensions) Dimensions of the required matrix
+         * @param value (int) Required default value for the matrix
+        ***********************************************/
         IntMatrix(Dimensions dims, int value = 0);
-        // Copy constructor
+
+        /***********************************************
+         * Initializes the IntMatrix according to another matrix (copy constructor)
+         * 
+         * @param IntMatrix Reference of the matrix to copy values from
+         * @return IntMatrix copy
+        ***********************************************/
         IntMatrix(const IntMatrix &);
-        // Destructor
+
+        //  Deconstructs the given IntMatrix and frees the data.
         ~IntMatrix();
 
         // ! Functions
-        // Function to create identity matrices.
+
+
+        /***********************************************
+         * Creates an identity matrix according to the given dimensions
+         * 
+         * @param dims Required dimensions for the identity matrix
+         * @return Identity matrix of size (dims * dims)
+        ***********************************************/
         static IntMatrix Identity(int dim);
         // Function to perform transpose on matrices.
+
+        /***********************************************
+         * Performs transposing of the given matrix.
+         * 
+         * @param this Implicit IntMatrix from the call.
+         * @return Transposed matrix copy
+        ***********************************************/
         IntMatrix transpose() const;
 
         // ! Operator overloads
@@ -76,7 +102,6 @@ namespace mtm
         Dimensions getDimensions() const;
 
         // Setters
-        int setRows();
         int setCols();
         void setCell(int row, int col, int val);
 
@@ -87,5 +112,23 @@ namespace mtm
     };
     bool all(const IntMatrix);
     bool any(const IntMatrix);
+
+    class IntMatrix::Iterator
+    {
+        int row, col;
+        IntMatrix *matrix;
+        friend class IntMatrix;
+        Iterator(const IntMatrix *matrix, int row, int col);
+
+    public:
+        // Operator overload for value retrieval
+        const int &operator*() const;
+        // Operator overload for advancing the iterator
+        Iterator &operator++();
+        // Operator overload for assignment
+        Iterator &operator=(const Iterator &);
+        // Operator overload for going backwards in the iterator
+        Iterator &operator--();
+    };
 } // namespace mtm
 #endif

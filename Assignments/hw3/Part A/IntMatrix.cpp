@@ -4,7 +4,6 @@ namespace mtm
 {
     // ! Constructors
 
-    // Constructor with value (defaulted to 0)
     mtm::IntMatrix::IntMatrix(Dimensions dims, int value)
     {
         // Get the row and column dimensions.
@@ -25,7 +24,6 @@ namespace mtm
         }
     }
 
-    // Copy constructor
     mtm::IntMatrix::IntMatrix(const IntMatrix &intMatrix)
     {
         // Assign the dims.
@@ -45,7 +43,6 @@ namespace mtm
         }
     }
 
-    // Destructor
     mtm::IntMatrix::~IntMatrix()
     {
         // Go through the actual matrix array and delete each row matrix.
@@ -366,7 +363,7 @@ namespace mtm
         return (*this) > (number - 1);
     }
 
-    // == operator overload
+
     IntMatrix mtm::IntMatrix::operator==(const int number)
     {
         // Create a result matrix.
