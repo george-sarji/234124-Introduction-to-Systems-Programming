@@ -121,7 +121,7 @@ namespace mtm
     {
         int row, col;
         const IntMatrix *matrix;
-        iterator(const IntMatrix *matrix) : row(0), col(0), matrix(matrix) {}
+        explicit iterator(const IntMatrix *matrix) : row(0), col(0), matrix(matrix) {}
         friend class IntMatrix;
 
     public:
@@ -144,7 +144,7 @@ namespace mtm
     {
         int row, col;
         const IntMatrix *matrix;
-        const_iterator(const IntMatrix *matrix) : row(0), col(0), matrix(matrix) {}
+        explicit const_iterator(const IntMatrix *matrix) : row(0), col(0), matrix(matrix) {}
         friend class IntMatrix;
 
     public:
