@@ -542,15 +542,28 @@ namespace mtm
 
         // ! Iterator
         class iterator;
-        iterator begin() const
+        iterator begin()
         {
             return iterator(this);
         }
-        iterator end() const
+        iterator end()
         {
             iterator it(this);
             it.row = height();
             return it;
+        }
+
+        // ! Const iterator
+        class const_iterator;
+        const_iterator begin() const
+        {
+            return const_iterator(this);
+        }
+        const_iterator end() const
+        {
+            const_iterator iterator(this);
+            iterator.row = (*this).height();
+            return iterator;
         }
     };
 
@@ -705,12 +718,107 @@ namespace mtm
         ***********************************************/
         T &operator*() const
         {
-            if (row >= (*matrix).height() || col >= (*matrix).height())
+            if (row >= (*matrix).height() || col >= (*matrix).width())
             {
                 throw AccessIllegalElement();
             }
             T &element = (*matrix)(row, col);
             return element;
+        }
+    };
+
+    template <class T>
+    class Matrix<T>::const_iterator
+    {
+        int row, col;
+        const Matrix<T> *matrix;
+
+        /***********************************************
+         * Constructor for a const iterator that uses a const Matrix
+         * The iterator begins at (0,0)
+         * 
+         * @param matrix Const Matrix that the iterator should work on
+        ***********************************************/
+        explicit const_iterator(const Matrix<T> *matrix) : row(0), col(0), matrix(matrix) {}
+        friend class Matrix<T>;
+
+    public:
+        ~const_iterator() = default;
+
+        /***********************************************
+         * Operator overload to retrieve the value that the const iterator points to
+         * @return Reference to the value that the const iterator points to
+        ***********************************************/
+        const T &operator*() const
+        {
+            if (row >= (*matrix).height() || col >= (*matrix).width())
+            {
+                throw AccessIllegalElement();
+            }
+            return (*matrix)(row, col);
+        }
+
+        /***********************************************
+         * Operator overload to advance the const iterator by one
+         * @return Reference to the const iterator after it was advanced
+        ***********************************************/
+        const_iterator &operator++()
+        {
+            if (col == (*matrix).width() - 1)
+            {
+                row++;
+                col = 0;
+            }
+            else
+            {
+                col++;
+            }
+            return *this;
+        }
+
+        /***********************************************
+         * Postfix operator overload to advance the const iterator
+         * @return Reference to the const iterator before it was advanced
+        ***********************************************/
+        const_iterator operator++(int)
+        {
+            const_iterator iterator = *this;
+            ++iterator;
+            return *this;
+        }
+
+        /***********************************************
+         * Operator overload to assign new values into the const iterator
+         * @param iterator Iterator to copy the values of into the current iterator
+         * @return Reference to the const iterator after it was changed
+        ***********************************************/
+        const_iterator &operator=(const const_iterator &iterator)
+        {
+            row = iterator.row;
+            col = iterator.col;
+            matrix = iterator.matrix;
+            return *this;
+        }
+
+        /***********************************************
+         * Operator overload to check if the current const iterator is not equal to the given const iterator
+         * @param iterator Const iterator to compare with the current const iterator
+         * @return True if iterators are not equal (not same matrix, row or col), otherwise false
+        ***********************************************/
+        bool operator!=(const const_iterator &iterator)
+        {
+            return !((*this) == iterator);
+        }
+
+        /***********************************************
+         * Operator overload to check if the current const iterator is equal to the given const iterator
+         * 
+         * @param iterator Const iterator to compare with the current const iterator
+         * @return True if iterators are equal (same matrix, row and col), otherwise false
+        ***********************************************/
+        bool operator==(const const_iterator &iterator)
+        {
+            return iterator.row == row && iterator.col == col && (iterator.matrix) == matrix;
         }
     };
 } // namespace mtm
