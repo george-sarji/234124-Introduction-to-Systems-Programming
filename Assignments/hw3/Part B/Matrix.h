@@ -142,6 +142,30 @@ namespace mtm
             return transposed;
         }
 
+        /***********************************************   
+         * Function to apply functions
+         * 
+         * @param function Function to apply to cells
+         * @return New matrix with the result of the function calls     
+        ***********************************************/
+        template <class F>
+        Matrix<T> apply(F function) const
+        {
+            // Construct a new result matrix according to the current one
+            Matrix<T> result(*this);
+            // Iterate through the matrix
+            for (int i = 0; i < rows; i++)
+            {
+                for (int j = 0; j < cols; j++)
+                {
+                    // Operate the function onto the current cell
+                    result(i, j) = function(result(i, j));
+                }
+            }
+            // Return the result
+            return result;
+        }
+
         // ! Getters
         /***********************************************
          * Gives the number of rows
@@ -169,6 +193,7 @@ namespace mtm
         {
             return cols * rows;
         }
+
         // ! Operator overloads
         /***********************************************
          * Provides a reference to the object in the cell (row, col)
