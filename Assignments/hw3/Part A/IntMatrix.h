@@ -60,7 +60,7 @@ namespace mtm
         // Operator + overload for scalar addition (scalar + matrix)
         friend IntMatrix operator+(int, const IntMatrix &);
         // operator += overload for scalar addition (matrix+=scalar)
-        IntMatrix operator+=(const int &);
+        IntMatrix& operator+=(const int &);
 
         // Operator - overload for matrices subtraction
         IntMatrix operator-(const IntMatrix &);

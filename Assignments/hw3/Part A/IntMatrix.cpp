@@ -192,7 +192,7 @@ namespace mtm
     }
 
     // Operator overload for matrix and scalar addition (matrix+=scalar)
-    IntMatrix mtm::IntMatrix::operator+=(const int &number)
+    mtm::IntMatrix& mtm::IntMatrix::operator+=(const int &number)
     {
         // Modify the current matrix instead of a new one.
         // Go through the matrix itself.
@@ -201,7 +201,7 @@ namespace mtm
             for (int j = 0; j < width(); j++)
             {
                 // Set the current cell (i,j) to current(i,j) + scalar
-                (*this).setCell(i, j, (*this)(i, j) + number);
+                matrix[i][j] += number;
             }
         }
         // Return the current matrix.

@@ -31,4 +31,4 @@ add_executable(hw1-elections-test ${ELECTIONS_TEST_1})
 add_executable(hw1-elections-test2 ${ELECTIONS_TEST_2})
 # target_link_libraries(hw1-elections ${MTM_ELECTIONS}/libmap.a)
 
-add_executable(hw3-parta ${MTM_HW3_A}/IntMatrix.cpp ${MTM_HW3_A}/Auxiliaries.cpp ${MTM_HW3_A}/Tests/test_partA.cpp)
+add_executable(hw3-parta ${MTM_HW3_A}/IntMatrix.cpp ${MTM_HW3_A}/Auxiliaries.cpp ${MTM_HW3_A}/Tests/partA_tester.cpp)
