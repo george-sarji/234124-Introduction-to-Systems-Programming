@@ -96,9 +96,6 @@ namespace mtm
             delete[] matrix;
         }
 
-        /***********************************************        
-        ***********************************************/
-
         // ! Functions
 
         /***********************************************
@@ -316,7 +313,7 @@ namespace mtm
                 for (int j = 0; j < matrix.cols; j++)
                 {
                     // Add the object to cell (i,j)
-                    result(i, j) = object + result(i,j);
+                    result(i, j) = object + result(i, j);
                 }
             }
             // Return the result matrix.
@@ -329,7 +326,7 @@ namespace mtm
          * @param object Object to be added into the matrix
          * @return Result matrix of the addition
         ***********************************************/
-        Matrix<T>& operator+=(const T &object)
+        Matrix<T> &operator+=(const T &object)
         {
             // Go through the matrix.
             for (int i = 0; i < rows; i++)
@@ -578,27 +575,51 @@ namespace mtm
 
         // ! Iterator
         class iterator;
+        /***********************************************       
+         * Returns a iterator that points to the beginning of the matrix
+         * @return iterator pointing to 0, 0 
+        ***********************************************/
         iterator begin()
         {
             return iterator(this);
         }
+
+        /***********************************************  
+         * Returns a iterator that points to the end of the matrix
+         * @return iterator pointing to row +1, col      
+        ***********************************************/
         iterator end()
         {
+            // Create an iterator
             iterator it(this);
+            // Change the row to the height
             it.row = height();
+            // Return the iterator
             return it;
         }
 
         // ! Const iterator
         class const_iterator;
+        /***********************************************       
+         * Returns a const_iterator that points to the beginning of the matrix
+         * @return const_iterator pointing to 0, 0 
+        ***********************************************/
         const_iterator begin() const
         {
             return const_iterator(this);
         }
+
+        /***********************************************  
+         * Returns a const_iterator that points to the end of the matrix
+         * @return const_iterator pointing to row +1, col      
+        ***********************************************/
         const_iterator end() const
         {
+            // Create an iterator
             const_iterator iterator(this);
+            // Change the row to the height
             iterator.row = (*this).height();
+            // Return the iterator
             return iterator;
         }
     };
@@ -654,15 +675,15 @@ namespace mtm
     }
 
     /***********************************************        
-        ***********************************************/
+     * Operator overload for printing the matrix
+     * @param matrix Matrix to be printed
+     * @return Stream with the printed matrix
+    ***********************************************/
     template <class T>
     std::ostream &operator<<(std::ostream &stream, const Matrix<T> &matrix)
     {
         return mtm::printMatrix(stream, matrix.begin(), matrix.end(), matrix.width());
     }
-
-    /***********************************************        
-        ***********************************************/
 
     template <class T>
     class Matrix<T>::iterator
