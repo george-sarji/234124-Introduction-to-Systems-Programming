@@ -42,12 +42,6 @@ namespace mtm
             }
         }
     }
-    mtm::IntMatrix::iterator::iterator(const IntMatrix *matrix)
-    {
-        row = 0;
-        col = 0;
-        (*this).matrix = matrix;
-    }
 
     mtm::IntMatrix::~IntMatrix()
     {
@@ -59,11 +53,6 @@ namespace mtm
         }
         // Delete the actual matrix array.
         delete[] matrix;
-    }
-
-    mtm::IntMatrix::iterator::~iterator()
-    {
-        matrix = NULL;
     }
 
     // ! Functions
@@ -431,17 +420,14 @@ namespace mtm
     }
 
     // ! Iterator functions
-    mtm::IntMatrix::iterator mtm::IntMatrix::begin() const
+    mtm::IntMatrix::iterator mtm::IntMatrix::begin()
     {
-        const IntMatrix *matrix = this;
-        iterator iterator(matrix);
-        return iterator;
+        return iterator(this);
     }
 
-    mtm::IntMatrix::iterator mtm::IntMatrix::end() const
+    mtm::IntMatrix::iterator mtm::IntMatrix::end()
     {
-        const mtm::IntMatrix *matrix = this;
-        iterator iterator(matrix);
+        iterator iterator(this);
         // Change the iterator's row and col.
         iterator.row = height();
         return iterator;
@@ -464,6 +450,7 @@ namespace mtm
         }
         else
         {
+            // Continue with the current column.
             col++;
         }
 
@@ -489,11 +476,73 @@ namespace mtm
 
     bool mtm::IntMatrix::iterator::operator==(const iterator &iterator)
     {
+        // Compare current row, col and matrix
         return row == iterator.row && col == iterator.col && matrix == iterator.matrix;
     }
 
     bool mtm::IntMatrix::iterator::operator!=(const iterator &iterator)
     {
+        // Return the opposite of the == operator
+        return !((*this) == iterator);
+    }
+
+    // ! const iterator functions
+    mtm::IntMatrix::const_iterator mtm::IntMatrix::begin() const
+    {
+        return const_iterator(this);
+    }
+
+    mtm::IntMatrix::const_iterator mtm::IntMatrix::end() const
+    {
+        const_iterator iterator(this);
+        iterator.row = (*this).height();
+        return iterator;
+    }
+
+    const int &mtm::IntMatrix::const_iterator::operator*() const
+    {
+        // Get the element at row, col
+        const int &element = (*matrix)(row, col);
+        return element;
+    }
+
+    mtm::IntMatrix::const_iterator &mtm::IntMatrix::const_iterator::operator++()
+    {
+        // Check if we need to go down to a new row.
+        if (col == (*matrix).width() - 1)
+        {
+            row++;
+            col = 0;
+        }
+        else
+        {
+            col++;
+        }
+        return *this;
+    }
+
+    mtm::IntMatrix::const_iterator mtm::IntMatrix::const_iterator::operator++(int num)
+    {
+        const_iterator iterator = *this;
+        ++*this;
+        return iterator;
+    }
+
+    mtm::IntMatrix::const_iterator &mtm::IntMatrix::const_iterator::operator=(const const_iterator &iterator)
+    {
+        row = iterator.row;
+        col = iterator.col;
+        matrix = iterator.matrix;
+        return *this;
+    }
+
+    bool mtm::IntMatrix::const_iterator::operator==(const const_iterator &iterator)
+    {
+        return iterator.row == row && iterator.col == col && (iterator.matrix) == matrix;
+    }
+    bool mtm::IntMatrix::const_iterator::operator!=(const const_iterator &iterator)
+    {
+
         return !((*this) == iterator);
     }
 

@@ -118,16 +118,16 @@ bool test_5()
         *it = counter;
         ++counter;
     }
-    // const mtm::IntMatrix mat_2(mat_1);
-    // int sum_elements = 0;
-    // for (mtm::IntMatrix::const_iterator it = mat_2.begin(); it != mat_2.end(); ++it)
-    // {
-    //     sum_elements += *it;
-    // }
-    // if (sum_elements != 15)
-    // {
-    //     return false;
-    // }
+    const mtm::IntMatrix mat_2(mat_1);
+    int sum_elements = 0;
+    for (mtm::IntMatrix::const_iterator it = mat_2.begin(); it != mat_2.end(); ++it)
+    {
+        sum_elements += *it;
+    }
+    if (sum_elements != 15)
+    {
+        return false;
+    }
     return true;
 }
 

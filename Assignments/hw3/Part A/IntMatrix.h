@@ -106,8 +106,13 @@ namespace mtm
 
         // ! Iterator
         class iterator;
-        iterator begin() const;
-        iterator end() const;
+        iterator begin();
+        iterator end();
+
+        // ! const_iterator
+        class const_iterator;
+        const_iterator begin() const;
+        const_iterator end() const;
     };
     bool all(const IntMatrix);
     bool any(const IntMatrix);
@@ -116,25 +121,46 @@ namespace mtm
     {
         int row, col;
         const IntMatrix *matrix;
-        iterator(const IntMatrix *matrix);
+        iterator(const IntMatrix *matrix) : row(0), col(0), matrix(matrix) {}
         friend class IntMatrix;
 
     public:
-        ~iterator();
+        ~iterator() = default;
         // Operator overload for value retrieval
         int &operator*() const;
         // Operator overload for advancing the iterator
-        iterator& operator++();
+        iterator &operator++();
         // Postfix iterator advancement operator
         iterator operator++(int);
         // Operator overload for assignment
         iterator &operator=(const iterator &);
-        // Operator overload for going backwards in the iterator
-        iterator &operator--();
         // Operator overload for comparison (!=)
         bool operator!=(const iterator &);
         // Operator overload for comparison (==)
         bool operator==(const iterator &);
+    };
+
+    class IntMatrix::const_iterator
+    {
+        int row, col;
+        const IntMatrix *matrix;
+        const_iterator(const IntMatrix *matrix) : row(0), col(0), matrix(matrix) {}
+        friend class IntMatrix;
+
+    public:
+        ~const_iterator() = default;
+        // Operator overload for value retrieval (returns const)
+        const int &operator*() const;
+        // Operator overload for advancing the iterator
+        const_iterator &operator++();
+        // Postfix operator overload for advancing the iterator
+        const_iterator operator++(int);
+        // Operator overload for assignment
+        const_iterator &operator=(const const_iterator &);
+        // Operator overload for comparison
+        bool operator!=(const const_iterator &);
+        // Operator overload for comparison
+        bool operator==(const const_iterator &);
     };
 } // namespace mtm
 #endif
