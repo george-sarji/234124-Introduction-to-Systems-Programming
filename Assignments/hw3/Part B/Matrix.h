@@ -192,7 +192,7 @@ namespace mtm
         const Matrix<T> &operator=(const Matrix &copy)
         {
             // Check if the dimensions match.
-            if (copy.height() != rows || copy.width() != cols)
+            if (copy.rows != rows || copy.cols != cols)
             {
                 // Throw a dimension mismatch.
                 throw DimensionMismatch(*this, copy);
@@ -221,7 +221,7 @@ namespace mtm
         {
             const Matrix<T> result(*this);
             // Check if the dimensions match for the addition
-            if (rows != mat.height() && cols != mat.width())
+            if (rows != mat.rows || cols != mat.cols)
             {
                 throw DimensionMismatch(*this, mat);
             }
@@ -274,9 +274,9 @@ namespace mtm
             // Create a result matrix according to the given matrix.
             Matrix<T> result(matrix);
             // Iterate through the matrix
-            for (int i = 0; i < matrix.height(); i++)
+            for (int i = 0; i < matrix.rows; i++)
             {
-                for (int j = 0; j < matrix.width(); j++)
+                for (int j = 0; j < matrix.cols; j++)
                 {
                     // Add the object to cell (i,j)
                     result(i, j) += object;
@@ -305,6 +305,54 @@ namespace mtm
             }
             // Return the current matrix.
             return *this;
+        }
+
+        /***********************************************      
+         * Operator overload for matrices subtraction
+         * 
+         * @param matrix Matrix to be deducted from current matrix
+         * @return Result matrix of the subtraction  
+        ***********************************************/
+        Matrix<T> operator-(const Matrix<T> &matrix)
+        {
+            // Check if the dimensions match.
+            if (rows != matrix.rows || cols != matrix.cols)
+            {
+                throw DimensionMismatch(*this, matrix);
+            }
+            Matrix<T> result(*this);
+            // The dimensions match. Iterate through the matrix.
+            for (int i = 0; i < rows; i++)
+            {
+                for (int j = 0; j < cols; j++)
+                {
+                    // Subtract the matrix's value from the current cell.
+                    result(i, j) -= matrix(i, j);
+                }
+            }
+            return result;
+        }
+
+        /***********************************************      
+         * Operator overloading to inverse the sign of the matrix (unary -)
+         * 
+         * @return Result matrix of sign invertence of the original matrix  
+        ***********************************************/
+        Matrix<T> operator-() const
+        {
+            // Create a result matrix according to the current matrix.
+            Matrix<T> result(*this);
+            // Iterate through the matrix.
+            for (int i = 0; i < rows; i++)
+            {
+                for (int j = 0; j < cols; j++)
+                {
+                    // Inverse the sign of the current cell
+                    result(i, j) = -result(i, j);
+                }
+            }
+            // Return the result
+            return result;
         }
 
         // ! Exception classes
