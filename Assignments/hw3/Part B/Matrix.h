@@ -385,7 +385,7 @@ namespace mtm
          * @param object Object to compare with matrix
          * @return Matrix with cells set to true if cell is smaller or equals to object, false otherwise   
         ***********************************************/
-        Matrix<bool> operator<(const T object) const
+        Matrix<bool> operator<=(const T object) const
         {
             // Create a matrix with the current dimensions
             Matrix<bool> result(Dimensions(rows, cols));
@@ -408,7 +408,7 @@ namespace mtm
          * @param object Object to compare with matrix
          * @return Matrix with cells set to true if cell is bigger than object, false otherwise   
         ***********************************************/
-        Matrix<bool> operator<(const T object) const
+        Matrix<bool> operator>(const T object) const
         {
             // Create a matrix with the current dimensions
             Matrix<bool> result(Dimensions(rows, cols));
@@ -431,7 +431,7 @@ namespace mtm
          * @param object Object to compare with matrix
          * @return Matrix with cells set to true if cell is bigger or equal to object, false otherwise   
         ***********************************************/
-        Matrix<bool> operator<(const T object) const
+        Matrix<bool> operator>=(const T object) const
         {
             // Create a matrix with the current dimensions
             Matrix<bool> result(Dimensions(rows, cols));
@@ -454,7 +454,7 @@ namespace mtm
          * @param object Object to compare with matrix
          * @return Matrix with cells set to true if cell is equal to object, false otherwise   
         ***********************************************/
-        Matrix<bool> operator<(const T object) const
+        Matrix<bool> operator==(const T object) const
         {
             // Create a matrix with the current dimensions
             Matrix<bool> result(Dimensions(rows, cols));
@@ -477,7 +477,7 @@ namespace mtm
          * @param object Object to compare with matrix
          * @return Matrix with cells set to true if cell is not equal to object, false otherwise   
         ***********************************************/
-        Matrix<bool> operator<(const T object) const
+        Matrix<bool> operator!=(const T object) const
         {
             // Create a matrix with the current dimensions
             Matrix<bool> result(Dimensions(rows, cols));
@@ -539,6 +539,19 @@ namespace mtm
                 return error.c_str();
             }
         };
+
+        // ! Iterator
+        class iterator;
+        iterator begin() const
+        {
+            return iterator(this);
+        }
+        iterator end() const
+        {
+            iterator it(this);
+            it.row = height();
+            return it;
+        }
     };
 
     /***********************************************       
@@ -590,5 +603,115 @@ namespace mtm
         // We encountered all zeros. Return false.
         return false;
     }
+
+    /***********************************************        
+        ***********************************************/
+    template <class T>
+    std::ostream &operator<<(std::ostream &stream, const Matrix<T> &matrix)
+    {
+        return mtm::printMatrix(stream, matrix.begin(), matrix.end(), matrix.width());
+    }
+
+    /***********************************************        
+        ***********************************************/
+
+    template <class T>
+    class Matrix<T>::iterator
+    {
+        int row, col;
+        const Matrix<T> *matrix;
+        friend class Matrix<T>;
+
+    public:
+        /***********************************************  
+         * Constructs the iterator for the given matrix
+         * Iterator starts at 0,0
+         * 
+         * @param matrix Matrix that the iterator works on      
+        ***********************************************/
+        explicit iterator(const Matrix<T> *matrix) : row(0), col(0), matrix(matrix) {}
+        ~iterator() = default;
+
+        /***********************************************
+         * Operator overload to advance the iterator by one
+         * @return Reference to the iterator after it was advanced
+        ***********************************************/
+        iterator &operator++()
+        {
+            if (col == (*matrix).width() - 1)
+            {
+                col = 0;
+                row++;
+            }
+            else
+            {
+                col++;
+            }
+            return *this;
+        }
+
+        /***********************************************
+         * Postfix operator overload to advance the iterator
+         * @return Reference to the iterator before it was advanced
+        ***********************************************/
+        iterator operator++(int num)
+        {
+            iterator iterator = *this;
+            ++*this;
+            return iterator;
+        }
+
+        /***********************************************
+         * Operator overload to assign new values into the iterator
+         * @param iterator Iterator to copy the values of into the current iterator
+         * @return Reference to the iterator after it was changed
+        ***********************************************/
+        iterator &operator=(const iterator &iterator)
+        {
+            // Use the current row and col.
+            row = iterator.row;
+            col = iterator.col;
+            // Change the matrix pointer.
+            matrix = iterator.matrix;
+            return *this;
+        }
+
+        /***********************************************
+         * Operator overload to check if the current iterator is not equal to the given iterator
+         * @param iterator Iterator to compare with the current iterator
+         * @return True if iterators are not equal (not same matrix, row or col), otherwise false
+        ***********************************************/
+        bool operator!=(const iterator &iterator)
+        {
+            // Return the opposite of the == operator
+            return !((*this) == iterator);
+        }
+
+        /***********************************************
+         * Operator overload to check if the current iterator is equal to the given iterator
+         * 
+         * @param iterator Iterator to compare with the current iterator
+         * @return True if iterators are equal (same matrix, row and col), otherwise false
+        ***********************************************/
+        bool operator==(const iterator &iterator)
+        {
+            // Compare current row, col and matrix
+            return row == iterator.row && col == iterator.col && matrix == iterator.matrix;
+        }
+
+        /***********************************************
+         * Operator overload to retrieve the value that the iterator points to
+         * @return Reference to the value that the iterator points to
+        ***********************************************/
+        T &operator*() const
+        {
+            if (row >= (*matrix).height() || col >= (*matrix).height())
+            {
+                throw AccessIllegalElement();
+            }
+            T &element = (*matrix)(row, col);
+            return element;
+        }
+    };
 } // namespace mtm
 #endif
