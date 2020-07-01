@@ -66,8 +66,8 @@ namespace mtm
         // Now iterate through the matrix and set the primary diagonal to 1.
         for (int i = 0; i < dim; i++)
         {
-            // setCell to 1.
-            matrix.setCell(i, i, 1);
+            // Set the cell to 1.
+            matrix(i, i) = 1;
         }
         // Return the constructed identity matrix.
         return matrix;
@@ -88,13 +88,12 @@ namespace mtm
             {
                 // Assign the proper values.
                 // Set the (i, j) in the original matrix into the (j, i).
-                transposed.setCell(j, i, (*this)(i, j));
+                transposed(j, i) = (*this)(i, j);
             }
         }
         return transposed;
     }
 
-    // Function checks if all cells in matrix are non-zero.
     bool all(const IntMatrix matrix)
     {
         // Iterate through the current matrix.
@@ -114,7 +113,6 @@ namespace mtm
         return true;
     }
 
-    // Function checks if at least one cell in the matrix is non-zero.
     bool any(const IntMatrix matrix)
     {
         // Create a flag to show that we received no zeros in the matrix. Defaults to false.
@@ -137,7 +135,6 @@ namespace mtm
 
     // ! Operator overloads
 
-    // Operator overload for matrix addition.
     IntMatrix mtm::IntMatrix::operator+(const IntMatrix &matrix)
     {
         // Create a new matrix that's a copy of the current.
@@ -148,14 +145,13 @@ namespace mtm
             for (int j = 0; j < width(); j++)
             {
                 // Set the current cell into the result of original(i,j) + matrix(i,j).
-                result.setCell(i, j, (*this)(i, j) + matrix(i, j));
+                result(i, j) += matrix(i, j);
             }
         }
         // Return the result.
         return result;
     }
 
-    // Operator overload for matrix and scalar addition (matrix+scalar)
     IntMatrix mtm::IntMatrix::operator+(const int &number)
     {
         // Create a new matrix that's a copy of the current.
@@ -166,14 +162,13 @@ namespace mtm
             for (int j = 0; j < width(); j++)
             {
                 // Add the scalar to the current cell (i,j)
-                result.setCell(i, j, (*this)(i, j) + number);
+                result(i, j) += number;
             }
         }
         // Return the result.
         return result;
     }
 
-    // Operator overload for matrix and scalar addition (scalar+matrix)
     IntMatrix operator+(int number, const IntMatrix &matrix)
     {
         // Create a new matrix that's a copy of the current matrix.
@@ -184,15 +179,14 @@ namespace mtm
             for (int j = 0; j < matrix.width(); j++)
             {
                 // Set the current cell (i,j) to matrix(i,j) + scalar
-                result.setCell(i, j, result(i, j) + number);
+                result(i, j) += number;
             }
         }
         // Return the result matrix.
         return result;
     }
 
-    // Operator overload for matrix and scalar addition (matrix+=scalar)
-    mtm::IntMatrix& mtm::IntMatrix::operator+=(const int &number)
+    mtm::IntMatrix &mtm::IntMatrix::operator+=(const int &number)
     {
         // Modify the current matrix instead of a new one.
         // Go through the matrix itself.
@@ -208,7 +202,6 @@ namespace mtm
         return *this;
     }
 
-    // Operator overload for matrix subtraction
     IntMatrix mtm::IntMatrix::operator-(const IntMatrix &matrix)
     {
         // Create a new matrix that's a copy of the current.
@@ -219,14 +212,13 @@ namespace mtm
             for (int j = 0; j < width(); j++)
             {
                 // Change the current cell (i,j) into original(i,j)-matrix(i,j)
-                result.setCell(i, j, (*this)(i, j) - matrix(i, j));
+                result(i, j) -= matrix(i, j);
             }
         }
         // Return the result matrix.
         return result;
     }
 
-    // Operator overload for matrix value inversion (-matrix)
     IntMatrix mtm::IntMatrix::operator-() const
     {
         // Create a result matrix as a copy of the current.
@@ -237,14 +229,13 @@ namespace mtm
             for (int j = 0; j < width(); j++)
             {
                 // Set the (i,j) cell to be -cell(i,j)
-                result.setCell(i, j, -(*this)(i, j));
+                result(i, j) = -(*this)(i, j);
             }
         }
         // Return the result matrix.
         return result;
     }
 
-    // Operator overload for matrix output
     std::ostream &operator<<(std::ostream &stream, const IntMatrix &matrix)
     {
         // Create an array with the size of the matrix.
@@ -271,13 +262,11 @@ namespace mtm
         return stream;
     }
 
-    // Operator () overload for cell recovery
     int &mtm::IntMatrix::operator()(int row, int col) const
     {
         return matrix[row][col];
     }
 
-    // Assignment operator overload
     IntMatrix &mtm::IntMatrix::operator=(const IntMatrix &copy)
     {
         // Clear the current matrix.
@@ -308,7 +297,6 @@ namespace mtm
         return *this;
     }
 
-    // < operator overload
     IntMatrix mtm::IntMatrix::operator<(const int number)
     {
         // Create a new matrix as the result.
@@ -330,13 +318,11 @@ namespace mtm
         return result;
     }
 
-    // <= operator overload
     IntMatrix mtm::IntMatrix::operator<=(const int number)
     {
         return *this < (number + 1);
     }
 
-    // > operator overload
     IntMatrix mtm::IntMatrix::operator>(const int number)
     {
         // Create a result matrix.
@@ -356,7 +342,6 @@ namespace mtm
         return result;
     }
 
-    // >= operator overload
     IntMatrix mtm::IntMatrix::operator>=(const int number)
     {
         // Use the regular overload (>) to get the proper result to avoid code duplication.
@@ -384,14 +369,14 @@ namespace mtm
         return result;
     }
 
-    //  != operator overload
     IntMatrix mtm::IntMatrix::operator!=(const int number)
     {
         // We can utilize the == operator overload. Just invert the numbers from 1 to 0.
         return ((*this) == number) == 0;
     }
 
-    // * Getters
+    // ! Getters
+
     int mtm::IntMatrix::height() const
     {
         return rows;
@@ -413,13 +398,8 @@ namespace mtm
         return dims;
     }
 
-    // ! Setters
-    void mtm::IntMatrix::setCell(int row, int col, int val)
-    {
-        matrix[row][col] = val;
-    }
-
     // ! Iterator functions
+
     mtm::IntMatrix::iterator mtm::IntMatrix::begin()
     {
         return iterator(this);
@@ -487,6 +467,7 @@ namespace mtm
     }
 
     // ! const iterator functions
+
     mtm::IntMatrix::const_iterator mtm::IntMatrix::begin() const
     {
         return const_iterator(this);
@@ -540,6 +521,7 @@ namespace mtm
     {
         return iterator.row == row && iterator.col == col && (iterator.matrix) == matrix;
     }
+
     bool mtm::IntMatrix::const_iterator::operator!=(const const_iterator &iterator)
     {
 
