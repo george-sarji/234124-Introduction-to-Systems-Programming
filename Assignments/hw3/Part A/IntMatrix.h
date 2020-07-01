@@ -249,16 +249,16 @@ namespace mtm
     {
         int row, col;
         const IntMatrix *matrix;
+        friend class IntMatrix;
 
+    public:
         /***********************************************
          * Constructors the iterator according to the given matrix
          * The iterator begins at 0,0 in the matrix.
          * @param matrix Pointer to the IntMatrix the constructor iterate on
         ***********************************************/
         explicit iterator(const IntMatrix *matrix) : row(0), col(0), matrix(matrix) {}
-        friend class IntMatrix;
 
-    public:
         ~iterator() = default;
 
         /***********************************************
