@@ -152,7 +152,7 @@ namespace mtm
         Matrix<T> apply(F function) const
         {
             // Construct a new result matrix according to the current one
-            Matrix<T> result(*this);
+            const Matrix<T> result(*this);
             // Iterate through the matrix
             for (int i = 0; i < rows; i++)
             {
@@ -215,27 +215,38 @@ namespace mtm
          * @param copy Matrix to be copied into the current matrix
          * @return Resultant matrix
         ***********************************************/
-        const Matrix<T> &operator=(const Matrix &copy)
+        Matrix<T> &operator=(const Matrix &copy)
         {
-            // Check if the dimensions match.
-            if (copy.rows != rows || copy.cols != cols)
+            // Delete the current matrix
+            for (int i = 0; i < rows; i++)
             {
-                // Throw a dimension mismatch.
-                throw DimensionMismatch(*this, copy);
+                delete[] matrix[i];
             }
-            // Create a result matrix according to the current matrix.
-            Matrix<T> result(*this);
+            delete[] matrix;
+            rows = copy.rows;
+            cols = copy.cols;
+            // Create a new matrix according to the new dimensions
+            matrix = new T *[rows];
+            if (matrix == NULL)
+            {
+                throw std::bad_alloc();
+            }
             // Iterate through the actual matrix and assign values.
             for (int i = 0; i < rows; i++)
             {
+                matrix[i] = new T[cols];
+                if (matrix[i] == NULL)
+                {
+                    throw std::bad_alloc();
+                }
                 for (int j = 0; j < cols; j++)
                 {
                     // Assign the values into result(i,j) according to copy(i,j)
-                    result(i, j) = copy(i, j);
+                    (*this)(i, j) = copy(i, j);
                 }
             }
             // Return the result.
-            return result;
+            return *this;
         }
 
         /***********************************************    
@@ -305,7 +316,7 @@ namespace mtm
                 for (int j = 0; j < matrix.cols; j++)
                 {
                     // Add the object to cell (i,j)
-                    result(i, j) += object;
+                    result(i, j) = object + result(i,j);
                 }
             }
             // Return the result matrix.
@@ -318,7 +329,7 @@ namespace mtm
          * @param object Object to be added into the matrix
          * @return Result matrix of the addition
         ***********************************************/
-        Matrix<T> operator+=(const T &object)
+        Matrix<T>& operator+=(const T &object)
         {
             // Go through the matrix.
             for (int i = 0; i < rows; i++)
@@ -353,7 +364,7 @@ namespace mtm
                 for (int j = 0; j < cols; j++)
                 {
                     // Subtract the matrix's value from the current cell.
-                    result(i, j) -= matrix(i, j);
+                    result(i, j) = result(i, j) - matrix(i, j);
                 }
             }
             return result;
@@ -606,7 +617,7 @@ namespace mtm
             for (int j = 0; j < matrix.width(); j++)
             {
                 // Check if the current cell is equals to zero
-                if (matrix(i, j) == 0)
+                if (!matrix(i, j))
                 {
                     // Return false.
                     return false;
@@ -631,7 +642,7 @@ namespace mtm
             for (int j = 0; j < matrix.width(); j++)
             {
                 // Check if the current cell is not equals to zero
-                if (matrix(i, j) != 0)
+                if (matrix(i, j))
                 {
                     // Not equals to zero. We found our perfect match.
                     return true;
