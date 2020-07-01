@@ -141,6 +141,7 @@ namespace mtm
             // Return the transposed array.
             return transposed;
         }
+
         // ! Getters
         /***********************************************
          * Gives the number of rows
@@ -177,7 +178,7 @@ namespace mtm
         ***********************************************/
         T &operator()(int row, int col) const
         {
-            if (row >= height() || col >= width())
+            if (row >= height() || row < 0 || col >= width() || col < 0)
             {
                 throw AccessIllegalElement();
             }
@@ -217,7 +218,7 @@ namespace mtm
          * @param matrix Matrix to be added into the current matrix
          * @return Resultant matrix of the addition    
         ***********************************************/
-        Matrix<T> operator+(const Matrix &mat)
+        Matrix<T> operator+(const Matrix &mat) const
         {
             const Matrix<T> result(*this);
             // Check if the dimensions match for the addition
@@ -245,7 +246,7 @@ namespace mtm
          * @param object Object to be added into the matrix cells
          * @return Result matrix of the addition
         ***********************************************/
-        const Matrix<T> operator+(const T &object)
+        const Matrix<T> operator+(const T &object) const
         {
             // Create a result matrix according to the current matrix
             const Matrix<T> result(*this);
@@ -269,7 +270,7 @@ namespace mtm
          * @param matrix Matrix to add the objects to
          * @return Result matrix of the addition
         ***********************************************/
-        friend Matrix<T> operator+(T object, const Matrix<T> &matrix)
+        friend Matrix<T> operator+(T object, const Matrix<T> &matrix) const
         {
             // Create a result matrix according to the given matrix.
             Matrix<T> result(matrix);
@@ -313,7 +314,7 @@ namespace mtm
          * @param matrix Matrix to be deducted from current matrix
          * @return Result matrix of the subtraction  
         ***********************************************/
-        Matrix<T> operator-(const Matrix<T> &matrix)
+        Matrix<T> operator-(const Matrix<T> &matrix) const
         {
             // Check if the dimensions match.
             if (rows != matrix.rows || cols != matrix.cols)
@@ -352,6 +353,144 @@ namespace mtm
                 }
             }
             // Return the result
+            return result;
+        }
+
+        /***********************************************  
+         * Operator overload for comparison between matrix and object (<)
+         * 
+         * @param object Object to compare with matrix
+         * @return Matrix with cells set to true if cell is smaller than object, false otherwise   
+        ***********************************************/
+        Matrix<bool> operator<(const T object) const
+        {
+            // Create a matrix with the current dimensions
+            Matrix<bool> result(Dimensions(rows, cols));
+            // Iterate through the matrix
+            for (int i = 0; i < rows; i++)
+            {
+                for (int j = 0; j < cols; j++)
+                {
+                    // Set the value of the comparison between the current cell (i,j) and the object
+                    result(i, j) = (*this)(i, j) < object;
+                }
+            }
+            // Return the result.
+            return result;
+        }
+
+        /***********************************************  
+         * Operator overload for comparison between matrix and object (<=)
+         * 
+         * @param object Object to compare with matrix
+         * @return Matrix with cells set to true if cell is smaller or equals to object, false otherwise   
+        ***********************************************/
+        Matrix<bool> operator<(const T object) const
+        {
+            // Create a matrix with the current dimensions
+            Matrix<bool> result(Dimensions(rows, cols));
+            // Iterate through the matrix
+            for (int i = 0; i < rows; i++)
+            {
+                for (int j = 0; j < cols; j++)
+                {
+                    // Set the value of the comparison between the current cell (i,j) and the object
+                    result(i, j) = (*this)(i, j) <= object;
+                }
+            }
+            // Return the result.
+            return result;
+        }
+
+        /***********************************************  
+         * Operator overload for comparison between matrix and object (>)
+         * 
+         * @param object Object to compare with matrix
+         * @return Matrix with cells set to true if cell is bigger than object, false otherwise   
+        ***********************************************/
+        Matrix<bool> operator<(const T object) const
+        {
+            // Create a matrix with the current dimensions
+            Matrix<bool> result(Dimensions(rows, cols));
+            // Iterate through the matrix
+            for (int i = 0; i < rows; i++)
+            {
+                for (int j = 0; j < cols; j++)
+                {
+                    // Set the value of the comparison between the current cell (i,j) and the object
+                    result(i, j) = (*this)(i, j) > object;
+                }
+            }
+            // Return the result.
+            return result;
+        }
+
+        /***********************************************  
+         * Operator overload for comparison between matrix and object (>=)
+         * 
+         * @param object Object to compare with matrix
+         * @return Matrix with cells set to true if cell is bigger or equal to object, false otherwise   
+        ***********************************************/
+        Matrix<bool> operator<(const T object) const
+        {
+            // Create a matrix with the current dimensions
+            Matrix<bool> result(Dimensions(rows, cols));
+            // Iterate through the matrix
+            for (int i = 0; i < rows; i++)
+            {
+                for (int j = 0; j < cols; j++)
+                {
+                    // Set the value of the comparison between the current cell (i,j) and the object
+                    result(i, j) = (*this)(i, j) >= object;
+                }
+            }
+            // Return the result.
+            return result;
+        }
+
+        /***********************************************  
+         * Operator overload for comparison between matrix and object (==)
+         * 
+         * @param object Object to compare with matrix
+         * @return Matrix with cells set to true if cell is equal to object, false otherwise   
+        ***********************************************/
+        Matrix<bool> operator<(const T object) const
+        {
+            // Create a matrix with the current dimensions
+            Matrix<bool> result(Dimensions(rows, cols));
+            // Iterate through the matrix
+            for (int i = 0; i < rows; i++)
+            {
+                for (int j = 0; j < cols; j++)
+                {
+                    // Set the value of the comparison between the current cell (i,j) and the object
+                    result(i, j) = (*this)(i, j) == object;
+                }
+            }
+            // Return the result.
+            return result;
+        }
+
+        /***********************************************  
+         * Operator overload for comparison between matrix and object (!=)
+         * 
+         * @param object Object to compare with matrix
+         * @return Matrix with cells set to true if cell is not equal to object, false otherwise   
+        ***********************************************/
+        Matrix<bool> operator<(const T object) const
+        {
+            // Create a matrix with the current dimensions
+            Matrix<bool> result(Dimensions(rows, cols));
+            // Iterate through the matrix
+            for (int i = 0; i < rows; i++)
+            {
+                for (int j = 0; j < cols; j++)
+                {
+                    // Set the value of the comparison between the current cell (i,j) and the object
+                    result(i, j) = (*this)(i, j) != object;
+                }
+            }
+            // Return the result.
             return result;
         }
 
@@ -401,5 +540,55 @@ namespace mtm
             }
         };
     };
+
+    /***********************************************       
+     * Checks if all the cells in the matrix are not equal to 0
+     * @param matrix Matrix to be checked
+     * @return True if no zeros in matrix, false otherwise 
+    ***********************************************/
+    template <class T>
+    bool all(const Matrix<T> &matrix)
+    {
+        // Iterate through the matrix.
+        for (int i = 0; i < matrix.height(); i++)
+        {
+            for (int j = 0; j < matrix.width(); j++)
+            {
+                // Check if the current cell is equals to zero
+                if (matrix(i, j) == 0)
+                {
+                    // Return false.
+                    return false;
+                }
+            }
+        }
+        // We did not encounter any zeros. We can return true.
+        return true;
+    }
+
+    /***********************************************       
+     * Checks if any of the cells in the matrix are not equal to 0
+     * @param matrix Matrix to be checked
+     * @return True if at least one non-zero in matrix, false otherwise 
+    ***********************************************/
+    template <class T>
+    bool any(const Matrix<T> &matrix)
+    {
+        // Iterate through the matrix
+        for (int i = 0; i < matrix.height(); i++)
+        {
+            for (int j = 0; j < matrix.width(); j++)
+            {
+                // Check if the current cell is not equals to zero
+                if (matrix(i, j) != 0)
+                {
+                    // Not equals to zero. We found our perfect match.
+                    return true;
+                }
+            }
+        }
+        // We encountered all zeros. Return false.
+        return false;
+    }
 } // namespace mtm
 #endif
