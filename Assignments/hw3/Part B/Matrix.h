@@ -270,7 +270,7 @@ namespace mtm
          * @param matrix Matrix to add the objects to
          * @return Result matrix of the addition
         ***********************************************/
-        friend Matrix<T> operator+(T object, const Matrix<T> &matrix) const
+        friend Matrix<T> operator+(T object, const Matrix<T> &matrix)
         {
             // Create a result matrix according to the given matrix.
             Matrix<T> result(matrix);
