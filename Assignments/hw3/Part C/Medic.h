@@ -17,7 +17,7 @@ namespace mtm
     {
 
     public:
-        Medic(units_t ammo, units_t health, units_t range, units_t power, Team team);
+        Medic(units_t health, units_t ammo, units_t range, units_t power, Team team);
         Medic(const Medic &medic) = default;
         void attack(const GridPoint &source, const GridPoint &dest, const Matrix<std::shared_ptr<Character>> &grid) override;
 

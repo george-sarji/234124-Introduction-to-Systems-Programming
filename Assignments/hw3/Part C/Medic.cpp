@@ -3,7 +3,7 @@
 #include "Exceptions.h"
 namespace mtm
 {
-    mtm::Medic::Medic(units_t ammo, units_t health, units_t range, units_t power, Team team) : Character(ammo, health, range, power,
+    mtm::Medic::Medic(units_t health, units_t ammo, units_t range, units_t power, Team team) : Character(health, ammo, range, power,
                                                                                                          5, 5, 1, team, MEDIC) {}
 
     std::shared_ptr<Character> mtm::Medic::clone() const
@@ -15,7 +15,7 @@ namespace mtm
         // The shot is in range. We need to check if there is someone in the destination.
         std::shared_ptr<Character> &target = grid(dest.row, dest.col);
         // Check if the target is empty.
-        if (!target)
+        if (!target || source == dest)
         {
             throw IllegalTarget();
         }

@@ -19,7 +19,7 @@ namespace mtm
         int shots_counter = 0;
 
     public:
-        Sniper(int ammo, int health, int range, int power, Team team) : Character(ammo, health, range, power,
+        Sniper(int health, int ammo, int range, int power, Team team) : Character(health, ammo, range, power,
                                                                                   4, 2,
                                                                                   1, team, SNIPER) {}
         Sniper(const Sniper &other) = default;

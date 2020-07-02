@@ -15,7 +15,7 @@ namespace mtm
         CharacterType type;
 
     protected:
-        Character(units_t ammo, units_t health, units_t range, units_t power, units_t move_range, units_t reload_amount, units_t attack_cost,
+        Character(units_t health, units_t ammo, units_t range, units_t power, units_t move_range, units_t reload_amount, units_t attack_cost,
                   Team team, CharacterType type);
         Character(const Character &character) = default;
         virtual ~Character() = default;

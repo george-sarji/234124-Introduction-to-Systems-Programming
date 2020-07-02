@@ -3,7 +3,6 @@
 #include "Auxiliaries.h"
 #include <list>
 #include <memory>
-#include "DeathCheck.h"
 
 namespace mtm
 {
