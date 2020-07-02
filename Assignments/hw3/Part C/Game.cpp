@@ -176,9 +176,77 @@ namespace mtm
         (*character).reloadAmmo();
     }
 
-    units_t distance(const GridPoint &src, const GridPoint &dest)
+    bool mtm::Game::isOver(Team *winningTeam) const
     {
-        return std::abs(src.col - dest.col) + std::abs(src.row - dest.row);
+        bool cppAlive = false, pythonAlive = false;
+        for (int i = 0; i < game_grid.height(); i++)
+        {
+            for (int j = 0; j < game_grid.width(); j++)
+            {
+                if (game_grid(i, j))
+                {
+                    // Check which team.
+                    if ((*game_grid(i, j)).getTeam() == mtm::CPP)
+                    {
+                        cppAlive = true;
+                    }
+                    else
+                    {
+                        pythonAlive = true;
+                    }
+                    if (cppAlive && pythonAlive)
+                    {
+                        return false;
+                    }
+                }
+            }
+        }
+        if (winningTeam != NULL)
+        {
+            *winningTeam = cppAlive ? mtm::CPP : mtm::PYTHON;
+        }
+        return true;
+    }
+
+    std::ostream &operator<<(std::ostream &stream, const Game &game)
+    {
+        char *characters = new char[game.game_grid.size()];
+        int index = 0;
+        //  Iterate through the game board.
+        for (int i = 0; i < game.game_grid.height(); i++)
+        {
+            for (int j = 0; j < game.game_grid.height(); j++)
+            {
+                std::shared_ptr<Character> current = game.game_grid(i, j);
+                if (current)
+                {
+                    switch ((*current).getType())
+                    {
+                    case MEDIC:
+                    {
+                        characters[index] = ((*current).getTeam() == mtm::CPP) ? 'M' : 'm';
+                        break;
+                    }
+                    case SNIPER:
+                    {
+                        characters[index] = ((*current).getTeam() == mtm::CPP) ? 'N' : 'n';
+                        break;
+                    }
+                    case SOLDIER:
+                    {
+                        characters[index] = ((*current).getTeam() == mtm::CPP) ? 'S' : 's';
+                        break;
+                    }
+                    }
+                }
+                else
+                {
+                    characters[index] = ' ';
+                }
+                index++;
+            }
+        }
+        return printGameBoard(stream, &characters[0], &characters[index + 1], game.game_grid.width());
     }
 
 }; // namespace mtm

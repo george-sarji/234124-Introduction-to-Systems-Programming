@@ -25,63 +25,63 @@ void example1()
 	g1.addCharacter(GridPoint(1, 4), Game::makeCharacter(CharacterType::SNIPER, Team::CPP, 10, 2, 4, 5));
 	g1.addCharacter(GridPoint(6, 1), Game::makeCharacter(CharacterType::SOLDIER, Team::PYTHON, 10, 2, 4, 5));
 	g1.addCharacter(GridPoint(6, 4), Game::makeCharacter(CharacterType::MEDIC, Team::PYTHON, 10, 2, 4, 5));
-	// std::cout << g1 << std::endl;
+	std::cout << g1 << std::endl;
 	g1.move(GridPoint(1, 1), GridPoint(1, 2));
-	// std::cout << g1 << std::endl;
+	std::cout << g1 << std::endl;
 
 	// try {
-		// g1.attack(GridPoint(1,4), GridPoint(1,2)); // can't attak ally
+	// g1.attack(GridPoint(1,4), GridPoint(1,2)); // can't attak ally
 	// } catch (const mtm::IllegalTarget& e) {
 	// 	std::cout << e.what() << std::endl;
 	// }
 
 	// 	try {
-			// g1.attack(GridPoint(1,4), GridPoint(6,1)); // should not work - not in range
+	// g1.attack(GridPoint(1,4), GridPoint(6,1)); // should not work - not in range
 	// 	} catch (const mtm::OutOfRange& e) {
 	// 		std::cout << e.what() << std::endl;
 	// 	}
 
-		g1.move(GridPoint(1,4), GridPoint(3,2));
-	// 	std::cout << g1 << std::endl;
+	g1.move(GridPoint(1, 4), GridPoint(3, 2));
+	std::cout << g1 << std::endl;
 	// 	try {
-			// g1.attack(GridPoint(1,4), GridPoint(6,4)); // character moved away
+	// g1.attack(GridPoint(1,4), GridPoint(6,4)); // character moved away
 	// 	} catch (const mtm::CellEmpty& e) {
 	// 		std::cout << e.what() << std::endl;
 	// 		}
 
-		g1.attack(GridPoint(3,2), GridPoint(6,1)); // now it can hit
+	g1.attack(GridPoint(3, 2), GridPoint(6, 1)); // now it can hit
 
-		g1.move(GridPoint(6,1), GridPoint(4,2));
-	// 	std::cout << g1 << std::endl;
+	g1.move(GridPoint(6, 1), GridPoint(4, 2));
+	std::cout << g1 << std::endl;
 
 	// 	try {
-			// g1.attack(GridPoint(3,2), GridPoint(4,2)); // sniper can't attack close targets
+	// g1.attack(GridPoint(3,2), GridPoint(4,2)); // sniper can't attack close targets
 	// 	} catch (const mtm::OutOfRange& e) {
 	// 		std::cout << e.what() << std::endl;
 	// 	}
 
-		g1.move(GridPoint(4,2), GridPoint(6,2));
+	g1.move(GridPoint(4, 2), GridPoint(6, 2));
 	// 	std::cout << g1 << std::endl;
 
-		g1.attack(GridPoint(3,2), GridPoint(6,2)); // now it can hit
-	// 	std::cout << g1 << std::endl;
+	g1.attack(GridPoint(3, 2), GridPoint(6, 2)); // now it can hit
+												 // 	std::cout << g1 << std::endl;
 
 	// 	try {
-			// g1.move(GridPoint(6,2), GridPoint(6,1)); // soldier was killed and removed
+	// g1.move(GridPoint(6,2), GridPoint(6,1)); // soldier was killed and removed
 	// 	} catch (const mtm::CellEmpty& e) {
 	// 		std::cout << e.what() << std::endl;
 	// 	}
 
-		g1.move(GridPoint(3,2), GridPoint(3,4));
+	g1.move(GridPoint(3, 2), GridPoint(3, 4));
 
 	// 	try {
-			// g1.attack(GridPoint(3,4), GridPoint(6,4)); // sniper out of ammo
+	// g1.attack(GridPoint(3,4), GridPoint(6,4)); // sniper out of ammo
 	// 	} catch (const mtm::OutOfAmmo& e) {
 	// 		std::cout << e.what() << std::endl;
 	// 	}
 
 	// 	try {
-			// g1.attack(GridPoint(6,4), GridPoint(6,4)); // medic can't heal itself
+	// g1.attack(GridPoint(6,4), GridPoint(6,4)); // medic can't heal itself
 	// 	} catch (const mtm::IllegalTarget& e) {
 	// 		std::cout << e.what() << std::endl;
 	// 	}
