@@ -2,6 +2,7 @@
 #define MATRIX_H
 
 #include "Auxiliaries.h"
+#include "Exceptions.h"
 namespace mtm
 {
     template <class T>
@@ -24,7 +25,7 @@ namespace mtm
             // Get the dimensions of the matrix
             if (dims.getRow() <= 0 || dims.getCol() <= 0)
             {
-                throw IllegalInitialization();
+                throw IllegalArgument();
             }
             rows = dims.getRow();
             cols = dims.getCol();

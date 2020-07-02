@@ -12,6 +12,10 @@ namespace mtm
     }
     void mtm::Medic::attack(const GridPoint &source, const GridPoint &dest, const Matrix<std::shared_ptr<Character>> &grid)
     {
+        if (isOutOfAmmo())
+        {
+            throw OutOfAmmo();
+        }
         // The shot is in range. We need to check if there is someone in the destination.
         std::shared_ptr<Character> &target = grid(dest.row, dest.col);
         // Check if the target is empty.

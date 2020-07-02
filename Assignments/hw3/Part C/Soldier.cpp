@@ -11,15 +11,19 @@ namespace mtm
     void mtm::Soldier::attack(const GridPoint &source, const GridPoint &dest, const Matrix<std::shared_ptr<Character>> &grid)
     {
         // First check if we can even attack dest
+        if (isOutOfAmmo())
+        {
+            throw OutOfAmmo();
+        }
         if ((source.col != dest.col && source.row != dest.row))
         {
-            throw OutOfRange();
+            throw IllegalTarget();
         }
         // Legal shot. Remove one ammo.
         shoot();
         // Check if the destination has an enemy.
         std::shared_ptr<Character> &target = grid(dest.row, dest.col);
-        if (target)
+        if (grid(source.row, source.col) != target && target)
         {
             // We have a target in the destination grid. Damage.
             (*target).addDamage(getPower());
@@ -32,19 +36,24 @@ namespace mtm
         }
         // We need to iterate through a sub-matrix within the splash damage zone
         // Get the range that the splash zone will have
-        units_t splash_range = std::round(getRange() / 3);
-        units_t splash_damage = std::round(getPower() / 2);
+        units_t splash_range = getRange() % 3 == 0 ? getRange() / 3 : getRange() / 3 + 1;
+        units_t splash_damage = getPower() % 3 == 0 ? getPower() / 3 : getPower() / 3 + 1;
         // We need to get the submatrix
         // Get the beginning row.
         int beginning_row = dest.row - splash_range < 0 ? 0 : dest.row - splash_range;
         int beginning_col = dest.col - splash_range < 0 ? 0 : dest.col - splash_range;
 
-        int ending_row = dest.row + splash_range <= grid.height() ? grid.height() - 1 : dest.row + splash_range;
-        int ending_col = dest.col + splash_range <= grid.width() ? grid.width() - 1 : dest.col + splash_range;
+        int ending_row = dest.row + splash_range >= grid.height() ? grid.height() - 1 : dest.row + splash_range;
+        int ending_col = dest.col + splash_range >= grid.width() ? grid.width() - 1 : dest.col + splash_range;
         for (int i = beginning_row; i <= ending_row; i++)
         {
             for (int j = beginning_col; j <= ending_col; j++)
             {
+                // Check if we are in a legal cell
+                if (GridPoint::distance(dest, GridPoint(i, j)) > splash_range)
+                {
+                    continue;
+                }
                 // Check if we have a character that is NOT an ally in the current cell.
                 std::shared_ptr<Character> &current = grid(i, j);
                 if (current)

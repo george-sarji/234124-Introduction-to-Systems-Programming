@@ -7,7 +7,7 @@ namespace mtm
 
     mtm::Character::Character(units_t health, units_t ammo, units_t range, units_t power, units_t move_range, units_t reload_amount, units_t attack_cost,
                               Team team, CharacterType type) : health(health), ammo(ammo), range(range), power(power),
-                                                               move_range(range), reload_amount(reload_amount),
+                                                               move_range(move_range), reload_amount(reload_amount),
                                                                attack_cost(attack_cost), team(team), type(type) {}
     bool mtm::Character::isInMoveRange(GridPoint source, GridPoint destination) const
     {

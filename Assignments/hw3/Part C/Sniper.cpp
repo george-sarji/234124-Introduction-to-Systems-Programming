@@ -7,11 +7,15 @@ namespace mtm
     void mtm::Sniper::attack(const GridPoint &source, const GridPoint &dest, const Matrix<std::shared_ptr<Character>> &grid)
     {
         // The point is in attack range, but is it away in the minimal distance?
-        units_t minimum_range = std::round(getRange() / 2);
+        units_t minimum_range = getRange() % 2 == 0 ? getRange() / 2 : getRange() / 2 + 1;
         if (mtm::GridPoint::distance(source, dest) < minimum_range)
         {
             // Illegal point. Throw an exception.
             throw OutOfRange();
+        }
+        if (isOutOfAmmo())
+        {
+            throw OutOfAmmo();
         }
         // OK. We're in range. Check if there is an opponent in the destination.
         std::shared_ptr<Character> &target = grid(dest.row, dest.col);
@@ -25,7 +29,7 @@ namespace mtm
         shoot();
         shots_counter++;
         units_t damage = getPower();
-        if (shots_counter == 2)
+        if (shots_counter == 3)
         {
             // Three shots. Double damage.
             damage *= 2;

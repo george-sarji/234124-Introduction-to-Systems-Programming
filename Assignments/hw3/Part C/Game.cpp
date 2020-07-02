@@ -56,7 +56,15 @@ namespace mtm
         {
             for (int j = 0; j < cols; j++)
             {
-                game_grid(i, j) = game_grid(i, j)->clone();
+                std::shared_ptr<Character> current = game_grid(i, j);
+                if (current)
+                {
+                    game_grid(i, j) = current->clone();
+                }
+                else
+                {
+                    game_grid(i, j) = std::shared_ptr<Character>();
+                }
             }
         }
         return (*this);
@@ -85,7 +93,7 @@ namespace mtm
     std::shared_ptr<Character> mtm::Game::makeCharacter(CharacterType type, Team team, units_t health, units_t ammo, units_t range, units_t power)
     {
         // Check if all parameters are legal
-        if (health == 0 || ammo < 0 || range < 0 || power < 0)
+        if (health <= 0 || ammo < 0 || range < 0 || power < 0)
         {
             throw IllegalArgument();
         }
@@ -111,7 +119,7 @@ namespace mtm
 
     bool mtm::Game::isInGameBounds(const GridPoint &coords)
     {
-        return coords.row >= 0 && coords.row <= rows && coords.col >= 0 && coords.col <= cols;
+        return coords.row >= 0 && coords.row < rows && coords.col >= 0 && coords.col < cols;
     }
 
     void mtm::Game::move(const GridPoint &src_coordinates, const GridPoint &dst_coordinates)
@@ -127,16 +135,16 @@ namespace mtm
         {
             throw CellEmpty();
         }
-        // Check if we can move to the destination (no characters in destination)
-        std::shared_ptr<Character> &destination = getGridPoint(dst_coordinates);
-        if (destination)
-        {
-            throw CellOccupied();
-        }
         // Check if the move is valid for the given character.
-        if (!(*character).isMoveValid(src_coordinates, dst_coordinates))
+        if (!character->isInMoveRange(src_coordinates, dst_coordinates))
         {
             throw MoveTooFar();
+        }
+        // Check if we can move to the destination (no characters in destination)
+        std::shared_ptr<Character> &destination = getGridPoint(dst_coordinates);
+        if (destination && destination != character)
+        {
+            throw CellOccupied();
         }
         // We can move the character to the designated spot.
         destination.swap(character);
@@ -161,10 +169,6 @@ namespace mtm
             throw OutOfRange();
         }
         // Check if the attacker is out of ammo.
-        if ((*source_char).isOutOfAmmo())
-        {
-            throw OutOfAmmo();
-        }
         // Attack the destination (check exceptions in character-specific attacks)
         // TODO: Continue logic for attack
         // Use std::vector to return list of affected characters
@@ -215,6 +219,10 @@ namespace mtm
                     }
                 }
             }
+        }
+        if (!pythonAlive && !cppAlive)
+        {
+            return false;
         }
         if (winningTeam != NULL)
         {
