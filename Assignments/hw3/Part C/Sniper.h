@@ -2,7 +2,10 @@
 #define SNIPER_H
 
 #include "Character.h"
+#include "Matrix.h"
 #include "Auxiliaries.h"
+#include <memory>
+#include <list>
 
 namespace mtm
 {
@@ -11,8 +14,7 @@ namespace mtm
     public:
         Sniper(int ammo, int health, int range, int power, Team team) : Character(ammo, health, range, power, 4, 2, 1, team, SNIPER) {}
         Sniper(const Sniper &sniper) : Character(sniper) {}
-        bool isAttackValid(GridPoint source, GridPoint destination) const override;
-        void attack(const GridPoint& src, const GridPoint &dest) const override;
+        std::list<std::shared_ptr<Character>> attack(const GridPoint &source, const GridPoint &dest, const Matrix<std::shared_ptr<Character>> &grid) const override;
 
         std::shared_ptr<Character> clone() const override;
     };

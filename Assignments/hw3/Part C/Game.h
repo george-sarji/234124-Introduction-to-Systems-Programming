@@ -18,6 +18,7 @@ namespace mtm
         int rows, cols;
         std::shared_ptr<Character> &getGridPoint(const GridPoint& coords);
         bool isInGameBounds(const GridPoint& coords);
+        units_t distance(const GridPoint& src, const GridPoint& dest);
     public:
         Game(int height, int width);
         ~Game() = default;

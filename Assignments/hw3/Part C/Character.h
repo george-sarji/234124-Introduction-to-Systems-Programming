@@ -2,7 +2,9 @@
 #define CHARACTER_H
 
 #include "Auxiliaries.h"
+#include "Matrix.h"
 #include <memory>
+#include <list>
 
 namespace mtm
 {
@@ -25,9 +27,8 @@ namespace mtm
 
     public:
         virtual std::shared_ptr<Character> clone() const = 0;
-        virtual bool isAttackValid(GridPoint source, GridPoint destination) const = 0;
-        virtual void attack(const GridPoint& src, const GridPoint& dest) const = 0;
         bool isMoveValid(GridPoint source, GridPoint destination) const;
+        virtual std::list<std::shared_ptr<Character>> attack(const GridPoint& source, const GridPoint& dest, const Matrix<std::shared_ptr<Character>>& grid) const = 0;
         bool isAlive() const;
         bool isOutOfAmmo() const;
         bool isInMoveRange(GridPoint source, GridPoint destination) const;

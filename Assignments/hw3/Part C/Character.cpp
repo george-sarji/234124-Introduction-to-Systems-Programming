@@ -7,13 +7,13 @@ namespace mtm
     bool mtm::Character::isInMoveRange(GridPoint source, GridPoint destination) const
     {
         // Check the distance between the two points, and whether they're out of the move range
-        return (std::abs(source.row - destination.row) + std::abs(source.col - destination.col)) <= move_range;
+        return source.distance(source, destination) <= move_range;
     }
 
     bool mtm::Character::isInAttackRange(GridPoint source, GridPoint destination) const
     {
         // Check the distance between the two points, and whether they're out of the move range
-        return (std::abs(source.row - destination.row) + std::abs(source.col - destination.col)) <= range;
+        return source.distance(source, destination) <= range;
     }
 
     bool mtm::Character::isMoveValid(GridPoint source, GridPoint destination) const

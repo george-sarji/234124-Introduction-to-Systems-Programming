@@ -1,6 +1,8 @@
 #include "Game.h"
 #include "Exceptions.h"
 #include "Auxiliaries.h"
+#include <list>
+#include <memory>
 
 namespace mtm
 {
@@ -129,7 +131,11 @@ namespace mtm
         }
         // Attack the destination (check exceptions in character-specific attacks)
         // TODO: Continue logic for attack
-        (*source_char).attack(src_coordinates, dst_coordinates);
+        // Use std::vector to return list of affected characters
+        // Use character specific attacks to update game board with effects etc
+        // Return map<damage, std::vector<map<GridPoint, Character>>>
+        // Each dm
+        std::list<std::shared_ptr<Character>> affected = (*source_char).attack(src_coordinates, dst_coordinates, game_grid);
     }
 
     void mtm::Game::reload(const GridPoint &coordinates)
@@ -147,6 +153,11 @@ namespace mtm
         }
         // No problems. Reload ammo.
         (*character).reloadAmmo();
+    }
+
+    units_t distance(const GridPoint &src, const GridPoint &dest)
+    {
+        return std::abs(src.col - dest.col) + std::abs(src.row - dest.row);
     }
 
 }; // namespace mtm
