@@ -21,10 +21,6 @@ namespace mtm
         return source.distance(source, destination) <= range;
     }
 
-    bool mtm::Character::isMoveValid(GridPoint source, GridPoint destination) const
-    {
-        return isInMoveRange(source, destination);
-    }
     bool mtm::Character::isAlive() const
     {
         return health > 0;
@@ -33,14 +29,6 @@ namespace mtm
     {
         return ammo < attack_cost;
     }
-    units_t mtm::Character::getAmmo() const
-    {
-        return ammo;
-    }
-    units_t mtm::Character::getHealth() const
-    {
-        return health;
-    }
     units_t mtm::Character::getRange() const
     {
         return range;
@@ -48,18 +36,6 @@ namespace mtm
     units_t mtm::Character::getPower() const
     {
         return power;
-    }
-    units_t mtm::Character::getMoveRange() const
-    {
-        return move_range;
-    }
-    units_t mtm::Character::getReloadAmount() const
-    {
-        return reload_amount;
-    }
-    units_t mtm::Character::getAttackCost() const
-    {
-        return attack_cost;
     }
     Team mtm::Character::getTeam() const
     {

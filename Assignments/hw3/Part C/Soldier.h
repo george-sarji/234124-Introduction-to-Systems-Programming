@@ -16,9 +16,7 @@ namespace mtm
     class Soldier : public Character
     {
     public:
-        Soldier(units_t health, units_t ammo, units_t range, units_t power, Team team) : Character(health, ammo, range,
-                                                                                                   power, 3, 3,
-                                                                                                   1, team, SOLDIER) {}
+        Soldier(units_t health, units_t ammo, units_t range, units_t power, Team team);
         Soldier(const Soldier &soldier) = default;
         void attack(const GridPoint &source, const GridPoint &dest,
                     const Matrix<std::shared_ptr<Character>> &grid) override;

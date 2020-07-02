@@ -24,18 +24,18 @@ namespace mtm
             throw IllegalTarget();
         }
         // Check if the target is a friendly or not.
-        if ((*target).getTeam() == getTeam())
+        if (target->getTeam() == getTeam())
         {
             // Heal the target.
-            (*target).heal(getPower());
+            target->heal(getPower());
         }
         else
         {
             // Shoot.
             shoot();
-            (*target).addDamage(getPower());
+            target->addDamage(getPower());
             // Check if target is dead.
-            if (!(*target).isAlive())
+            if (!target->isAlive())
             {
                 // Target is dead. Disqualify.
                 target.reset();

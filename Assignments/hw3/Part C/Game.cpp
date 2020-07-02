@@ -18,6 +18,7 @@ namespace mtm
         // Else, create the matrix as required.
     }
 
+    // Returns the grid point at the given coords (returns the pointer at board(row, col))
     std::shared_ptr<Character> &mtm::Game::getGridPoint(const GridPoint &coords)
     {
         return game_grid(coords.row, coords.col);
@@ -36,7 +37,7 @@ namespace mtm
                 // Re-fill the contents with new pointers to the clones.
                 if (game_grid(i, j))
                 {
-                    game_grid(i, j) = std::shared_ptr<Character>((*game_grid(i, j)).clone());
+                    game_grid(i, j) = std::shared_ptr<Character>(game_grid(i, j)->clone());
                 }
                 else
                 {
@@ -57,12 +58,15 @@ namespace mtm
             for (int j = 0; j < cols; j++)
             {
                 std::shared_ptr<Character> current = game_grid(i, j);
+                // Check if the current grid is not null
                 if (current)
                 {
+                    // Clone the current grid
                     game_grid(i, j) = current->clone();
                 }
                 else
                 {
+                    // Assign an empty pointer
                     game_grid(i, j) = std::shared_ptr<Character>();
                 }
             }
@@ -117,6 +121,7 @@ namespace mtm
         return NULL;
     }
 
+    // Checks if a grid point that is given is in bounds of the actual game.
     bool mtm::Game::isInGameBounds(const GridPoint &coords)
     {
         return coords.row >= 0 && coords.row < rows && coords.col >= 0 && coords.col < cols;
@@ -163,19 +168,13 @@ namespace mtm
             throw CellEmpty();
         }
         // Check if the destination is even in attack range
-        if (!(*source_char).isInAttackRange(src_coordinates, dst_coordinates))
+        if (!source_char->isInAttackRange(src_coordinates, dst_coordinates))
         {
             // Not in range. Throw out of range.
             throw OutOfRange();
         }
-        // Check if the attacker is out of ammo.
-        // Attack the destination (check exceptions in character-specific attacks)
-        // TODO: Continue logic for attack
-        // Use std::vector to return list of affected characters
-        // Use character specific attacks to update game board with effects etc
-        // Return map<damage, std::vector<map<GridPoint, Character>>>
-        // Each dm
-        (*source_char).attack(src_coordinates, dst_coordinates, game_grid);
+        // Attack the target.
+        source_char->attack(src_coordinates, dst_coordinates, game_grid);
     }
 
     void mtm::Game::reload(const GridPoint &coordinates)
@@ -192,20 +191,23 @@ namespace mtm
             throw CellEmpty();
         }
         // No problems. Reload ammo.
-        (*character).reloadAmmo();
+        character->reloadAmmo();
     }
 
     bool mtm::Game::isOver(Team *winningTeam) const
     {
+        // Create flags for whether we have members from each team alive
+        // Iterate through the board
         bool cppAlive = false, pythonAlive = false;
         for (int i = 0; i < game_grid.height(); i++)
         {
             for (int j = 0; j < game_grid.width(); j++)
             {
+                // Check if the current grid point is a valid pointer
                 if (game_grid(i, j))
                 {
                     // Check which team.
-                    if ((*game_grid(i, j)).getTeam() == mtm::CPP)
+                    if (game_grid(i, j)->getTeam() == mtm::CPP)
                     {
                         cppAlive = true;
                     }
@@ -213,6 +215,7 @@ namespace mtm
                     {
                         pythonAlive = true;
                     }
+                    // Check if both teams are alive and return false.
                     if (cppAlive && pythonAlive)
                     {
                         return false;
@@ -220,20 +223,25 @@ namespace mtm
                 }
             }
         }
+        // If no characters from either team, return false.
         if (!pythonAlive && !cppAlive)
         {
             return false;
         }
+        // Add the winning team.
         if (winningTeam != NULL)
         {
             *winningTeam = cppAlive ? mtm::CPP : mtm::PYTHON;
         }
+        // By default, reaching here means we have a winner. Return true.
         return true;
     }
 
     std::ostream &operator<<(std::ostream &stream, const Game &game)
     {
+        // Create a characters array to add the board
         char *characters = new char[game.game_grid.size()];
+        // Independent index for the characters array
         int index = 0;
         //  Iterate through the game board.
         for (int i = 0; i < game.game_grid.height(); i++)
@@ -241,36 +249,43 @@ namespace mtm
             for (int j = 0; j < game.game_grid.width(); j++)
             {
                 std::shared_ptr<Character> current = game.game_grid(i, j);
+                // Check if the current pointer is valid
                 if (current)
                 {
-                    switch ((*current).getType())
+                    // Go according to the type and assign the proper letter to the current index in the characters array
+                    switch (current->getType())
                     {
                     case MEDIC:
                     {
-                        characters[index] = ((*current).getTeam() == mtm::CPP) ? 'M' : 'm';
+                        characters[index] = (current->getTeam() == mtm::CPP) ? 'M' : 'm';
                         break;
                     }
                     case SNIPER:
                     {
-                        characters[index] = ((*current).getTeam() == mtm::CPP) ? 'N' : 'n';
+                        characters[index] = (current->getTeam() == mtm::CPP) ? 'N' : 'n';
                         break;
                     }
                     case SOLDIER:
                     {
-                        characters[index] = ((*current).getTeam() == mtm::CPP) ? 'S' : 's';
+                        characters[index] = (current->getTeam() == mtm::CPP) ? 'S' : 's';
                         break;
                     }
                     }
                 }
+                // Not a valid pointer, means empty spot. Add empty letter.
                 else
                 {
                     characters[index] = ' ';
                 }
+                // Increase the index.
                 index++;
             }
         }
+        // Activate the provided printer to add into the stream
         printGameBoard(stream, &characters[0], &characters[index], game.game_grid.width());
+        // Delete the characters array to avoid memory leaks
         delete[] characters;
+        // Return the stream
         return stream;
     }
 

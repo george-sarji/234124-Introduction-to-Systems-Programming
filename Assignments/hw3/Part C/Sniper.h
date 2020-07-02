@@ -19,9 +19,7 @@ namespace mtm
         int shots_counter = 0;
 
     public:
-        Sniper(int health, int ammo, int range, int power, Team team) : Character(health, ammo, range, power,
-                                                                                  4, 2,
-                                                                                  1, team, SNIPER) {}
+        Sniper(int health, int ammo, int range, int power, Team team);
         Sniper(const Sniper &other) = default;
         void attack(const GridPoint &source, const GridPoint &dest, const Matrix<std::shared_ptr<Character>> &grid) override;
         std::shared_ptr<Character> clone() const override;
