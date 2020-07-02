@@ -23,11 +23,27 @@ namespace mtm
         return game_grid(coords.row, coords.col);
     }
 
-    mtm::Game::Game(const Game &game) : game_grid(game.game_grid)
+    mtm::Game::Game(const Game &other) : game_grid(other.game_grid)
     {
         // Copy constructor, copy the matrix.
-        rows = game.rows;
-        cols = game.cols;
+        rows = other.rows;
+        cols = other.cols;
+        // We copied the grid. We have to refill the contents however.
+        for (int i = 0; i < game_grid.height(); i++)
+        {
+            for (int j = 0; j < game_grid.width(); j++)
+            {
+                // Re-fill the contents with new pointers to the clones.
+                if (game_grid(i, j))
+                {
+                    game_grid(i, j) = std::shared_ptr<Character>((*game_grid(i, j)).clone());
+                }
+                else
+                {
+                    game_grid(i, j) = std::shared_ptr<Character>();
+                }
+            }
+        }
     }
 
     void mtm::Game::addCharacter(const GridPoint &coordinates, std::shared_ptr<Character> character)
@@ -98,7 +114,7 @@ namespace mtm
         }
         // Check if we can move to the destination (no characters in destination)
         std::shared_ptr<Character> destination = getGridPoint(dst_coordinates);
-        if (!destination)
+        if (destination)
         {
             throw CellOccupied();
         }
@@ -108,8 +124,7 @@ namespace mtm
             throw MoveTooFar();
         }
         // We can move the character to the designated spot.
-        destination = character;
-        character.reset();
+        destination.swap(character);
     }
     void mtm::Game::attack(const GridPoint &src_coordinates, const GridPoint &dst_coordinates)
     {

@@ -3,7 +3,6 @@
 
 #include "Matrix.h"
 #include <memory>
-#include "Auxiliaries.h"
 #include "Character.h"
 #include "Sniper.h"
 #include "Medic.h"

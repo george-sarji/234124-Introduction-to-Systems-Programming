@@ -7,13 +7,18 @@
 #include <memory>
 #include <list>
 
+#define MEDIC_MOVE_RANGE 5
+#define MEDIC_RELOAD 5
+#define MEDIC_ATTACK_COST 1
+
 namespace mtm
 {
     class Medic : public Character
     {
+
     public:
-        Medic(units_t ammo, units_t health, units_t range, units_t power, Team team) : Character(ammo, health, range, power, 5, 5, 1, team, MEDIC) {}
-        Medic(const Medic &medic) : Character(medic) {}
+        Medic(units_t ammo, units_t health, units_t range, units_t power, Team team);
+        Medic(const Medic &medic) = default;
         std::list<std::shared_ptr<Character>> attack(const GridPoint &source, const GridPoint &dest, const Matrix<std::shared_ptr<Character>> &grid) const override;
 
         std::shared_ptr<Character> clone() const override;

@@ -1,7 +1,6 @@
 #ifndef CHARACTER_H
 #define CHARACTER_H
 
-#include "Auxiliaries.h"
 #include "Matrix.h"
 #include <memory>
 #include <list>
@@ -17,18 +16,14 @@ namespace mtm
 
     protected:
         Character(units_t ammo, units_t health, units_t range, units_t power, units_t move_range, units_t reload_amount, units_t attack_cost,
-                  Team team, CharacterType type) : ammo(ammo), health(health), range(range), power(power),
-                                                   move_range(range), reload_amount(reload_amount),
-                                                   attack_cost(attack_cost), team(team), type(type) {}
-        Character(const Character &character) : ammo(character.ammo), health(character.health), range(character.range),
-                                                power(character.power), move_range(character.move_range),
-                                                reload_amount(character.reload_amount), attack_cost(character.attack_cost),
-                                                team(character.team), type(character.type) {}
+                  Team team, CharacterType type);
+        Character(const Character &character) = default;
+        virtual ~Character() = default;
 
     public:
         virtual std::shared_ptr<Character> clone() const = 0;
         bool isMoveValid(GridPoint source, GridPoint destination) const;
-        virtual std::list<std::shared_ptr<Character>> attack(const GridPoint& source, const GridPoint& dest, const Matrix<std::shared_ptr<Character>>& grid) const = 0;
+        virtual std::list<std::shared_ptr<Character>> attack(const GridPoint &source, const GridPoint &dest, const Matrix<std::shared_ptr<Character>> &grid) const = 0;
         bool isAlive() const;
         bool isOutOfAmmo() const;
         bool isInMoveRange(GridPoint source, GridPoint destination) const;
@@ -45,6 +40,8 @@ namespace mtm
         units_t getAttackCost() const;
         Team getTeam() const;
         CharacterType getType() const;
+
+        void addDamage(int damage);
     };
 }; // namespace mtm
 

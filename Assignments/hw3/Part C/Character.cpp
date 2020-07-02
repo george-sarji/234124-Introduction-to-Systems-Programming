@@ -4,6 +4,11 @@
 
 namespace mtm
 {
+
+    mtm::Character::Character(units_t ammo, units_t health, units_t range, units_t power, units_t move_range, units_t reload_amount, units_t attack_cost,
+                              Team team, CharacterType type) : ammo(ammo), health(health), range(range), power(power),
+                                                               move_range(range), reload_amount(reload_amount),
+                                                               attack_cost(attack_cost), team(team), type(type) {}
     bool mtm::Character::isInMoveRange(GridPoint source, GridPoint destination) const
     {
         // Check the distance between the two points, and whether they're out of the move range
@@ -68,6 +73,11 @@ namespace mtm
     void mtm::Character::reloadAmmo()
     {
         ammo += reload_amount;
+    }
+
+    void mtm::Character::addDamage(int damage)
+    {
+        health -= damage;
     }
 
 } // namespace mtm

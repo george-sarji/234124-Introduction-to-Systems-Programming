@@ -7,6 +7,7 @@
 
 namespace mtm
 {
+
     std::list<std::shared_ptr<Character>> mtm::Soldier::attack(const GridPoint &source, const GridPoint &dest, const Matrix<std::shared_ptr<Character>> &grid) const
     {
         std::list<std::shared_ptr<Character>> affected;
@@ -20,6 +21,7 @@ namespace mtm
         if (target)
         {
             // We have a target in the destination grid. Damage.
+            (*target).addDamage(getPower());
             affected.push_front(target);
         }
         // We need to iterate through a sub-matrix within the splash damage zone
