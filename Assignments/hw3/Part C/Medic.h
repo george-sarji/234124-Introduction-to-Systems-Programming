@@ -19,7 +19,7 @@ namespace mtm
     public:
         Medic(units_t ammo, units_t health, units_t range, units_t power, Team team);
         Medic(const Medic &medic) = default;
-        std::list<std::shared_ptr<Character>> attack(const GridPoint &source, const GridPoint &dest, const Matrix<std::shared_ptr<Character>> &grid) const override;
+        void attack(const GridPoint &source, const GridPoint &dest, const Matrix<std::shared_ptr<Character>> &grid) override;
 
         std::shared_ptr<Character> clone() const override;
     };

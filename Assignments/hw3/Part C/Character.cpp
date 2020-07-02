@@ -80,4 +80,14 @@ namespace mtm
         health -= damage;
     }
 
+    void mtm::Character::heal(int hp)
+    {
+        health += hp;
+    }
+
+    void mtm::Character::shoot()
+    {
+        ammo -= attack_cost;
+    }
+
 } // namespace mtm

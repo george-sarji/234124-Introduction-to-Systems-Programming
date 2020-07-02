@@ -3,6 +3,7 @@
 #include "Auxiliaries.h"
 #include <list>
 #include <memory>
+#include "DeathCheck.h"
 
 namespace mtm
 {
@@ -106,14 +107,14 @@ namespace mtm
         {
             throw IllegalCell();
         }
-        std::shared_ptr<Character> character = getGridPoint(src_coordinates);
+        std::shared_ptr<Character> &character = getGridPoint(src_coordinates);
         // Check if there is a character in the source point
         if (!character)
         {
             throw CellEmpty();
         }
         // Check if we can move to the destination (no characters in destination)
-        std::shared_ptr<Character> destination = getGridPoint(dst_coordinates);
+        std::shared_ptr<Character> &destination = getGridPoint(dst_coordinates);
         if (destination)
         {
             throw CellOccupied();
@@ -134,10 +135,16 @@ namespace mtm
             throw IllegalCell();
         }
         // Check if the source is empty.
-        std::shared_ptr<Character> source_char = getGridPoint(src_coordinates);
+        std::shared_ptr<Character> &source_char = getGridPoint(src_coordinates);
         if (!source_char)
         {
             throw CellEmpty();
+        }
+        // Check if the destination is even in attack range
+        if (!(*source_char).isInAttackRange(src_coordinates, dst_coordinates))
+        {
+            // Not in range. Throw out of range.
+            throw OutOfRange();
         }
         // Check if the attacker is out of ammo.
         if ((*source_char).isOutOfAmmo())
@@ -150,7 +157,7 @@ namespace mtm
         // Use character specific attacks to update game board with effects etc
         // Return map<damage, std::vector<map<GridPoint, Character>>>
         // Each dm
-        std::list<std::shared_ptr<Character>> affected = (*source_char).attack(src_coordinates, dst_coordinates, game_grid);
+        (*source_char).attack(src_coordinates, dst_coordinates, game_grid);
     }
 
     void mtm::Game::reload(const GridPoint &coordinates)

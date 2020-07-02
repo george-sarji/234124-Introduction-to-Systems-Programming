@@ -23,7 +23,7 @@ namespace mtm
     public:
         virtual std::shared_ptr<Character> clone() const = 0;
         bool isMoveValid(GridPoint source, GridPoint destination) const;
-        virtual std::list<std::shared_ptr<Character>> attack(const GridPoint &source, const GridPoint &dest, const Matrix<std::shared_ptr<Character>> &grid) const = 0;
+        virtual void attack(const GridPoint &source, const GridPoint &dest, const Matrix<std::shared_ptr<Character>> &grid) = 0;
         bool isAlive() const;
         bool isOutOfAmmo() const;
         bool isInMoveRange(GridPoint source, GridPoint destination) const;
@@ -42,6 +42,8 @@ namespace mtm
         CharacterType getType() const;
 
         void addDamage(int damage);
+        void heal(int hp);
+        void shoot();
     };
 }; // namespace mtm
 
