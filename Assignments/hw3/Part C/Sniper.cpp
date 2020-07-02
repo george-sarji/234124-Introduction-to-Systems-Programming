@@ -25,10 +25,11 @@ namespace mtm
         shoot();
         shots_counter++;
         units_t damage = getPower();
-        if (shots_counter == 3)
+        if (shots_counter == 2)
         {
             // Three shots. Double damage.
             damage *= 2;
+            shots_counter = 0;
         }
         // Remove from the health of the target.
         (*target).addDamage(damage);
