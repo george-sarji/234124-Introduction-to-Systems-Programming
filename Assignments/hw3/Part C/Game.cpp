@@ -96,7 +96,7 @@ namespace mtm
 
     bool mtm::Game::isInGameBounds(const GridPoint &coords)
     {
-        return coords.row > 0 && coords.row <= rows && coords.col > 0 && coords.col <= cols;
+        return coords.row >= 0 && coords.row <= rows && coords.col >= 0 && coords.col <= cols;
     }
 
     void mtm::Game::move(const GridPoint &src_coordinates, const GridPoint &dst_coordinates)
@@ -215,7 +215,7 @@ namespace mtm
         //  Iterate through the game board.
         for (int i = 0; i < game.game_grid.height(); i++)
         {
-            for (int j = 0; j < game.game_grid.height(); j++)
+            for (int j = 0; j < game.game_grid.width(); j++)
             {
                 std::shared_ptr<Character> current = game.game_grid(i, j);
                 if (current)
@@ -246,7 +246,7 @@ namespace mtm
                 index++;
             }
         }
-        return printGameBoard(stream, &characters[0], &characters[index + 1], game.game_grid.width());
+        return printGameBoard(stream, &characters[0], &characters[index], game.game_grid.width());
     }
 
 }; // namespace mtm
