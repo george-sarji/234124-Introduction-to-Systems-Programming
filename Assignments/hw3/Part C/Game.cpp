@@ -54,7 +54,7 @@ namespace mtm
             throw IllegalCell();
         }
         // Check if the point is already occupied.
-        std::shared_ptr<Character> grid = getGridPoint(coordinates);
+        std::shared_ptr<Character> &grid = getGridPoint(coordinates);
         if (grid != NULL)
         {
             // Already taken. Throw an error
@@ -63,7 +63,7 @@ namespace mtm
         else
         {
             // Grid empty. Assign.
-            grid = character;
+            grid.swap(character);
         }
     }
 
