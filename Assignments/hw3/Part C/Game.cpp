@@ -46,9 +46,24 @@ namespace mtm
         }
     }
 
+    Game &mtm::Game::operator=(const Game &other)
+    {
+        rows = other.rows;
+        cols = other.cols;
+        // Delete the current grid.
+        game_grid = other.game_grid;
+        for (int i = 0; i < rows; i++)
+        {
+            for (int j = 0; j < cols; j++)
+            {
+                game_grid(i, j) = game_grid(i, j)->clone();
+            }
+        }
+        return (*this);
+        // Create a new grid according to the new width and height.
+    }
     void mtm::Game::addCharacter(const GridPoint &coordinates, std::shared_ptr<Character> character)
     {
-        // Check if the cell is within bounds.
         if (!isInGameBounds(coordinates))
         {
             throw IllegalCell();
@@ -70,7 +85,7 @@ namespace mtm
     std::shared_ptr<Character> mtm::Game::makeCharacter(CharacterType type, Team team, units_t health, units_t ammo, units_t range, units_t power)
     {
         // Check if all parameters are legal
-        if (health == 0 || ammo < 0 || range <= 0 || power < 0)
+        if (health == 0 || ammo < 0 || range < 0 || power < 0)
         {
             throw IllegalArgument();
         }
@@ -246,7 +261,9 @@ namespace mtm
                 index++;
             }
         }
-        return printGameBoard(stream, &characters[0], &characters[index], game.game_grid.width());
+        printGameBoard(stream, &characters[0], &characters[index], game.game_grid.width());
+        delete[] characters;
+        return stream;
     }
 
 }; // namespace mtm
