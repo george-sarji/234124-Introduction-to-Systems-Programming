@@ -42,7 +42,7 @@ namespace mtm
         // We need to iterate through a sub-matrix within the splash damage zone
         // Get the range that the splash zone will have
         units_t splash_range = getRange() % 3 == 0 ? getRange() / 3 : getRange() / 3 + 1;
-        units_t splash_damage = getPower() % 3 == 0 ? getPower() / 3 : getPower() / 3 + 1;
+        units_t splash_damage = getPower() % 2 == 0 ? getPower() / 2 : getPower() / 2 + 1;
         // We need to get the submatrix
         // Get the beginning row and col
         int beginning_row = dest.row - splash_range < 0 ? 0 : dest.row - splash_range;

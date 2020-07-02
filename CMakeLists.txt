@@ -14,9 +14,9 @@ set(ELECTIONS ${MTM_ELECTIONS}/election.h ${MTM_ELECTIONS}/election.c ${MTM_ELEC
 set(ELECTIONS_TEST_1 ${ELECTIONS} ${MTM_ELECTIONS}/Tests/election_test.c)
 set(ELECTIONS_TEST_2 ${ELECTIONS} ${MTM_ELECTIONS}/Tests/election_tests.c ${MTM_ELECTIONS}/test_utilities.h ${MTM_ELECTIONS}/Tests/utils.c ${MTM_ELECTIONS}/Tests/utils.h)
 set(MTM_HW3 "Assignments/hw3/")
-set(MTM_HW3_A ${MTM_HW3}/Part\ A)
-set(MTM_HW3_B ${MTM_HW3}/Part\ B)
-set(MTM_HW3_C ${MTM_HW3}/Part\ C)
+set(MTM_HW3_A ${MTM_HW3}/partA)
+set(MTM_HW3_B ${MTM_HW3}/partB)
+set(MTM_HW3_C ${MTM_HW3}/partC)
 
 
 add_executable(hw0-part1 Assignments/hw0/part1.c)
