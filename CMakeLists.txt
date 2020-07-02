@@ -16,6 +16,7 @@ set(ELECTIONS_TEST_2 ${ELECTIONS} ${MTM_ELECTIONS}/Tests/election_tests.c ${MTM_
 set(MTM_HW3 "Assignments/hw3/")
 set(MTM_HW3_A ${MTM_HW3}/Part\ A)
 set(MTM_HW3_B ${MTM_HW3}/Part\ B)
+set(MTM_HW3_C ${MTM_HW3}/Part\ C)
 
 
 add_executable(hw0-part1 Assignments/hw0/part1.c)
@@ -34,3 +35,4 @@ add_executable(hw1-elections-test2 ${ELECTIONS_TEST_2})
 
 add_executable(hw3-parta ${MTM_HW3_A}/IntMatrix.cpp ${MTM_HW3_A}/Auxiliaries.cpp ${MTM_HW3_A}/Tests/partA_tester.cpp)
 add_executable(hw3-partb ${MTM_HW3_B}/Matrix.h ${MTM_HW3_B}/Auxiliaries.cpp ${MTM_HW3_B}/Tests/partB_test.cpp)
+add_executable(hw3-partc ${MTM_HW3_C}/Character.cpp ${MTM_HW3_C}/Soldier.cpp ${MTM_HW3_C}/Medic.cpp ${MTM_HW3_C}/Sniper.cpp ${MTM_HW3_C}/Game.cpp)
