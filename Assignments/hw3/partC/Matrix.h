@@ -226,5 +226,5 @@ namespace mtm
             }
         };
     };
-}; // namespace mtm
+} // namespace mtm
 #endif

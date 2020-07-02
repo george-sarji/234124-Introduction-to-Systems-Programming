@@ -37,6 +37,6 @@ namespace mtm
         bool isOver(Team *winningTeam = NULL) const;
         friend std::ostream &operator<<(std::ostream &stream, const Game &game);
     };
-}; // namespace mtm
+} // namespace mtm
 
 #endif

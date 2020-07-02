@@ -289,4 +289,4 @@ namespace mtm
         return stream;
     }
 
-}; // namespace mtm
+} // namespace mtm

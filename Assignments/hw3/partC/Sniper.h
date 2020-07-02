@@ -24,6 +24,6 @@ namespace mtm
         void attack(const GridPoint &source, const GridPoint &dest, const Matrix<std::shared_ptr<Character>> &grid) override;
         std::shared_ptr<Character> clone() const override;
     };
-}; // namespace mtm
+} // namespace mtm
 
 #endif

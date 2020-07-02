@@ -21,7 +21,7 @@ namespace mtm
         // Attack cost (integer) - Denotes amount of ammo used per attack
         // Team (Team) - Denotes which team the character is on
         // Type (CharacterType) - Denotes what type the character is.
-        units_t ammo, health, range, power, move_range, reload_amount, attack_cost;
+        units_t health, ammo, range, power, move_range, reload_amount, attack_cost;
         Team team;
         CharacterType type;
 
@@ -64,6 +64,6 @@ namespace mtm
         // Registers an active shot
         void shoot();
     };
-}; // namespace mtm
+} // namespace mtm
 
 #endif

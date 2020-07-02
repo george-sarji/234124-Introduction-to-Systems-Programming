@@ -23,6 +23,6 @@ namespace mtm
 
         std::shared_ptr<Character> clone() const override;
     };
-}; // namespace mtm
+} // namespace mtm
 
 #endif
