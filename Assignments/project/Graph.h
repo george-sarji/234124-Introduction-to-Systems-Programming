@@ -20,6 +20,17 @@ namespace mtm
         void removeVertex(std::string identifier);
         void addEdge(std::string originId, std::string destinationId);
         void removeEdge(std::string originId, std::string destinationId);
+
+        // ! Operator overloads
+        // TODO: Union operator overload
+        Graph operator+(Graph &graph);
+        // TODO: Intersection operator overload
+        Graph operator^(Graph &graph);
+        // TODO: Difference operator overload
+        Graph operator-(Graph &graph);
+        // TODO: Product operator overload
+        Graph operator*(Graph &graph);
+        // TODO: Complement operator overload
     };
 
 }; // namespace mtm

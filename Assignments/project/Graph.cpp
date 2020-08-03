@@ -116,4 +116,17 @@ namespace mtm
         }
     }
 
+    mtm::Graph mtm::Graph::operator+(Graph& graph) {
+        // TODO
+    }
+    mtm::Graph mtm::Graph::operator^(Graph& graph) {
+        // TODO
+    }
+    mtm::Graph mtm::Graph::operator-(Graph& graph) {
+        // TODO
+    }
+    mtm::Graph mtm::Graph::operator*(Graph& graph) {
+        // TODO
+    }
+
 } // namespace mtm
