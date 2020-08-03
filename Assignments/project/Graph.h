@@ -1,3 +1,7 @@
+#ifndef GRAPH_H
+#define GRAPH_H
+
+
 #include <vector>
 #include <map>
 #include <string>
@@ -15,3 +19,5 @@ namespace mtm
         std::vector<std::string> getPoints();
     };
 }; // namespace mtm
+
+#endif
