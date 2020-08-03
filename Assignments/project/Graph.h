@@ -10,17 +10,18 @@ namespace mtm
     class Graph
     {
     private:
-        std::vector<std::map<std::string, std::string>> links;
-        std::vector<std::string> points;
+        std::map<std::string, std::vector<std::string>> edges;
+        std::vector<std::string> vertices;
 
     public:
-        Graph();
-        std::vector<std::map<std::string, std::string>> getLinks();
-        std::vector<std::string> getPoints();
-        void addGraphPoint(std::string pointName);
-        void removeGraphPoint(std::string pointName);
-        void addLink(std::string to, std::string from);
-        void removeLink(std::string to, std::string from);
+        Graph() = default;
+        ~Graph() = default;
+        std::map<std::string, std::vector<std::string>> getEdges();
+        std::vector<std::string> getVertices();
+        void addVertex(std::string vertexName);
+        void removeVertex(std::string vertexName);
+        void addEdge(std::string to, std::string from);
+        void removeEdge(std::string to, std::string from);
     };
 }; // namespace mtm
 
