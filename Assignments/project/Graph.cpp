@@ -58,4 +58,62 @@ namespace mtm
             }
         }
     }
+
+    void mtm::Graph::addEdge(std::string originId, std::string destinationId)
+    {
+        // Check if we are doing a loop.
+        if (originId == destinationId)
+        {
+            printf("ERROR: Attempt of edge creation to same vertex.");
+            return;
+        }
+        // Check if we can find any of the identifiers inside the vertices.
+        mtm::Vertex origin = NULL, destination = NULL;
+        bool originFlag = false, destinationFlag = false;
+        for (auto iterator = vertices.begin(); iterator != vertices.end(); ++iterator)
+        {
+            if (iterator->getName() == originId)
+            {
+                origin = *iterator;
+                originFlag = true;
+            }
+            if (iterator->getName() == destinationId)
+            {
+                destination = *iterator;
+                destinationFlag = true;
+            }
+
+            if (destinationFlag && originFlag)
+            {
+                break;
+            }
+        }
+
+        if (!destinationFlag || !originFlag)
+        {
+            printf("ERROR: Attempt of edge creation to invalid vertices.");
+            return;
+        }
+        // Create a new edge.
+        mtm::Edge edge(origin, destination);
+        // Push the edge into the vector.
+        edges.push_back(edge);
+    }
+
+    void mtm::Graph::removeEdge(std::string originId, std::string destinationId)
+    {
+        auto iterator = edges.begin();
+        while (iterator != edges.end())
+        {
+            // Check if origin and destination match.
+            if (iterator->getDestination().getName() == destinationId && iterator->getOrigin().getName() == originId)
+            {
+                // Positive hit. Remove the iterator and exit.
+                edges.erase(iterator);
+                return;
+            }
+            ++iterator;
+        }
+    }
+
 } // namespace mtm
