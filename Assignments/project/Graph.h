@@ -4,7 +4,6 @@
 #include <vector>
 #include <map>
 #include <string>
-#include <set>
 namespace mtm
 {
 
@@ -12,12 +11,12 @@ namespace mtm
     {
     private:
         std::vector<std::map<std::string, std::string>> links;
-        std::set<std::string> points;
+        std::vector<std::string> points;
 
     public:
         Graph();
         std::vector<std::map<std::string, std::string>> getLinks();
-        std::set<std::string> getPoints();
+        std::vector<std::string> getPoints();
         void addGraphPoint(std::string pointName);
         void removeGraphPoint(std::string pointName);
         void addLink(std::string to, std::string from);
