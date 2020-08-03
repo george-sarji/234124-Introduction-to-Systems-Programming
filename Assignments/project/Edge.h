@@ -8,7 +8,14 @@ namespace mtm
 {
     class Edge
     {
-        std::vector<mtm::Vertex> connections;
+    private:
+        std::pair<mtm::Vertex, mtm::Vertex> edge;
+
+    public:
+        Edge(mtm::Vertex origin, mtm::Vertex destination);
+        ~Edge() = default;
+        mtm::Vertex getDestination();
+        mtm::Vertex getOrigin();
     }
 } // namespace mtm
 
