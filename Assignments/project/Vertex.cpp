@@ -52,4 +52,9 @@ namespace mtm
         }
         return true;
     }
+    std::string mtm::Vertex::getName()
+    {
+        return name;
+    }
+
 } // namespace mtm

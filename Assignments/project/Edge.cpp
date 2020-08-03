@@ -4,11 +4,7 @@
 
 namespace mtm
 {
-    mtm::Edge::Edge(mtm::Vertex origin, mtm::Vertex destination)
-    {
-        // Allocate a new pair.
-        this->edge = std::pair(origin, destination);
-    }
+    mtm::Edge::Edge(mtm::Vertex origin, mtm::Vertex destination) : edge(origin, destination) {}
 
     mtm::Vertex mtm::Edge::getOrigin()
     {

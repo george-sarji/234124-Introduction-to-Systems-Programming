@@ -13,7 +13,7 @@ namespace mtm
     public:
         Vertex(std::string name);
         ~Vertex() = default;
-
+        std::string getName();
         static bool isNameValid(std::string name);
     }
 } // namespace mtm

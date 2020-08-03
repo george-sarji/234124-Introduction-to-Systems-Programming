@@ -16,7 +16,7 @@ namespace mtm
         ~Edge() = default;
         mtm::Vertex getDestination();
         mtm::Vertex getOrigin();
-    }
-} // namespace mtm
+    };
+}; // namespace mtm
 
 #endif

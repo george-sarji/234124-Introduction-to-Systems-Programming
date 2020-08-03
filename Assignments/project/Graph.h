@@ -15,13 +15,13 @@ namespace mtm
 
     public:
         Graph();
-        ~Graph();
+        ~Graph() = default;
         void addVertex(std::string identifier);
         void removeVertex(std::string identifier);
         void addEdge(std::string originId, std::string destinationId);
         void removeEdge(std::string originId, std::string destinationId);
-    }
+    };
 
-} // namespace mtm
+}; // namespace mtm
 
 #endif
