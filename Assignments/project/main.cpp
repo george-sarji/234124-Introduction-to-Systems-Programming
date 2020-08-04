@@ -28,15 +28,25 @@ void test1()
     graph.addEdge("test", "test1");
     graph.addEdge("test1", "test");
 
-    try
-    {
-        graph.addEdge("test11", "test1");
-        graph.addEdge("test", "test1");
-    }
-    catch (const std::exception &e)
-    {
-        std::cout << e.what() << std::endl;
-    }
+    // try
+    // {
+    //     graph.addEdge("test11", "test1");
+    //     graph.addEdge("test", "test1");
+    // }
+    // catch (const std::exception &e)
+    // {
+    //     std::cout << e.what() << std::endl;
+    // }
+
+    Graph graph2;
+    graph2.addVertex("test1");
+    graph2.addVertex("x1");
+    graph2.addVertex("x2");
+    graph2.addEdge("x1", "x2");
+
+    Graph graph3 = graph + graph2;
+    Graph graph4 = graph ^ graph2;
+
     graph.removeVertex("test");
 }
 int main()

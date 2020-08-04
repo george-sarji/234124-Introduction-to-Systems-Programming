@@ -14,8 +14,10 @@ namespace mtm
     public:
         Edge(mtm::Vertex origin, mtm::Vertex destination);
         ~Edge() = default;
-        mtm::Vertex getDestination();
-        mtm::Vertex getOrigin();
+        mtm::Vertex getDestination() const;
+        mtm::Vertex getOrigin() const;
+
+        bool operator==(const Edge &edge) const;
     };
 }; // namespace mtm
 

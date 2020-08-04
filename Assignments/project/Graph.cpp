@@ -123,16 +123,113 @@ namespace mtm
         }
     }
 
+    bool mtm::Graph::isContainsVertex(const mtm::Vertex &vertex)
+    {
+        // Go through the vertices that we have.
+        for (auto it = vertices.begin(); it != vertices.end(); ++it)
+        {
+            if (*it == vertex)
+            {
+                // We have the same vertex.
+                return true;
+            }
+        }
+        return false;
+    }
+
+    bool mtm::Graph::isContainsEdge(const mtm::Edge &edge)
+    {
+        for (auto it = edges.begin(); it != edges.end(); ++it)
+        {
+            if (*it == edge)
+            {
+                // We have the same edge.
+                return true;
+            }
+        }
+        return false;
+    }
+
     mtm::Graph mtm::Graph::operator+(Graph &graph)
     {
         // TODO
         // Union removes duplicates and only stores one item.
-        return *this;
+        // Go through the vertices and add them into a new graph.
+        Graph newGraph;
+        for (auto it = vertices.begin(); it != vertices.end(); ++it)
+        {
+            // Add the current vertex to the new graph.
+            try
+            {
+                newGraph.addVertex(it->getName());
+            }
+            catch (const mtm::GraphException &e)
+            {
+                continue;
+            }
+        }
+        // Add the second graph.
+        for (auto it = graph.vertices.begin(); it != graph.vertices.end(); ++it)
+        {
+            // Add the current vertex to the new graph.
+            try
+            {
+                newGraph.addVertex(it->getName());
+            }
+            catch (const mtm::GraphException &e)
+            {
+                continue;
+            }
+        }
+
+        // Go ahead and add the edges.
+        for (auto it = edges.begin(); it != edges.end(); ++it)
+        {
+            try
+            {
+                newGraph.addEdge(it->getOrigin().getName(), it->getDestination().getName());
+            }
+            catch (const mtm::GraphException &e)
+            {
+                continue;
+            }
+        }
+        for (auto it = graph.edges.begin(); it != graph.edges.end(); ++it)
+        {
+            try
+            {
+                newGraph.addEdge(it->getOrigin().getName(), it->getDestination().getName());
+            }
+            catch (const mtm::GraphException &e)
+            {
+                continue;
+            }
+        }
+        return newGraph;
     }
     mtm::Graph mtm::Graph::operator^(Graph &graph)
     {
         // TODO
-        return *this;
+        // Create a new graph
+        Graph newGraph;
+        // Go through the current graph and add the overlapping edges and vertices.
+        for (auto it = vertices.begin(); it != vertices.end(); ++it)
+        {
+            // Check if the current vertex is also contained in the other graph.
+            if (graph.isContainsVertex(*it))
+            {
+                // Add the vertex to the new graph.
+                newGraph.addVertex(it->getName());
+            }
+        }
+        for (auto it = edges.begin(); it != edges.end(); ++it)
+        {
+            if (graph.isContainsEdge(*it))
+            {
+                newGraph.addEdge(it->getOrigin().getName(), it->getDestination().getName());
+            }
+        }
+        return newGraph;
     }
     mtm::Graph mtm::Graph::operator-(Graph &graph)
     {

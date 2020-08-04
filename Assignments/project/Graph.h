@@ -21,6 +21,8 @@ namespace mtm
         void removeVertex(std::string identifier);
         void addEdge(std::string originId, std::string destinationId);
         void removeEdge(std::string originId, std::string destinationId);
+        bool isContainsVertex(const mtm::Vertex &vertex);
+        bool isContainsEdge(const mtm::Edge &edge);
 
         // ! Operator overloads
         // TODO: Union operator overload
