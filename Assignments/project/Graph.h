@@ -15,6 +15,7 @@ namespace mtm
 
     public:
         Graph();
+        Graph(const Graph &graph);
         ~Graph() = default;
         void addVertex(std::string identifier);
         void removeVertex(std::string identifier);

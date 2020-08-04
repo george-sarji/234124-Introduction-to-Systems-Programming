@@ -14,6 +14,7 @@ set(ELECTIONS ${MTM_ELECTIONS}/election.h ${MTM_ELECTIONS}/election.c ${MTM_ELEC
 set(ELECTIONS_TEST_1 ${ELECTIONS} ${MTM_ELECTIONS}/Tests/election_test.c)
 set(ELECTIONS_TEST_2 ${ELECTIONS} ${MTM_ELECTIONS}/Tests/election_tests.c ${MTM_ELECTIONS}/test_utilities.h ${MTM_ELECTIONS}/Tests/utils.c ${MTM_ELECTIONS}/Tests/utils.h)
 set(MTM_HW3 "Assignments/hw3/")
+set(MTM_PROJECT "Assignments/project")
 set(MTM_HW3_A ${MTM_HW3}/partA)
 set(MTM_HW3_B ${MTM_HW3}/partB)
 set(MTM_HW3_C ${MTM_HW3}/partC)
@@ -35,4 +36,6 @@ add_executable(hw1-elections-test2 ${ELECTIONS_TEST_2})
 
 add_executable(hw3-parta ${MTM_HW3_A}/IntMatrix.cpp ${MTM_HW3_A}/Auxiliaries.cpp ${MTM_HW3_A}/Tests/partA_tester.cpp)
 add_executable(hw3-partb ${MTM_HW3_B}/Matrix.h ${MTM_HW3_B}/Auxiliaries.cpp ${MTM_HW3_B}/Tests/partB_test.cpp)
-add_executable(hw3-partc ${MTM_HW3_C}/Character.cpp ${MTM_HW3_C}/Soldier.cpp ${MTM_HW3_C}/Medic.cpp ${MTM_HW3_C}/Sniper.cpp ${MTM_HW3_C}/Game.cpp ${MTM_HW3_C}/Tests/partC_test.cpp ${MTM_HW3_C}/Matrix.h ${MTM_HW3_C}/Auxiliaries.cpp ${MTM_HW3_C}/Exceptions.cpp) 
+add_executable(hw3-partc ${MTM_HW3_C}/Character.cpp ${MTM_HW3_C}/Soldier.cpp ${MTM_HW3_C}/Medic.cpp ${MTM_HW3_C}/Sniper.cpp ${MTM_HW3_C}/Game.cpp ${MTM_HW3_C}/Tests/partC_test.cpp ${MTM_HW3_C}/Matrix.h ${MTM_HW3_C}/Auxiliaries.cpp ${MTM_HW3_C}/Exceptions.cpp)
+
+add_executable(project ${MTM_PROJECT}/Graph.h ${MTM_PROJECT}/Graph.cpp ${MTM_PROJECT}/Edge.h ${MTM_PROJECT}/Edge.cpp ${MTM_PROJECT}/main.cpp ${MTM_PROJECT}/Vertex.h ${MTM_PROJECT}/Vertex.cpp)

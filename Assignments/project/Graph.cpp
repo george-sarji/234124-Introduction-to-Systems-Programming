@@ -7,6 +7,11 @@ namespace mtm
 {
     mtm::Graph::Graph() : vertices(), edges() {}
 
+    mtm::Graph::Graph(const Graph &graph)
+    {
+        
+    }
+
     void mtm::Graph::addVertex(std::string identifier)
     {
         // Check if the identifier is valid.
@@ -116,16 +121,21 @@ namespace mtm
         }
     }
 
-    mtm::Graph mtm::Graph::operator+(Graph& graph) {
+    mtm::Graph mtm::Graph::operator+(Graph &graph)
+    {
+        // TODO
+        // Union removes duplicates and only stores one item.
+    }
+    mtm::Graph mtm::Graph::operator^(Graph &graph)
+    {
         // TODO
     }
-    mtm::Graph mtm::Graph::operator^(Graph& graph) {
+    mtm::Graph mtm::Graph::operator-(Graph &graph)
+    {
         // TODO
     }
-    mtm::Graph mtm::Graph::operator-(Graph& graph) {
-        // TODO
-    }
-    mtm::Graph mtm::Graph::operator*(Graph& graph) {
+    mtm::Graph mtm::Graph::operator*(Graph &graph)
+    {
         // TODO
     }
 
