@@ -285,7 +285,6 @@ namespace mtm
     }
     mtm::Graph mtm::Graph::operator*(Graph &graph)
     {
-        // TODO
         Graph newGraph;
         for (auto it = vertices.begin(); it != vertices.end(); ++it)
         {

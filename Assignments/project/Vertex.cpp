@@ -8,7 +8,6 @@ namespace mtm
 
     bool mtm::Vertex::isNameValid(std::string name)
     {
-        // TODO: Name validation.
         // Iterate through the name itself.
         int openingBrackets = 0;
         for (auto iterator = name.begin(); iterator != name.end(); ++iterator)
