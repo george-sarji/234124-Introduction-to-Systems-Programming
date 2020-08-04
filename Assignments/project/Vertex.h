@@ -15,7 +15,9 @@ namespace mtm
         ~Vertex() = default;
         std::string getName();
         static bool isNameValid(std::string name);
-    }
-} // namespace mtm
+        void operator=(const Vertex &v);
+        bool operator==(const Vertex &v) const;
+    };
+}; // namespace mtm
 
 #endif

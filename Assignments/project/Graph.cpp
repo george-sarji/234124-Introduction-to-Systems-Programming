@@ -1,5 +1,5 @@
 #include "Graph.h"
-
+#include "GraphException.h"
 #include <string>
 #include "Vertex.h"
 
@@ -9,7 +9,6 @@ namespace mtm
 
     mtm::Graph::Graph(const Graph &graph)
     {
-        
     }
 
     void mtm::Graph::addVertex(std::string identifier)
@@ -25,8 +24,7 @@ namespace mtm
             if (iterator->getName() == identifier)
             {
                 // Same name. Exit.
-                printf("ERROR: Duplicate vertex entry.");
-                return;
+                throw DuplicateVertex();
             }
         }
         // No duplicate names. Good to assign.
@@ -66,42 +64,46 @@ namespace mtm
 
     void mtm::Graph::addEdge(std::string originId, std::string destinationId)
     {
-        // Check if we are doing a loop.
+        // We need to search for the given vertices.
+        // Check if we are creating an edge from and to the same point.
         if (originId == destinationId)
         {
-            printf("ERROR: Attempt of edge creation to same vertex.");
-            return;
+            throw SelfEdge();
         }
-        // Check if we can find any of the identifiers inside the vertices.
-        mtm::Vertex origin = NULL, destination = NULL;
-        bool originFlag = false, destinationFlag = false;
-        for (auto iterator = vertices.begin(); iterator != vertices.end(); ++iterator)
+        // Go through the current vertices and retrieve them.
+        mtm::Vertex *origin = nullptr, *destination = nullptr;
+        auto it = vertices.begin();
+        while (it != vertices.end())
         {
-            if (iterator->getName() == originId)
+            // Check the current item.
+            if (it->getName() == originId)
             {
-                origin = *iterator;
-                originFlag = true;
+                origin = &*it;
             }
-            if (iterator->getName() == destinationId)
+            else if (it->getName() == destinationId)
             {
-                destination = *iterator;
-                destinationFlag = true;
+                destination = &*it;
             }
-
-            if (destinationFlag && originFlag)
-            {
-                break;
-            }
+            ++it;
         }
 
-        if (!destinationFlag || !originFlag)
+        // Check if we have a valid origin and destination.
+        if (origin == nullptr || destination == nullptr)
         {
-            printf("ERROR: Attempt of edge creation to invalid vertices.");
-            return;
+            throw InvalidEdgeVertex();
         }
-        // Create a new edge.
-        mtm::Edge edge(origin, destination);
-        // Push the edge into the vector.
+        // Double check the edges, make sure not a duplicate.
+        for (auto it = edges.begin(); it != edges.end(); ++it)
+        {
+            if (it->getOrigin() == *origin && it->getDestination() == *destination)
+            {
+                // Duplicate edge.
+                throw DuplicateEdge();
+            }
+        }
+        // Create an edge according to the two vertices.
+        mtm::Edge edge(*origin, *destination);
+        // Push the current edge.
         edges.push_back(edge);
     }
 
@@ -125,18 +127,22 @@ namespace mtm
     {
         // TODO
         // Union removes duplicates and only stores one item.
+        return *this;
     }
     mtm::Graph mtm::Graph::operator^(Graph &graph)
     {
         // TODO
+        return *this;
     }
     mtm::Graph mtm::Graph::operator-(Graph &graph)
     {
         // TODO
+        return *this;
     }
     mtm::Graph mtm::Graph::operator*(Graph &graph)
     {
         // TODO
+        return *this;
     }
 
 } // namespace mtm

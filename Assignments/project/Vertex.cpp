@@ -1,4 +1,6 @@
 #include "Vertex.h"
+#include "GraphException.h"
+#include <algorithm>
 
 namespace mtm
 {
@@ -11,12 +13,9 @@ namespace mtm
         int openingBrackets = 0;
         for (auto iterator = name.begin(); iterator != name.end(); ++iterator)
         {
-            if ((*iterator < 'A' || *iterator > 'Z') &&
-                    (*iterator < 'a' || *iterator > 'z') ||
-                (*iterator < '0' || *iterator > '9'))
+            if (!isalpha(*iterator) && !isdigit(*iterator) && *iterator != '[' && *iterator != ']' && *iterator != ';')
             {
-                printf("ERROR: Invalid character in string.");
-                return false;
+                throw IllegalName();
             }
             // Check if the current letter is an opening bracket.
             if (*iterator == '[')
@@ -31,8 +30,7 @@ namespace mtm
                 if (openingBrackets <= 0)
                 {
                     // No valid opening bracket.
-                    printf("ERROR: Invalid semi-colon in name.");
-                    return false;
+                    throw mtm::IllegalName();
                 }
             }
 
@@ -40,21 +38,30 @@ namespace mtm
             if (openingBrackets < 0)
             {
                 // Extra closing bracket.
-                printf("ERROR: Invalid closing bracket.");
-                return false;
+                throw mtm::IllegalName();
             }
         }
         // Check if we still have an open bracket.
         if (openingBrackets > 0)
         {
-            printf("ERROR: Invalid opening bracket.");
-            return false;
+            throw mtm::IllegalName();
         }
         return true;
     }
     std::string mtm::Vertex::getName()
     {
         return name;
+    }
+
+    bool mtm::Vertex::operator==(const mtm::Vertex &v) const
+    {
+        return v.name == name;
+    }
+
+    void mtm::Vertex::operator=(const mtm::Vertex &v)
+    {
+        // Set the current name to the given name.
+        name = v.name;
     }
 
 } // namespace mtm
