@@ -31,7 +31,6 @@ namespace mtm
         Graph operator^(Graph &graph);
         Graph operator-(Graph &graph);
         Graph operator*(Graph &graph);
-        // TODO: Complement operator overload
     };
 
 }; // namespace mtm
