@@ -25,13 +25,9 @@ namespace mtm
         bool isContainsEdge(const mtm::Edge &edge);
 
         // ! Operator overloads
-        // TODO: Union operator overload
         Graph operator+(Graph &graph);
-        // TODO: Intersection operator overload
         Graph operator^(Graph &graph);
-        // TODO: Difference operator overload
         Graph operator-(Graph &graph);
-        // TODO: Product operator overload
         Graph operator*(Graph &graph);
         // TODO: Complement operator overload
     };

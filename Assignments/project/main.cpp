@@ -47,6 +47,7 @@ void test1()
     Graph graph3 = graph + graph2;
     Graph graph4 = graph ^ graph2;
     Graph graph5 = graph2 - graph;
+    Graph graph6 = graph * graph2;
 
     graph.removeVertex("test");
 }

@@ -231,7 +231,6 @@ namespace mtm
     }
     mtm::Graph mtm::Graph::operator-(Graph &graph)
     {
-        // TODO
         // Create a new graph.
         Graph newGraph;
         // Go through the vertices.
@@ -256,7 +255,26 @@ namespace mtm
     mtm::Graph mtm::Graph::operator*(Graph &graph)
     {
         // TODO
-        return *this;
+        Graph newGraph;
+        for (auto it = vertices.begin(); it != vertices.end(); ++it)
+        {
+            for (auto init = graph.vertices.begin(); init != graph.vertices.end(); ++init)
+            {
+                // Add the current vertex with the new name.
+                newGraph.addVertex("[" + it->getName() + ";" + init->getName() + "]");
+            }
+        }
+        for (auto it = edges.begin(); it != edges.end(); ++it)
+        {
+            for (auto init = graph.edges.begin(); init != graph.edges.end(); ++init)
+            {
+                // Add the current edge.
+                std::string origin = "[" + it->getOrigin().getName() + ";" + init->getOrigin().getName() + "]";
+                std::string destination = "[" + it->getDestination().getName() + ";" + init->getDestination().getName() + "]";
+                newGraph.addEdge(origin, destination);
+            }
+        }
+        return newGraph;
     }
 
 } // namespace mtm
