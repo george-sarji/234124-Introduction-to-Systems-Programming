@@ -152,7 +152,6 @@ namespace mtm
 
     mtm::Graph mtm::Graph::operator+(Graph &graph)
     {
-        // TODO
         // Union removes duplicates and only stores one item.
         // Go through the vertices and add them into a new graph.
         Graph newGraph;
@@ -209,7 +208,6 @@ namespace mtm
     }
     mtm::Graph mtm::Graph::operator^(Graph &graph)
     {
-        // TODO
         // Create a new graph
         Graph newGraph;
         // Go through the current graph and add the overlapping edges and vertices.
@@ -234,7 +232,26 @@ namespace mtm
     mtm::Graph mtm::Graph::operator-(Graph &graph)
     {
         // TODO
-        return *this;
+        // Create a new graph.
+        Graph newGraph;
+        // Go through the vertices.
+        for (auto it = vertices.begin(); it != vertices.end(); ++it)
+        {
+            if (!graph.isContainsVertex(*it))
+            {
+                // Not contained. Add to the new graph.
+                newGraph.addVertex(it->getName());
+            }
+        }
+        // Go through the edges.
+        for (auto it = edges.begin(); it != edges.end(); ++it)
+        {
+            if (!graph.isContainsEdge(*it))
+            {
+                newGraph.addEdge(it->getOrigin().getName(), it->getDestination().getName());
+            }
+        }
+        return newGraph;
     }
     mtm::Graph mtm::Graph::operator*(Graph &graph)
     {
