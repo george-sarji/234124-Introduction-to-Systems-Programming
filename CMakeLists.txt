@@ -38,4 +38,4 @@ add_executable(hw3-parta ${MTM_HW3_A}/IntMatrix.cpp ${MTM_HW3_A}/Auxiliaries.cpp
 add_executable(hw3-partb ${MTM_HW3_B}/Matrix.h ${MTM_HW3_B}/Auxiliaries.cpp ${MTM_HW3_B}/Tests/partB_test.cpp)
 add_executable(hw3-partc ${MTM_HW3_C}/Character.cpp ${MTM_HW3_C}/Soldier.cpp ${MTM_HW3_C}/Medic.cpp ${MTM_HW3_C}/Sniper.cpp ${MTM_HW3_C}/Game.cpp ${MTM_HW3_C}/Tests/partC_test.cpp ${MTM_HW3_C}/Matrix.h ${MTM_HW3_C}/Auxiliaries.cpp ${MTM_HW3_C}/Exceptions.cpp)
 
-add_executable(project ${MTM_PROJECT}/Graph.h ${MTM_PROJECT}/Graph.cpp ${MTM_PROJECT}/Edge.h ${MTM_PROJECT}/Edge.cpp ${MTM_PROJECT}/main.cpp ${MTM_PROJECT}/Vertex.h ${MTM_PROJECT}/Vertex.cpp)
+add_executable(project ${MTM_PROJECT}/Graph.h ${MTM_PROJECT}/Graph.cpp ${MTM_PROJECT}/Edge.h ${MTM_PROJECT}/Edge.cpp ${MTM_PROJECT}/main.cpp ${MTM_PROJECT}/Vertex.h ${MTM_PROJECT}/Vertex.cpp ${MTM_PROJECT}/GraphException.h ${MTM_PROJECT}/GraphException.cpp)
