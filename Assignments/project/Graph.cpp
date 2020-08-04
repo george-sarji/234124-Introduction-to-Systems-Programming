@@ -2,6 +2,7 @@
 #include "GraphException.h"
 #include <string>
 #include "Vertex.h"
+#include "Edge.h"
 
 namespace mtm
 {
@@ -123,7 +124,7 @@ namespace mtm
         }
     }
 
-    bool mtm::Graph::isContainsVertex(const mtm::Vertex &vertex)
+    bool mtm::Graph::isContainsVertex(const mtm::Vertex &vertex) const
     {
         // Go through the vertices that we have.
         for (auto it = vertices.begin(); it != vertices.end(); ++it)
@@ -137,7 +138,7 @@ namespace mtm
         return false;
     }
 
-    bool mtm::Graph::isContainsEdge(const mtm::Edge &edge)
+    bool mtm::Graph::isContainsEdge(const mtm::Edge &edge) const
     {
         for (auto it = edges.begin(); it != edges.end(); ++it)
         {
@@ -148,6 +149,36 @@ namespace mtm
             }
         }
         return false;
+    }
+
+    mtm::Graph mtm::Graph::complement() const
+    {
+        // Create a new graph.
+        Graph newGraph;
+        // Add the same vertices.
+        for (auto it = vertices.begin(); it != vertices.end(); ++it)
+        {
+            newGraph.addVertex(it->getName());
+        }
+        // Go through the vertices.
+        for (auto it = vertices.begin(); it != vertices.end(); ++it)
+        {
+            // Check with all the other vertices if the edge is contained.
+            for (auto init = vertices.begin(); init != vertices.end(); ++init)
+            {
+                // Check if same iterator standpoint.
+                if (init == it)
+                    continue;
+                // Create a new edge.
+                mtm::Edge current(it->getName(), init->getName());
+                // Check if it's contained in the graph.
+                if (!isContainsEdge(current))
+                {
+                    newGraph.edges.push_back(current);
+                }
+            }
+        }
+        return newGraph;
     }
 
     mtm::Graph mtm::Graph::operator+(Graph &graph)

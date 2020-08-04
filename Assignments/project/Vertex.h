@@ -13,7 +13,7 @@ namespace mtm
     public:
         Vertex(std::string name);
         ~Vertex() = default;
-        std::string getName();
+        std::string getName() const;
         static bool isNameValid(std::string name);
         void operator=(const Vertex &v);
         bool operator==(const Vertex &v) const;

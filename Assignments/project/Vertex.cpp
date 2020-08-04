@@ -48,7 +48,7 @@ namespace mtm
         }
         return true;
     }
-    std::string mtm::Vertex::getName()
+    std::string mtm::Vertex::getName() const
     {
         return name;
     }
