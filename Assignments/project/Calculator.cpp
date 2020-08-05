@@ -10,18 +10,22 @@
 #define PROMPT "Gcalc> "
 #define SHELL_DEF "\\{\\s*[a-zA-Z;[\\]]\\s*(\\s*,\\s*[a-zA-Z;[\\]]\\s*)*\\s*(\\|\\s*(<\\s*[a-zA-Z;[\\]]\\s*,\\s*[a-zA-Z;[\\]]\\s*>)(\\s*,\\s*<\\s*[a-zA-Z;[\\]]\\s*,\\s*[a-zA-Z;[\\]]\\s*>)*)*\\}"
 #define DEFINITION "\\s*[a-zA-Z]+[0-9]*[a-zA-Z0-9]*\\s*=\\s*"
-#define ADDITION "\\s*[a-zA-Z]+[0-9]*[a-zA-Z0-9]*\\s*=\\s*+\\s*[a-zA-Z]+[0-9]*[a-zA-Z0-9]*\\s*=\\s*"
+#define ADDITION "\\s*[a-zA-Z]+[0-9]*[a-zA-Z0-9]*\\s*\\s*\\+\\s*[a-zA-Z]+[0-9]*[a-zA-Z0-9]*\\s*\\s*"
+#define SUBTRACTION "\\s*[a-zA-Z]+[0-9]*[a-zA-Z0-9]*\\s*\\s*\\-\\s*[a-zA-Z]+[0-9]*[a-zA-Z0-9]*\\s*\\s*"
+#define MULTIPLICATION "\\s*[a-zA-Z]+[0-9]*[a-zA-Z0-9]*\\s*\\s*\\*\\s*[a-zA-Z]+[0-9]*[a-zA-Z0-9]*\\s*\\s*"
+#define INTERSECTION "\\s*[a-zA-Z]+[0-9]*[a-zA-Z0-9]*\\s*\\s*\\^\\s*[a-zA-Z]+[0-9]*[a-zA-Z0-9]*\\s*\\s*"
 #define COMPLEMENT "\\s*![a-zA-Z]+[0-9]*[a-zA-Z0-9]*\\s*=\\s*"
-#define PRINT "(print)\\s*(\\s*\\(\\s*)+([a-zA-Z]+[0-9]*[a-zA-Z0-9]*)(\\s*\\)\\s*)+"
+#define PRINT "\\s*(print)\\s*(\\s*\\(\\s*)+([a-zA-Z]+[0-9]*[a-zA-Z0-9]*)(\\s*\\)\\s*)+"
 using namespace mtm;
 
 std::string toUpper(std::string str)
 {
+    std::string newStr;
     for (auto it = str.begin(); it != str.end(); ++it)
     {
-        *it = std::toupper(*it);
+        newStr += std::toupper(*it);
     }
-    return str;
+    return newStr;
 }
 
 void shellMode()
@@ -29,28 +33,30 @@ void shellMode()
     std::regex defRegexp(SHELL_DEF);
     std::regex definitionExp(DEFINITION);
     std::regex additionExp(ADDITION);
+    std::regex printExp(PRINT);
     // This will contain all the logic for the shell itself.
     std::cout << PROMPT;
     std::string input;
     std::getline(std::cin, input);
-
-    while (toUpper(input) != "EXIT")
+    std::map<std::string, Graph> variables;
+    while (toUpper(input) != "QUIT")
     {
         // Handle the logic here.
-        std::cout << toUpper(input) << std::endl;
-        if (input == "")
-        {
-            std::cout << PROMPT;
-            std::getline(std::cin, input);
-            continue;
-        }
+        Graph temp;
+        std::cout << "Input:" << input << std::endl;
         if (std::regex_search(input, defRegexp))
         {
             std::cout << "Valid constructor!!!" << std::endl;
+            // Check if we have a valid middle splitter.
         }
         if (std::regex_search(input, definitionExp))
         {
             std::cout << "Valid defintion." << std::endl;
+        }
+
+        if (std::regex_search(input, printExp))
+        {
+            // Print the given variable.
         }
         std::cout << PROMPT;
         std::getline(std::cin, input);
