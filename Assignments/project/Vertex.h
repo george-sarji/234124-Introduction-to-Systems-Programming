@@ -17,6 +17,7 @@ namespace mtm
         static bool isNameValid(std::string name);
         void operator=(const Vertex &v);
         bool operator==(const Vertex &v) const;
+        bool operator<(const Vertex &v) const;
     };
 }; // namespace mtm
 

@@ -63,4 +63,9 @@ namespace mtm
         name = v.name;
     }
 
+    bool mtm::Vertex::operator<(const Vertex &v) const
+    {
+        return name < v.name;
+    }
+
 } // namespace mtm

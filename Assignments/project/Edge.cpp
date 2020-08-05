@@ -21,4 +21,9 @@ namespace mtm
         return edge.first == e.edge.first && edge.second == e.edge.second;
     }
 
+    bool mtm::Edge::operator<(const mtm::Edge &edge) const
+    {
+        return getOrigin().getName() < edge.getOrigin().getName();
+    }
+
 } // namespace mtm

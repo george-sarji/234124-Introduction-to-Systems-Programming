@@ -18,6 +18,8 @@ namespace mtm
         mtm::Vertex getOrigin() const;
 
         bool operator==(const Edge &edge) const;
+
+        bool operator<(const Edge& edge) const;
     };
 }; // namespace mtm
 

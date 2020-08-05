@@ -31,6 +31,7 @@ namespace mtm
         Graph operator^(Graph &graph);
         Graph operator-(Graph &graph);
         Graph operator*(Graph &graph);
+        friend std::ostream &operator<<(std::ostream &stream, Graph &graph);
     };
 
 }; // namespace mtm

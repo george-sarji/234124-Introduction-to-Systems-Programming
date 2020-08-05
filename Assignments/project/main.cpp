@@ -50,6 +50,17 @@ void test1()
     Graph graph6 = graph * graph2;
 
     Graph graph7 = graph2.complement();
+    std::cout << graph7 << std::endl;
+    Graph graph8;
+    graph8.addVertex("x1");
+    graph8.addVertex("x2");
+    graph8.addVertex("x3");
+
+    graph8.addEdge("x1", "x2");
+    graph8.addEdge("x2", "x3");
+    graph8.addEdge("x3", "x1");
+
+    std::cout << graph8 << std::endl;
 
     graph.removeVertex("test");
 }
