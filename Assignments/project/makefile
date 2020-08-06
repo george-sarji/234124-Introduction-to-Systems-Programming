@@ -21,5 +21,8 @@ GraphException.o: GraphException.cpp GraphException.h
 libgraph.a: $(OBJS) 
 	ar -rs $@ $^
 
+tar: $(OBJS)
+	zip gcalc.zip Edge.h Edge.cpp Vertex.h Vertex.cpp GraphException.cpp GraphException.h makefile Graph.cpp Graph.h Calculator.cpp
+
 clean:
 	rm -f $(OBJS) $(EXEC)
