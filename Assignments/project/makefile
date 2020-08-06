@@ -1,5 +1,5 @@
 CC = g++
-OBJS = Graph.o Edge.o Vertex.o GraphException.o main.o
+OBJS = Graph.o Edge.o Vertex.o GraphException.o
 EXEC = gcalc
 DEBUG_FLAG = 
 COMP_FLAG = -std=c++11 -Wall -Werror -pedantic-errors
