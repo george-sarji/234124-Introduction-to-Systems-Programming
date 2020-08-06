@@ -34,6 +34,6 @@ namespace mtm
         friend std::ostream &operator<<(std::ostream &stream, Graph &graph);
     };
 
-}; // namespace mtm
+} // namespace mtm
 
 #endif

@@ -34,6 +34,8 @@ std::string toUpper(std::string str)
     return newStr;
 }
 
+// TODO: Create a function that receives the parameters after the assignment operator. It processes and checks if the given expression is valid, and returns
+// the result of the given expression.
 
 
 void shellMode()

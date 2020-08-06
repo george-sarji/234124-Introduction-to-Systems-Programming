@@ -21,6 +21,6 @@ namespace mtm
 
         bool operator<(const Edge& edge) const;
     };
-}; // namespace mtm
+} // namespace mtm
 
 #endif

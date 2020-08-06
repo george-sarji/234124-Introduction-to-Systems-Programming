@@ -19,6 +19,6 @@ namespace mtm
         bool operator==(const Vertex &v) const;
         bool operator<(const Vertex &v) const;
     };
-}; // namespace mtm
+} // namespace mtm
 
 #endif

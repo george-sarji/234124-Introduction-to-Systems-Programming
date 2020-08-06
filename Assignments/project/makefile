@@ -1,0 +1,25 @@
+CC = g++
+OBJS = Graph.o Edge.o Vertex.o GraphException.o main.o
+EXEC = gcalc
+DEBUG_FLAG = 
+COMP_FLAG = -std=c++11 -Wall -Werror -pedantic-errors
+RELEASE_FLAG = -DNDEBUG
+
+$(EXEC) : $(OBJS)
+	$(CC) $(DEBUG_FLAG) $(OBJS) -o $@
+
+main.o: main.cpp Edge.h Edge.cpp Vertex.h Vertex.cpp GraphException.cpp GraphException.h Graph.cpp Graph.h
+	$(CC) -c $(DEBUG_FLAG) $(COMP_FLAG) $*.cpp
+Graph.o: Edge.h Edge.cpp Vertex.h Vertex.cpp GraphException.cpp GraphException.h
+	$(CC) -c $(DEBUG_FLAG) $(COMP_FLAG) $*.cpp
+Vertex.o: Vertex.h Vertex.cpp GraphException.cpp GraphException.h
+	$(CC) -c $(DEBUG_FLAG) $(COMP_FLAG) $*.cpp
+Edge.o: Edge.h Edge.cpp
+	$(CC) -c $(DEBUG_FLAG) $(COMP_FLAG) $*.cpp
+GraphException.o: GraphException.cpp GraphException.h
+	$(CC) -c $(DEBUG_FLAG) $(COMP_FLAG) $*.cpp
+libgraph.a: $(OBJS) 
+	ar -rs $@ $^
+
+clean:
+	rm -f $(OBJS) $(EXEC)

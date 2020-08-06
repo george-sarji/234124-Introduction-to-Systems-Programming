@@ -43,6 +43,6 @@ namespace mtm
     public:
         const char *what() const noexcept;
     };
-}; // namespace mtm
+} // namespace mtm
 
 #endif
