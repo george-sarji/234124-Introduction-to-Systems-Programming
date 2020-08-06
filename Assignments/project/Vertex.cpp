@@ -6,6 +6,8 @@ namespace mtm
 {
     mtm::Vertex::Vertex(std::string name) : name(name) {}
 
+    mtm::Vertex::~Vertex() = default;
+
     bool mtm::Vertex::isNameValid(std::string name)
     {
         // Iterate through the name itself.

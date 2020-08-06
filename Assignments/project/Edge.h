@@ -13,7 +13,7 @@ namespace mtm
 
     public:
         Edge(mtm::Vertex origin, mtm::Vertex destination);
-        ~Edge() = default;
+        ~Edge();
         mtm::Vertex getDestination() const;
         mtm::Vertex getOrigin() const;
 

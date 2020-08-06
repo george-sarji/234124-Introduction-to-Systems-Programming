@@ -6,6 +6,8 @@ namespace mtm
 {
     mtm::Edge::Edge(mtm::Vertex origin, mtm::Vertex destination) : edge(origin, destination) {}
 
+    mtm::Edge::~Edge() = default;
+
     mtm::Vertex mtm::Edge::getOrigin() const
     {
         return edge.first;
