@@ -2,7 +2,7 @@ CC = g++
 OBJS = Graph.o Edge.o Vertex.o GraphException.o
 EXEC = gcalc
 DEBUG_FLAG = 
-COMP_FLAG = -std=c++11 -Wall -Werror -pedantic-errors
+COMP_FLAG = -std=c++11 -Wall -Werror -pedantic-errors -fPIC
 RELEASE_FLAG = -DNDEBUG
 
 $(EXEC) : $(OBJS)
@@ -20,7 +20,7 @@ libgraph.a: $(OBJS)
 	ar -rs $@ $^
 
 swig:
-	swig -python -o graph_wrap.c graph.i
+	swig -c++ -python -o graph_wrap.c graph.i
 
 tar: $(OBJS)
 	zip gcalc.zip Edge.h Edge.cpp Vertex.h Vertex.cpp GraphException.cpp GraphException.h makefile Graph.cpp Graph.h Calculator.cpp

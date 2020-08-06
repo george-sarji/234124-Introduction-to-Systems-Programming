@@ -11,6 +11,7 @@ namespace mtm
     mtm::Graph::Graph(const Graph &graph)
     {
     }
+    mtm::Graph::~Graph() {}
 
     void mtm::Graph::addVertex(std::string identifier)
     {
