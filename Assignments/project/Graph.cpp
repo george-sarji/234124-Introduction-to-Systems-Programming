@@ -1,8 +1,6 @@
 #include "Graph.h"
 #include "GraphException.h"
 #include <string>
-#include "Vertex.h"
-#include "Edge.h"
 #include <algorithm>
 #include <iostream>
 
