@@ -8,8 +8,6 @@ RELEASE_FLAG = -DNDEBUG
 $(EXEC) : $(OBJS)
 	$(CC) $(DEBUG_FLAG) $(OBJS) -o $@
 
-main.o: main.cpp Edge.h Edge.cpp Vertex.h Vertex.cpp GraphException.cpp GraphException.h Graph.cpp Graph.h
-	$(CC) -c $(DEBUG_FLAG) $(COMP_FLAG) $*.cpp
 Graph.o: Edge.h Edge.cpp Vertex.h Vertex.cpp GraphException.cpp GraphException.h
 	$(CC) -c $(DEBUG_FLAG) $(COMP_FLAG) $*.cpp
 Vertex.o: Vertex.h Vertex.cpp GraphException.cpp GraphException.h
