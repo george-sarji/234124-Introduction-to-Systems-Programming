@@ -10,7 +10,7 @@
 #include <stdlib.h>
 
 #define PROMPT "Gcalc> "
-#define SHELL_DEF "\\{\\s*[a-zA-Z;[\\]]\\s*(\\s*,\\s*[a-zA-Z;[\\]]\\s*)*\\s*(\\|\\s*(<\\s*[a-zA-Z;[\\]]\\s*,\\s*[a-zA-Z;[\\]]\\s*>)(\\s*,\\s*<\\s*[a-zA-Z;[\\]]\\s*,\\s*[a-zA-Z;[\\]]\\s*>)*)*\\}"
+#define SHELL_DEF "\\s*\\{\\s*[a-zA-Z[;\\]0-9]+\\s*(,\\s*[a-zA-Z[;\\]0-9]*\\s*)*(\\s*\\|\\s*(<\\s*[a-zA-Z[;\\]0-9]+\\s*,\\s*[a-zA-Z[;\\]0-9]+\\s*>)*(\\s*,\\s*<\\s*[a-zA-Z[;\\]0-9]+\\s*,\\s*[a-zA-Z[;\\]0-9]+\\s*>)*)*\\s*\\}\\s*"
 #define DEFINITION "\\s*[a-zA-Z]+[0-9]*[a-zA-Z0-9]*\\s*=\\s*"
 #define ADDITION "\\s*[a-zA-Z]+[0-9]*[a-zA-Z0-9]*\\s*\\s*\\+\\s*[a-zA-Z]+[0-9]*[a-zA-Z0-9]*\\s*\\s*"
 #define SUBTRACTION "\\s*[a-zA-Z]+[0-9]*[a-zA-Z0-9]*\\s*\\s*\\-\\s*[a-zA-Z]+[0-9]*[a-zA-Z0-9]*\\s*\\s*"
@@ -20,7 +20,8 @@
 #define PRINT "\\s*(print)\\s*(\\(+\\s*.*\\s*\\)+)"
 #define RESET "\\s*(reset)\\s*"
 #define WHO "\\s*(who)\\s*"
-#define DELETE "\\s*(delete)\\(+\\s*.*\\s*\\)+\\s*"
+#define DELETE "\\s*(delete)\\(+\\s*.+\\s*\\)+\\s*"
+#define PARENTHESIS "\\(+\\s*.*\\s*\\)"
 using namespace mtm;
 
 std::string toUpper(std::string str)
@@ -33,6 +34,8 @@ std::string toUpper(std::string str)
     return newStr;
 }
 
+
+
 void shellMode()
 {
     std::regex defRegexp(SHELL_DEF);
@@ -42,6 +45,7 @@ void shellMode()
     std::regex whoExp(WHO, std::regex_constants::icase);
     std::regex resetExp(RESET, std::regex_constants::icase);
     std::regex deleteExp(DELETE, std::regex_constants::icase);
+    std::regex parenthesisExp(PARENTHESIS);
     // This will contain all the logic for the shell itself.
     std::string input;
     std::map<std::string, Graph> variables;
@@ -66,7 +70,23 @@ void shellMode()
             continue;
         }
         if (std::regex_match(input, deleteExp)) {
-
+            // We have a matched regex string. Get the variable to delete.
+            std::smatch toDelete;
+            std::regex_search(input, toDelete, parenthesisExp);
+            // Take the first smatch, remove outside parenthesis.
+            std::string stringDelete = toDelete[0];
+            stringDelete = stringDelete.substr(1, stringDelete.length()-2);
+            // Check if the current string is a key inside the map.
+            auto it = variables.find(stringDelete);
+            // Check if the iterator is valid.
+            if (it != variables.end()) {
+                // Delete the variable.
+                variables.erase(it);
+            }
+            else {
+                std::cout << "Error: Unrecognized variable '" << stringDelete << "'" << std::endl;
+            }
+            continue;
         }
 
         Graph temp;
