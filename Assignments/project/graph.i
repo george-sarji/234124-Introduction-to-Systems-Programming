@@ -9,5 +9,5 @@
 %}
 
 %template(StringVector) std::vector<std::string>;
-
+%rename(display) operator<<;
 %include "Graph.h"
