@@ -2633,10 +2633,12 @@ SWIGINTERN PyObject *SWIG_PyStaticMethod_New(PyObject *SWIGUNUSEDPARM(self), PyO
 
 /* -------- TYPES TABLE (BEGIN) -------- */
 
-#define SWIGTYPE_p_char swig_types[0]
-#define SWIGTYPE_p_namespace swig_types[1]
-static swig_type_info *swig_types[3];
-static swig_module_info swig_module = {swig_types, 2, 0, 0, 0, 0};
+#define SWIGTYPE_p_Graph swig_types[0]
+#define SWIGTYPE_p_char swig_types[1]
+#define SWIGTYPE_p_mtm__Graph swig_types[2]
+#define SWIGTYPE_p_namespace swig_types[3]
+static swig_type_info *swig_types[5];
+static swig_module_info swig_module = {swig_types, 4, 0, 0, 0, 0};
 #define SWIG_TypeQuery(name) SWIG_TypeQueryModule(&swig_module, &swig_module, name)
 #define SWIG_MangledTypeQuery(name) SWIG_MangledTypeQueryModule(&swig_module, &swig_module, name)
 
@@ -2668,7 +2670,7 @@ static swig_module_info swig_module = {swig_types, 2, 0, 0, 0, 0};
 
 
     #include "Graph.h"
-
+    
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -2699,8 +2701,51 @@ SWIGINTERN PyObject *Swig_var_mtm_get(void) {
 }
 
 
+SWIGINTERN PyObject *_wrap_create(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  Graph result;
+  
+  if (!SWIG_Python_UnpackTuple(args, "create", 0, 0, 0)) SWIG_fail;
+  result = create();
+  resultobj = SWIG_NewPointerObj((Graph *)memcpy((Graph *)calloc(1,sizeof(Graph)),&result,sizeof(Graph)), SWIGTYPE_p_Graph, SWIG_POINTER_OWN |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_destroy(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  mtm::Graph arg1 ;
+  void *argp1 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  {
+    res1 = SWIG_ConvertPtr(swig_obj[0], &argp1, SWIGTYPE_p_mtm__Graph,  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "destroy" "', argument " "1"" of type '" "mtm::Graph""'"); 
+    }  
+    if (!argp1) {
+      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "destroy" "', argument " "1"" of type '" "mtm::Graph""'");
+    } else {
+      arg1 = *((mtm::Graph *)(argp1));
+    }
+  }
+  destroy(arg1);
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
 static PyMethodDef SwigMethods[] = {
 	 { "SWIG_PyInstanceMethod_New", SWIG_PyInstanceMethod_New, METH_O, NULL},
+	 { "create", _wrap_create, METH_NOARGS, NULL},
+	 { "destroy", _wrap_destroy, METH_O, NULL},
 	 { NULL, NULL, 0, NULL }
 };
 
@@ -2711,19 +2756,27 @@ static PyMethodDef SwigMethods_proxydocs[] = {
 
 /* -------- TYPE CONVERSION AND EQUIVALENCE RULES (BEGIN) -------- */
 
+static swig_type_info _swigt__p_Graph = {"_p_Graph", "Graph *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_char = {"_p_char", "char *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_mtm__Graph = {"_p_mtm__Graph", "mtm::Graph *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_namespace = {"_p_namespace", "namespace *", 0, 0, (void*)0, 0};
 
 static swig_type_info *swig_type_initial[] = {
+  &_swigt__p_Graph,
   &_swigt__p_char,
+  &_swigt__p_mtm__Graph,
   &_swigt__p_namespace,
 };
 
+static swig_cast_info _swigc__p_Graph[] = {  {&_swigt__p_Graph, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_char[] = {  {&_swigt__p_char, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_mtm__Graph[] = {  {&_swigt__p_mtm__Graph, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_namespace[] = {  {&_swigt__p_namespace, 0, 0, 0},{0, 0, 0, 0}};
 
 static swig_cast_info *swig_cast_initial[] = {
+  _swigc__p_Graph,
   _swigc__p_char,
+  _swigc__p_mtm__Graph,
   _swigc__p_namespace,
 };
 

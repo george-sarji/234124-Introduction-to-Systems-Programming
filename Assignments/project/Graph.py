@@ -62,5 +62,11 @@ class _SwigNonDynamicMeta(type):
 
 
 
+def create():
+    return _Graph.create()
+
+def destroy(graph):
+    return _Graph.destroy(graph)
+
 cvar = _Graph.cvar
 

@@ -331,4 +331,12 @@ namespace mtm
         }
         return stream;
     }
+
+    mtm::Graph create() {
+        Graph graph;
+        return graph;
+    }
+    void destroy(mtm::Graph graph) {
+        graph.~Graph();
+    }
 } // namespace mtm
