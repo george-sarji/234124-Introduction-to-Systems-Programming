@@ -80,6 +80,7 @@ Graph validateExpression(std::string expression)
             throw IllegalCommand();
         }
         std::cout << isExpressionValid(*it);
+        // TODO: Add the value calculation logic here. Also add the variable table. Also add the DEFINITION regex
     }
     return Graph();
 }
