@@ -1,4 +1,4 @@
-%module graph_wrap
+%module graph
 %include "std_vector.i"
 %include "std_string.i"
 %include "typemaps.i"
@@ -24,6 +24,7 @@
   }
   catch (const Exception &e) {
     std::cout << e.what() << std::endl;
+    SWIG_exception(SWIG_IOError, "Library error.");
   }
 }
 
