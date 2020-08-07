@@ -25,7 +25,6 @@ namespace mtm
         bool isContainsEdge(const mtm::Edge &edge) const;
 
         std::string toString();
-        Graph complement() const;
 
         // ! Operator overloads
         Graph operator+(Graph &graph);
