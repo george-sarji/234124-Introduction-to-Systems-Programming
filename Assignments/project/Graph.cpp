@@ -6,15 +6,19 @@
 
 namespace mtm
 {
-    mtm::Graph::Graph() : vertices(), edges() {}
+    mtm::Graph::Graph() : vertices(), edges()
+    {
+    }
 
     mtm::Graph::Graph(const Graph &graph)
     {
         // Go through the vertices and add them.
-        for (auto it = graph.vertices.begin(); it!=graph.vertices.end();++it) {
+        for (auto it = graph.vertices.begin(); it!=graph.vertices.end();++it)
+        {
             addVertex(it->getName());
         }
-        for (auto it = graph.edges.begin();it!=graph.edges.end();++it) {
+        for (auto it = graph.edges.begin();it!=graph.edges.end();++it)
+        {
             addEdge(it->getOrigin().getName(), it->getDestination().getName());
         }
     }
@@ -320,15 +324,18 @@ namespace mtm
         return stream;
     }
 
-    mtm::Graph create() {
+    mtm::Graph create()
+    {
         Graph graph;
         return graph;
     }
-    void destroy(mtm::Graph graph) {
+    void destroy(mtm::Graph graph)
+    {
         graph.~Graph();
     }
 
-    std::string mtm::Graph::toString() {
+    std::string mtm::Graph::toString()
+    {
         std::string str = "";
         // Sort the vertices and the edges.
         std::sort(edges.begin(), edges.end());

@@ -18,14 +18,16 @@
 // %rename(__invert__) Graph::operator!;
 // %rename(__str__) Graph::toString;
 
-%exception {
-  try {
+%exception{
+    try
+{
     $action
-  }
-  catch (const Exception &e) {
+}
+catch (const Exception &e)
+{
     std::cout << e.what() << std::endl;
     SWIG_exception(SWIG_IOError, "Library error.");
-  }
+}
 }
 
 

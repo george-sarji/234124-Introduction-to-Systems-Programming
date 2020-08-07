@@ -25,4 +25,8 @@ namespace mtm
     {
         return "Error: Duplicate edge attempt.";
     }
+    const char *mtm::IllegalCommand::what() const noexcept
+    {
+        return "Error: Invalid command.";
+    }
 } // namespace mtm

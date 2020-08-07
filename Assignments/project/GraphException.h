@@ -43,6 +43,13 @@ namespace mtm
     public:
         const char *what() const noexcept;
     };
+
+    class IllegalCommand : public Exception
+    {
+    public:
+        const char *what() const noexcept;
+    };
+
 } // namespace mtm
 
 #endif
