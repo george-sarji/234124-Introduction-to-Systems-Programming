@@ -339,16 +339,19 @@ namespace mtm
             // Add to the stream with a new line.
             str += it->getName() + "\n";
         }
+        str = str.substr(0, str.length()-1);
         // Check if we have any edges.
         if (edges.size() != 0)
         {
             // Print the spacer.
-            str += "$\n";
+            str += "\n$\n";
         }
         for (auto it = edges.begin(); it != edges.end(); ++it)
         {
             str += it->getOrigin().getName() + " " + it->getDestination().getName() +"\n";
         }
+        str = str.substr(0, str.length()-1);
+
         return str;
     }
 
