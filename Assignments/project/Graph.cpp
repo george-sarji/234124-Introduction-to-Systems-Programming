@@ -316,25 +316,7 @@ namespace mtm
     }
     std::ostream &operator<<(std::ostream &stream, Graph &graph)
     {
-        // Sort the vertices and the edges.
-        std::sort(graph.edges.begin(), graph.edges.end());
-        std::sort(graph.vertices.begin(), graph.vertices.end());
-        // Go through the vertices.
-        for (auto it = graph.vertices.begin(); it != graph.vertices.end(); ++it)
-        {
-            // Add to the stream with a new line.
-            stream << it->getName() << std::endl;
-        }
-        // Check if we have any edges.
-        if (graph.edges.size() != 0)
-        {
-            // Print the spacer.
-            stream << "$" << std::endl;
-        }
-        for (auto it = graph.edges.begin(); it != graph.edges.end(); ++it)
-        {
-            stream << it->getOrigin().getName() << " " << it->getDestination().getName() << std::endl;
-        }
+        stream << graph.toString();
         return stream;
     }
 
