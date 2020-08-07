@@ -29,4 +29,4 @@ tar: $(OBJS)
 	zip gcalc.zip Edge.h Edge.cpp Vertex.h Vertex.cpp GraphException.cpp GraphException.h makefile Graph.cpp Graph.h Calculator.cpp
 
 clean:
-	rm -f $(OBJS) $(EXEC)
+	rm -f $(OBJS) $(EXEC) libgraph.a _graph.so graph_wrap.c graph_wrap.py
