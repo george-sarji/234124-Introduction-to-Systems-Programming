@@ -1,4 +1,4 @@
-%module graph
+%module graph_wrap
 %include "std_vector.i"
 %include "std_string.i"
 %include "typemaps.i"
@@ -15,7 +15,6 @@
 %rename(__sub__) Graph::operator-;
 %rename(__mul__) Graph::operator*;
 %rename(__xor__) Graph::operator^;
-%rename(comp) Graph::operator!;
 // %rename(__invert__) Graph::operator!;
 // %rename(__str__) Graph::toString;
 
