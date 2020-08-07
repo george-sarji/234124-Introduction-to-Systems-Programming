@@ -10,7 +10,17 @@
 #include <stdlib.h>
 
 #define PROMPT "Gcalc> "
-#define VALID "\\s*\\(\\s*[a-zA-Z]+[a-zA-Z0-9]*\\s*([+\\-\\*^]\\s*[a-zA-Z]+[a-zA-Z0-9]*)*\\s*\\)\\s*"
+#define VALID "\\s*\\(\\s*[\\!][a-zA-Z]+[a-zA-Z0-9]*\\s*([+\\-\\*^]\\s*[\\!][a-zA-Z]+[a-zA-Z0-9]*)*\\s*\\)\\s*"
+#define VALID_DEF "\\s*\\(\\s*(([!]{0,1}[a-zA-Z]+[a-zA-Z0-9]*)|"\
+            "\\s*[!]{0,1}\\{\\s*[a-zA-Z[;\\]0-9]+\\s*(,\\s*[a-zA-Z[;\\]0-9]*\\s*)*"\
+            "(\\s*\\|\\s*(<\\s*[a-zA-Z[;\\]0-9]+\\s*,\\s*[a-zA-Z[;\\]0-9]+\\s*>)*"\
+            "(\\s*,\\s*<\\s*[a-zA-Z[;\\]0-9]+\\s*,\\s*[a-zA-Z[;\\]0-9]+\\s*>)*)*\\s*\\}\\s*)\\s*"\
+            "([+\\-\\*^]\\s*(([!]{0,1}[a-zA-Z]+[a-zA-Z0-9]*)|\\s*[!]{0,1}\\{\\s*[a-zA-Z[;\\]0-9]+\\s*"\
+            "(,\\s*[a-zA-Z[;\\]0-9]*\\s*)*(\\s*\\|\\s*(<\\s*[a-zA-Z[;\\]0-9]+\\s*,\\s*[a-zA-Z[;\\]0-9]+\\s*>)*"\
+            "(\\s*,\\s*<\\s*[a-zA-Z[;\\]0-9]+\\s*,\\s*[a-zA-Z[;\\]0-9]+\\s*>)*)*\\s*\\}\\s*))*\\s*\\)\\s*"
+#define VALID_OPERATION "\\s*[+\\-\\*^]\\s*"
+#define GRAPH_DEF "\\s*\\{\\s*[a-zA-Z[;\\]0-9]+\\s*(,\\s*[a-zA-Z[;\\]0-9]*\\s*)*(\\s*\\|\\s*(<\\s*[a-zA-Z[;\\]0-9]+\\s*,\\s*[a-zA-Z[;\\]0-9]+\\s*>)"\
+                "*(\\s*,\\s*<\\s*[a-zA-Z[;\\]0-9]+\\s*,\\s*[a-zA-Z[;\\]0-9]+\\s*>)*)*\\s*\\}\\s*"
 using namespace mtm;
 
 std::string toUpper(std::string str)
@@ -30,10 +40,11 @@ bool isExpressionValid(std::string str)
 {
     // Check according to regex if it meets the requirements.
     std::regex expression(VALID);
-    return std::regex_match(str, expression);
+    std::regex defExpression(VALID_DEF);
+    return std::regex_match(str, defExpression);
 }
 
-Graph validateExpression(std::string expression)
+Graph validateExpression(std::string expression, std::map<std::string, mtm::Graph> vars)
 {
     // Go through the expression, check for the parenthesis and work by order.
     int currentOpening = 0;
@@ -88,28 +99,31 @@ Graph validateExpression(std::string expression)
 int main(int argCount, char *args[])
 {
     // std::cout << argCount << std::endl;
-    if (argCount == 1)
+    switch (argCount)
     {
+    case 1:
+    {
+        std::map<std::string, mtm::Graph> vars;
         // SHELL
         try
         {
-            validateExpression("(G3+ (G1))");
+            validateExpression("(!G3+ !{a,b|<a,b>} + (G1*!G2))", vars);
         }
         catch (const Exception& e)
         {
             std::cout << e.what() << std::endl;
         }
-
+        break;
     }
-    else if (argCount != 3)
+    case 3:
     {
-        // Error!
-        std::cout << "Error: Provide the proper syntax: gcalc input.txt output.txt" << std::endl;
+        // BATCH
     }
-    else
+    default:
     {
-        // Batch mode.
-        return 0;
+        std::cerr << "Error: Use the proper syntax gcalc OR gcalc in.txt out.txt" << std::endl;
+        break;
+    }
     }
     return 1;
 }
