@@ -24,6 +24,7 @@ namespace mtm
         bool isContainsVertex(const mtm::Vertex &vertex) const;
         bool isContainsEdge(const mtm::Edge &edge) const;
 
+        std::string toString();
         Graph complement() const;
 
         // ! Operator overloads
@@ -31,6 +32,7 @@ namespace mtm
         Graph operator^(Graph &graph);
         Graph operator-(Graph &graph);
         Graph operator*(Graph &graph);
+        Graph operator!() const;
         friend std::ostream &operator<<(std::ostream &stream, Graph &graph);
     };
 

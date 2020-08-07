@@ -159,7 +159,7 @@ namespace mtm
         return false;
     }
 
-    mtm::Graph mtm::Graph::complement() const
+    mtm::Graph mtm::Graph::operator!() const
     {
         // Create a new graph.
         Graph newGraph;
