@@ -10,6 +10,13 @@ namespace mtm
 
     mtm::Graph::Graph(const Graph &graph)
     {
+        // Go through the vertices and add them.
+        for (auto it = graph.vertices.begin(); it!=graph.vertices.end();++it) {
+            addVertex(it->getName());
+        }
+        for (auto it = graph.edges.begin();it!=graph.edges.end();++it) {
+            addEdge(it->getOrigin().getName(), it->getDestination().getName());
+        }
     }
     mtm::Graph::~Graph() = default;
 
@@ -338,4 +345,29 @@ namespace mtm
     void destroy(mtm::Graph graph) {
         graph.~Graph();
     }
+
+    std::string mtm::Graph::toString() {
+        std::string str = "";
+        // Sort the vertices and the edges.
+        std::sort(edges.begin(), edges.end());
+        std::sort(vertices.begin(), vertices.end());
+        // Go through the vertices.
+        for (auto it = vertices.begin(); it != vertices.end(); ++it)
+        {
+            // Add to the stream with a new line.
+            str += it->getName() + "\n";
+        }
+        // Check if we have any edges.
+        if (edges.size() != 0)
+        {
+            // Print the spacer.
+            str += "$\n";
+        }
+        for (auto it = edges.begin(); it != edges.end(); ++it)
+        {
+            str += it->getOrigin().getName() + " " + it->getDestination().getName() +"\n";
+        }
+        return str;
+    }
+
 } // namespace mtm
