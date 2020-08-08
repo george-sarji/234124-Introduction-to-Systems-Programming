@@ -78,15 +78,7 @@ Graph createDefinition(std::string command)
         int firstComma = vertices.find(",");
         std::string current = vertices.substr(0, firstComma);
         // Get the current vertix.
-        mtm::Vertex currentVertex(current);
-        if (graph.isContainsVertex(current))
-        {
-            throw DuplicateVertex(current);
-        }
-        else
-        {
-            graph.addVertex(current);
-        }
+        graph.addVertex(current);
         // Substring.
         vertices.erase(0, current.length()+1);
     }
@@ -99,12 +91,7 @@ Graph createDefinition(std::string command)
         int openingTag = edges.find("<"), closingTag = edges.find(">");
         int firstVertex = comma-openingTag-1, secondVertex = closingTag-comma-1;
         // Attempt to add.
-        Vertex origin(edges.substr(openingTag+1, firstVertex)), destination(edges.substr(comma+1, secondVertex));
-        if (graph.isContainsVertex(origin) && graph.isContainsVertex(destination))
-        {
-            throw DuplicateEdge("<");
-        }
-        graph.addEdge(origin.getName(), destination.getName());
+        graph.addEdge(edges.substr(openingTag+1, firstVertex), edges.substr(comma+1, secondVertex));
         // Substring accordingly.
         edges = edges.substr(closingTag+2, edges.length()-1);
     }
