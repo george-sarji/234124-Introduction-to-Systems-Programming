@@ -2,6 +2,7 @@
 #define GRAPH_EXCEPTION_H
 
 #include <exception>
+#include <string>
 
 namespace mtm
 {
@@ -45,6 +46,12 @@ namespace mtm
     };
 
     class IllegalCommand : public Exception
+    {
+    public:
+        const char *what() const noexcept;
+    };
+
+    class UnknownVariable : public Exception
     {
     public:
         const char *what() const noexcept;

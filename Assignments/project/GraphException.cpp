@@ -29,4 +29,9 @@ namespace mtm
     {
         return "Error: Invalid command.";
     }
+
+    const char *mtm::UnknownVariable::what() const noexcept
+    {
+        return "Error: Unknown variable.";
+    }
 } // namespace mtm
