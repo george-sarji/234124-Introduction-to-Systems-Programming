@@ -33,6 +33,8 @@
 #define ARGUMENTS "\\(\\s*.*\\s*\\)"
 #define LOAD "\\s*[!]{0,1}\\s*(load)\\s*\\(\\s*.*\\s*\\)\\s*"
 #define LOAD_KEYWORD "\\s*(load)\\s*"
+#define SAVE "\\s*(save)\\s*\\(\\s*.+\\s*,\\s*.+\\s*\\)\\s*"
+#define SAVE_ARGUMENTS "\\(\\s*.+\\s*,\\s*.+\\s*\\)"
 #define RESERVED_KEYWORD "\\s*(delete)|(print)|(who)|(delete)|(reset)|(quit)|(load)|(save)\\s*"
 #define FILENAME "\\s*.+(\\.gc)\\s*"
 using namespace mtm;
@@ -365,10 +367,6 @@ Graph validateExpression(std::string expression, std::map<std::string, mtm::Grap
                 commandsSplit.push_back(sub);
                 left = strit;
             }
-            else if (std::regex_match(sub, loadExp))
-            {
-                std::cout << "LOAD" << std::endl;
-            }
             else if (std::regex_match(sub, variableExp))
             {
                 // Check if we have a definition in our command.
@@ -389,7 +387,7 @@ Graph validateExpression(std::string expression, std::map<std::string, mtm::Grap
                 if (!subDef)
                 {
                     auto varIt = strit+1;
-                    bool isVar = false;
+                    bool isVar = true;
                     while (varIt<=current.end())
                     {
                         std::string varSub = std::string(left, varIt);
@@ -402,6 +400,7 @@ Graph validateExpression(std::string expression, std::map<std::string, mtm::Grap
                         if (std::regex_match(varSub, loadKey))
                         {
                             // We have a valid load keyword. Exit the variable section.
+                            isVar = false;
                             break;
                         }
                         ++varIt;
@@ -449,6 +448,8 @@ void shell(bool automatic)
     std::regex deleteExp(DELETE);
     std::regex resetExp(RESET);
     std::regex reservedWord(RESERVED_KEYWORD);
+    std::regex saveExp(SAVE);
+    std::regex saveArguments(SAVE_ARGUMENTS);
     std::map<std::string, mtm::Graph> varTable;
     while (!std::regex_match(input, quit) && !std::cin.eof())
     {
@@ -519,6 +520,20 @@ void shell(bool automatic)
                 {
                     varTable.erase(match);
                 }
+            }
+            else if (std::regex_match(input, saveExp))
+            {
+                // We have a save command. Grab the arguments.
+                std::regex_search(input, matches, saveArguments);
+                // Get the comma and substring accordingly.
+                std::string arguments = matches[0];
+                int comma = arguments.find(',');
+                // Substring accordingly.
+                std::string expression = arguments.substr(1, comma-1), filename = arguments.substr(comma+1, arguments.length()-comma-2);
+                std::regex_search(filename, matches, std::regex("[^ ].+"));
+                filename = matches[0];
+                Graph g = validateExpression(expression, varTable);
+                g.writeBinary(filename);
             }
             else if (std::regex_match(input, resetExp))
             {
