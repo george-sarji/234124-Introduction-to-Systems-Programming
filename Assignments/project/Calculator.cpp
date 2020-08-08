@@ -421,7 +421,7 @@ void shell()
                 // Valid reset. Wipe the table.
                 varTable.clear();
             }
-            else if (!std::regex_match(input, quit))
+            else if (!std::regex_match(input, quit) && !input.empty())
             {
                 // No recognized command. Throw an error.
                 throw IllegalCommand(input);
