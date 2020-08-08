@@ -64,4 +64,12 @@ namespace mtm
     {
         return error.c_str();
     }
+
+    mtm::InvalidFilename::InvalidFilename(const std::string variable) : error("Error: Invalid file name '" + variable + "'")
+    {
+    }
+    const char* mtm::InvalidFilename::what() const noexcept
+    {
+        return error.c_str();
+    }
 }

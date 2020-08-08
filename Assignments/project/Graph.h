@@ -24,6 +24,8 @@ namespace mtm
         bool isContainsVertex(const mtm::Vertex &vertex) const;
         bool isContainsEdge(const mtm::Edge &edge) const;
 
+        std::string getBinary() const;
+
         std::string toString();
 
         // ! Operator overloads

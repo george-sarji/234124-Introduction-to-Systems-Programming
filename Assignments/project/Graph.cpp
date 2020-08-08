@@ -362,5 +362,20 @@ namespace mtm
         return edges == graph.edges && vertices == graph.vertices;
     }
 
+    std::string mtm::Graph::getBinary() const
+    {
+        std::string str = "";
+        str += vertices.size();
+        str+=edges.size();
+        for (auto it = vertices.begin();it!=vertices.end();++it)
+        {
+            str+=it->getName();
+        }
+        for (auto it=edges.begin();it!=edges.end();++it)
+        {
+            str+="<"+it->getOrigin().getName()+","+it->getDestination().getName()+">";
+        }
+        return str;
+    }
 
 } // namespace mtm

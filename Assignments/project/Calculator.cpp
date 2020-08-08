@@ -11,24 +11,17 @@
 
 #define PROMPT "Gcalc> "
 #define VALID "\\s*\\(\\s*[a-zA-Z]+[a-zA-Z0-9]*\\s*([+\\-\\*^]\\s*[a-zA-Z]+[a-zA-Z0-9]*)*\\s*\\)\\s*"
-#define VALID_DEF "(\\s*\\s*[!]{0,1}(([!]{0,1}[a-zA-Z]+[a-zA-Z0-9]*)|"\
-            "\\s*[!]{0,1}\\{(\\s*[a-zA-Z[;\\]0-9]+\\s*(,\\s*[a-zA-Z[;\\]0-9]+\\s*)*)*"\
-            "(\\s*\\|\\s*(<\\s*[a-zA-Z[;\\]0-9]+\\s*,\\s*[a-zA-Z[;\\]0-9]+\\s*>)*"\
-            "(\\s*,\\s*<\\s*[a-zA-Z[;\\]0-9]+\\s*,\\s*[a-zA-Z[;\\]0-9]+\\s*>)*)*\\s*\\}\\s*)\\s*"\
-            "([+\\-\\*^]\\s*[!]{0,1}(([!]{0,1}[a-zA-Z]+[a-zA-Z0-9]*)|\\s*[!]{0,1}\\{\\s*[a-zA-Z[;\\]0-9]+\\s*"\
-            "(,\\s*[a-zA-Z[;\\]0-9]+\\s*)*(\\s*\\|\\s*(<\\s*[a-zA-Z[;\\]0-9]+\\s*,\\s*[a-zA-Z[;\\]0-9]+\\s*>)*"\
-            "(\\s*,\\s*<\\s*[a-zA-Z[;\\]0-9]+\\s*,\\s*[a-zA-Z[;\\]0-9]+\\s*>)*)*\\s*\\}\\s*))*\\s*\\s*)"\
-            "|(\\s*\\(\\s*[!]{0,1}(([!]{0,1}[a-zA-Z]+[a-zA-Z0-9]*)|"\
-            "\\s*[!]{0,1}\\{\\s*[a-zA-Z[;\\]0-9]+\\s*(,\\s*[a-zA-Z[;\\]0-9]+\\s*)*"\
-            "(\\s*\\|\\s*(<\\s*[a-zA-Z[;\\]0-9]+\\s*,\\s*[a-zA-Z[;\\]0-9]+\\s*>)*"\
-            "(\\s*,\\s*<\\s*[a-zA-Z[;\\]0-9]+\\s*,\\s*[a-zA-Z[;\\]0-9]+\\s*>)*)*\\s*\\}\\s*)\\s*"\
-            "([+\\-\\*^]\\s*[!]{0,1}(([!]{0,1}[a-zA-Z]+[a-zA-Z0-9]*)|\\s*[!]{0,1}\\{\\s*[a-zA-Z[;\\]0-9]+\\s*"\
-            "(,\\s*[a-zA-Z[;\\]0-9]*\\s*)*(\\s*\\|\\s*(<\\s*[a-zA-Z[;\\]0-9]+\\s*,\\s*[a-zA-Z[;\\]0-9]+\\s*>)*"\
-            "(\\s*,\\s*<\\s*[a-zA-Z[;\\]0-9]+\\s*,\\s*[a-zA-Z[;\\]0-9]+\\s*>)*)*\\s*\\}\\s*))*\\s*\\)\\s*)"
+#define VALID_DEF "\\s*([!]*(\\s*(load)\\(\\s*.*\\)\\s*)|([a-zA-Z]+[a-zA-Z0-9]*)|\\s*\\"\
+            "{\\s*[a-zA-Z[;\\]0-9]+\\s*(,\\s*[a-zA-Z[;\\]0-9]*\\s*)*(\\s*\\|\\s*(<\\s*[a-zA-Z[;\\]0-9]+\\s*,"\
+            "\\s*[a-zA-Z[;\\]0-9]+\\s*>)*(\\s*,\\s*<\\s*[a-zA-Z[;\\]0-9]+\\s*,\\s*[a-zA-Z[;\\]0-9]+\\s*>)*)*\\s*"\
+            "\\}\\s*)\\s*([+^\\-\\*]([!]*(\\s*(load)\\(\\s*.*\\)\\s*)|([a-zA-Z]+[a-zA-Z0-9]*)|\\s*\\{\\s*[a-zA-Z[;\\]"\
+            "0-9]+\\s*(,\\s*[a-zA-Z[;\\]0-9]*\\s*)*(\\s*\\|\\s*(<\\s*[a-zA-Z[;\\]0-9]+\\s*,\\s*[a-zA-Z[;\\]0-9]+\\s*>)"\
+            "*(\\s*,\\s*<\\s*[a-zA-Z[;\\]0-9]+\\s*,\\s*[a-zA-Z[;\\]0-9]+\\s*>)*)*\\s*\\}\\s*))*"
 #define VALID_OPERATION "\\s*[+\\-\\*^]\\s*"
 #define VALID_PARENTHESIS "[\\(\\)]"
 #define VARIABLE "\\s*[!]{0,1}[a-zA-Z]+[a-zA-Z0-9]*\\s*"
-#define GRAPH_DEF "\\s*[!]{0,1}\\s*\\{\\s*([a-zA-Z[;\\]0-9]+\\s*(,\\s*[a-zA-Z[;\\]0-9]+\\s*)*)*(\\s*\\|\\s*(<\\s*[a-zA-Z[;\\]0-9]+\\s*,\\s*[a-zA-Z[;\\]0-9]+\\s*>)"\
+#define GRAPH_DEF "\\s*[!]{0,1}\\s*\\{\\s*([a-zA-Z[;\\]0-9]+\\s*(,\\s*[a-zA-Z[;\\]0-9]+\\s*)*)*(\\s*\\|"\
+                "\\s*(<\\s*[a-zA-Z[;\\]0-9]+\\s*,\\s*[a-zA-Z[;\\]0-9]+\\s*>)"\
                 "*(\\s*,\\s*<\\s*[a-zA-Z[;\\]0-9]+\\s*,\\s*[a-zA-Z[;\\]0-9]+\\s*>)*)*\\s*\\}\\s*"
 #define VALID_VARIABLE "\\s*[a-zA-Z]+[a-zA-Z0-9]*\\s*=\\s*"
 #define FUNCTIONS ['!', '+', '^', '*', '-']
@@ -38,7 +31,10 @@
 #define WHO "\\s*(who)\\s*"
 #define RESET "\\s*(reset)\\s*"
 #define ARGUMENTS "\\(\\s*.*\\s*\\)"
+#define LOAD "\\s*[!]{0,1}\\s*(load)\\s*\\(\\s*.*\\s*\\)\\s*"
+#define LOAD_KEYWORD "\\s*(load)\\s*"
 #define RESERVED_KEYWORD "\\s*(delete)|(print)|(who)|(delete)|(reset)|(quit)|(load)|(save)\\s*"
+#define FILENAME "\\s*.+(\\.gc)\\s*"
 using namespace mtm;
 
 std::string toUpper(std::string str)
@@ -64,6 +60,64 @@ bool isExpressionValid(std::string str)
     // Check according to regex if it meets the requirements.
     std::regex defExpression(VALID_DEF);
     return std::regex_match(str, defExpression);
+}
+
+bool isValidLoad(std::string arguments, std::string load)
+{
+    // Check if the arguments are valid for a filename.
+    std::regex fileExp(FILENAME);
+    return std::regex_match(arguments, fileExp) && load.find(arguments)!=std::string::npos;
+}
+
+Graph loadBinaryFile(std::string command)
+{
+    // Format the string.
+    removeWhitespace(&command);
+    // Remove the load.
+    std::string name = std::string(command.begin()+5, command.end()-1);
+    std::cout << name << std::endl;
+    // Check if the name is even valid, first of all.
+    std::ifstream file(name, std::ios_base::binary);
+    if (!file || !file.is_open())
+    {
+        throw InvalidFilename(name);
+    }
+    // Get the number of vertices.
+    unsigned int vertices = 0, edges=0;
+    file.read((char*)&vertices, sizeof(unsigned int));
+    file.read((char*)&edges, sizeof(unsigned int));
+
+    Graph g;
+    // Go through the actual vertices.
+    for (int i=0;i<vertices;i++)
+    {
+        unsigned int characters = 0;
+        file.read((char*)&characters, sizeof(int));
+        // We now need to read the name.
+        // Read a char.
+        char* item = new char[characters+1];
+        file.read((char*)item, sizeof(char)*characters);
+        item[characters]='\0';
+        g.addVertex(item);
+    }
+
+    for (int i=0;i<edges;i++)
+    {
+        unsigned int originCharacters = 0;
+        file.read((char*)&originCharacters, 4);
+        // We now need to read the name.
+        // Read a char.
+        char* origin = new char[originCharacters+1];
+        file.read((char*)origin, originCharacters*sizeof(char));
+        origin[originCharacters]='\0';
+        unsigned int destChars = 0;
+        file.read((char*)&destChars, 4);
+        char* dest = new char[destChars];
+        file.read((char*)dest, destChars*sizeof(char));
+        dest[destChars]='\0';
+        g.addEdge(origin, dest);
+    }
+    return g;
 }
 
 Graph createDefinition(std::string command)
@@ -108,10 +162,22 @@ Graph createDefinition(std::string command)
 Graph fetchVariable(std::string command, std::map<std::string, Graph> varTable, Graph temp)
 {
     std::regex defintionExp(GRAPH_DEF);
-    bool define = std::regex_match(command, defintionExp);
+    bool define = std::regex_match(command, defintionExp), complement = false;
+    std::regex loadExp(LOAD);
+    if (std::regex_match(command, loadExp))
+    {
+        // We have to load the variable.
+        if (command.at(0) == '!')
+        {
+            complement = true;
+            command = command.substr(1, command.length()-1);
+        }
+        // TODO: Function call to read data from file.
+        std::cout << command << std::endl;
+        throw InvalidFilename("You have reached here.");
+    }
     if (!define)
     {
-        bool complement=false;
         if (command.at(0) == '!')
         {
             complement = true;
@@ -143,7 +209,6 @@ Graph fetchVariable(std::string command, std::map<std::string, Graph> varTable, 
     }
     else
     {
-        bool complement = false;
         // Check if we have a complement.
         if (command.at(0) == '!')
         {
@@ -167,6 +232,7 @@ Graph calculateCommands(std::vector<std::string> commands, std::map<std::string,
     std::regex variableExp(VARIABLE);
     std::regex defintionExp(GRAPH_DEF);
     std::regex operationExp(VALID_OPERATION);
+    std::regex loadExp(LOAD);
     bool initiated=false;
     Graph temp;
     // Go through the vector.
@@ -181,6 +247,11 @@ Graph calculateCommands(std::vector<std::string> commands, std::map<std::string,
             {
                 temp = temp + current;
             }
+        }
+        else if (std::regex_match(*it, loadExp))
+        {
+            // Remove the load text and grab the file name.
+            temp = loadBinaryFile(*it);
         }
         else if (std::regex_match(*it, operationExp))
         {
@@ -247,16 +318,27 @@ Graph validateExpression(std::string expression, std::map<std::string, mtm::Grap
         // Check if the expression is actually valid according to regex.
         // Replace with the current pointer the old substring with the keyword 'temp'
         // Check if we have something before.
-        if (it != depth.begin())
+        // Get the previous item. Check if it meets the regex for loading.
+        std::regex loadExp(LOAD);
+        // We have to check if the next item is a load. If so, remove the current item from depth.
+        std::smatch match;
+        if (it+1<depth.end() && std::regex_search(*(it+1), match, loadExp) && match[0].str().find(*it)!=std::string::npos)
+        {
+            // We have a valid load expression. Remove the current item.
+            continue;
+        }
+        if (it != depth.begin() && !std::regex_search(*it, loadExp))
         {
             // We can replace.
             *it = it->replace(it->find(*(it-1)), (it-1)->length(), "temp");
         }
+
         if (!isExpressionValid(*it))
         {
             // Not a valid expression at all. Break completely.
             throw UnknownVariable(*it);
         }
+
         std::string current = *it;
         removeWhitespace(&current);
         std::vector<std::string> commandsSplit;
@@ -265,7 +347,7 @@ Graph validateExpression(std::string expression, std::map<std::string, mtm::Grap
         std::regex defintionExp(GRAPH_DEF);
         std::regex operationExp(VALID_OPERATION);
         std::regex parenthesisExp(VALID_PARENTHESIS);
-
+        std::regex loadKey(LOAD_KEYWORD);
         for (auto strit = current.begin(); strit<=current.end() && left <= strit;++strit)
         {
             // Get the current substring.
@@ -277,11 +359,15 @@ Graph validateExpression(std::string expression, std::map<std::string, mtm::Grap
             {
                 left = strit;
             }
-            else if (std::regex_match(sub, operationExp)|| std::regex_match(sub, defintionExp))
+            else if (std::regex_match(sub, operationExp)|| std::regex_match(sub, defintionExp) || std::regex_match(sub, loadExp))
             {
                 // Push into the vector.
                 commandsSplit.push_back(sub);
                 left = strit;
+            }
+            else if (std::regex_match(sub, loadExp))
+            {
+                std::cout << "LOAD" << std::endl;
             }
             else if (std::regex_match(sub, variableExp))
             {
@@ -303,21 +389,36 @@ Graph validateExpression(std::string expression, std::map<std::string, mtm::Grap
                 if (!subDef)
                 {
                     auto varIt = strit+1;
+                    bool isVar = false;
                     while (varIt<=current.end())
                     {
                         std::string varSub = std::string(left, varIt);
                         if (!std::regex_match(varSub, variableExp))
                         {
                             // The last one is a valid variable.
+                            isVar = true;
+                            break;
+                        }
+                        if (std::regex_match(varSub, loadKey))
+                        {
+                            // We have a valid load keyword. Exit the variable section.
                             break;
                         }
                         ++varIt;
                     }
-                    commandsSplit.push_back(std::string(left, varIt-1));
-                    left = varIt-1;
+                    if (isVar)
+                    {
+                        commandsSplit.push_back(std::string(left, varIt-1));
+                        left = varIt-1;
+                    }
+                    else
+                    {
+                        strit = varIt;
+                    }
                 }
             }
         }
+
         t = calculateCommands(commandsSplit, vars, t);
     }
     return t;

@@ -80,6 +80,15 @@ namespace mtm
         ReservedKeyword(const std::string vertex);
         const char* what() const noexcept override;
     };
+
+    class InvalidFilename : public Exception
+    {
+    private:
+        std::string error;
+    public:
+        InvalidFilename(const std::string vertex);
+        const char* what() const noexcept override;
+    };
 }
 
 #endif
