@@ -6,55 +6,63 @@
 
 namespace mtm
 {
-    class GraphException : public std::exception
-    {
-    public:
-        GraphException() = default;
-        ~GraphException() = default;
-    };
-
-    class Exception : public GraphException
+    class Exception : public std::exception
     {
     };
 
-    class IllegalName : public Exception
+    class GraphException : public Exception
     {
+    private:
+        std::string error;
     public:
-        const char *what() const noexcept;
+        GraphException(std::string error) :error(error)
+        {
+        }
+        virtual const char *what() const noexcept override;
     };
 
-    class DuplicateVertex : public Exception
+    class IllegalName : public GraphException
     {
+        
     public:
-        const char *what() const noexcept;
-    };
-    class SelfEdge : public Exception
-    {
-    public:
-        const char *what() const noexcept;
-    };
-    class InvalidEdgeVertex : public Exception
-    {
-    public:
-        const char *what() const noexcept;
+        IllegalName(std::string name) : GraphException("Error: Illegal vertex name '" + name + "'")
+        {
+        }
+        const char *what() const noexcept override;
     };
 
-    class DuplicateEdge : public Exception
+    class DuplicateVertex : public GraphException
     {
     public:
-        const char *what() const noexcept;
+        const char *what() const noexcept override;
+    };
+    class SelfEdge : public GraphException
+    {
+    public:
+        const char *what() const noexcept override;
+    };
+    class InvalidEdgeVertex : public GraphException
+    {
+    public:
+        const char *what() const noexcept override;
     };
 
-    class IllegalCommand : public Exception
+    class DuplicateEdge : public GraphException
     {
     public:
-        const char *what() const noexcept;
+        const char *what() const noexcept override;
     };
 
-    class UnknownVariable : public Exception
+    class IllegalCommand : public GraphException
     {
     public:
-        const char *what() const noexcept;
+        const char *what() const noexcept override;
+    };
+
+    class UnknownVariable : public GraphException
+    {
+    public:
+        const char *what() const noexcept override;
     };
 
 } // namespace mtm

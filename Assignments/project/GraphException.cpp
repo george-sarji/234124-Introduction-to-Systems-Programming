@@ -1,7 +1,12 @@
-#include "GraphException.h"
+#include "Exceptions.h"
 
 namespace mtm
 {
+
+    const char *mtm::GraphException::what() const noexcept
+    {
+        return "Error.";
+    }
     const char *mtm::IllegalName::what() const noexcept
     {
         return "Error: Illegal vertex name.";

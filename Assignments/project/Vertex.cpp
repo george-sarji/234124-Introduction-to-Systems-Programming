@@ -1,5 +1,5 @@
 #include "Vertex.h"
-#include "GraphException.h"
+#include "Exceptions.h"
 #include <algorithm>
 
 namespace mtm
@@ -16,7 +16,7 @@ namespace mtm
         {
             if (!isalpha(*iterator) && !isdigit(*iterator) && *iterator != '[' && *iterator != ']' && *iterator != ';')
             {
-                throw IllegalName();
+                throw IllegalName(name);
             }
             // Check if the current letter is an opening bracket.
             if (*iterator == '[')
@@ -31,7 +31,7 @@ namespace mtm
                 if (openingBrackets <= 0)
                 {
                     // No valid opening bracket.
-                    throw mtm::IllegalName();
+                    throw mtm::IllegalName(name);
                 }
             }
 
@@ -39,13 +39,13 @@ namespace mtm
             if (openingBrackets < 0)
             {
                 // Extra closing bracket.
-                throw mtm::IllegalName();
+                throw mtm::IllegalName(name);
             }
         }
         // Check if we still have an open bracket.
         if (openingBrackets > 0)
         {
-            throw mtm::IllegalName();
+            throw mtm::IllegalName(name);
         }
         return true;
     }

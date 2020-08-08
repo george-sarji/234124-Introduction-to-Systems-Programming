@@ -1,7 +1,7 @@
 #include "Graph.h"
 #include "Edge.h"
 #include "Vertex.h"
-#include "GraphException.h"
+#include "Exceptions.h"
 #include <iostream>
 
 using namespace mtm;

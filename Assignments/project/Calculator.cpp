@@ -6,7 +6,7 @@
 #include "Graph.h"
 #include <regex>
 #include <map>
-#include "GraphException.h"
+#include "Exceptions.h"
 
 #define PROMPT "Gcalc> "
 #define VALID "\\s*\\(\\s*[a-zA-Z]+[a-zA-Z0-9]*\\s*([+\\-\\*^]\\s*[a-zA-Z]+[a-zA-Z0-9]*)*\\s*\\)\\s*"
@@ -138,7 +138,7 @@ Graph fetchVariable(std::string command, std::map<std::string, Graph> varTable, 
         else if (varTable.count(command) == 0)
         {
             // Unknown variable.
-            throw UnknownVariable();
+            throw UnknownVariable(command);
         }
         else
         {
@@ -256,7 +256,7 @@ Graph validateExpression(std::string expression, std::map<std::string, mtm::Grap
     }
     if (parenthesis.size() != 0)
     {
-        throw IllegalCommand();
+        throw IllegalCommand(expression);
     }
     if (*(expression.begin()) != '(')
         depth.push_back(expression);
@@ -278,7 +278,7 @@ Graph validateExpression(std::string expression, std::map<std::string, mtm::Grap
         if (!isExpressionValid(*it))
         {
             // Not a valid expression at all. Break completely.
-            throw IllegalCommand();
+            throw IllegalCommand(*it);
         }
         // TODO: Add the value calculation logic here. Also add the variable table. Also add the DEFINITION regex
         // TODO: Make a string splitter according to spaces or regex, split up the current string into seperate keywords.
@@ -396,7 +396,7 @@ void shell()
                 // Add the result into the variable table.
                 saveVariable(variable, result, varTable);
             }
-            catch (const Exception& e)
+            catch (const mtm::Exception& e)
             {
                 std::cout << e.what() << std::endl;
                 continue;
@@ -424,7 +424,7 @@ void shell()
                 // Add the result into the variable table.
                 std::cout << result << std::endl;
             }
-            catch (const Exception& e)
+            catch (const mtm::Exception& e)
             {
                 std::cout << e.what() << std::endl;
                 continue;
@@ -442,14 +442,14 @@ void shell()
             {
                 if (varTable.count(match) == 0)
                 {
-                    throw UnknownVariable();
+                    throw UnknownVariable(match);
                 }
                 else
                 {
                     varTable.erase(match);
                 }
             }
-            catch (const Exception& e)
+            catch (const mtm::Exception& e)
             {
                 std::cout << e.what() << std::endl;
                 continue;
@@ -481,7 +481,7 @@ int main(int argCount, char *args[])
         {
             shell();
         }
-        catch (const Exception& e)
+        catch (const mtm::Exception& e)
         {
             std::cout << e.what() << std::endl;
         }

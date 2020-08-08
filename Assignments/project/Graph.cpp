@@ -1,5 +1,5 @@
 #include "Graph.h"
-#include "GraphException.h"
+#include "Exceptions.h"
 #include <string>
 #include <algorithm>
 #include <iostream>
@@ -37,7 +37,7 @@ namespace mtm
             if (iterator->getName() == identifier)
             {
                 // Same name. Exit.
-                throw DuplicateVertex();
+                throw DuplicateVertex(identifier);
             }
         }
         // No duplicate names. Good to assign.
@@ -81,7 +81,7 @@ namespace mtm
         // Check if we are creating an edge from and to the same point.
         if (originId == destinationId)
         {
-            throw SelfEdge();
+            throw SelfEdge("<" + originId + "," + destinationId + ">");
         }
         // Go through the current vertices and retrieve them.
         mtm::Vertex *origin = nullptr, *destination = nullptr;
@@ -103,7 +103,7 @@ namespace mtm
         // Check if we have a valid origin and destination.
         if (origin == nullptr || destination == nullptr)
         {
-            throw InvalidEdgeVertex();
+            throw InvalidEdgeVertex(origin == nullptr ? originId : destinationId);
         }
         // Double check the edges, make sure not a duplicate.
         for (auto it = edges.begin(); it != edges.end(); ++it)
@@ -111,7 +111,7 @@ namespace mtm
             if (it->getOrigin() == *origin && it->getDestination() == *destination)
             {
                 // Duplicate edge.
-                throw DuplicateEdge();
+                throw DuplicateEdge("<" + originId + "," + destinationId + ">");
             }
         }
         // Create an edge according to the two vertices.
@@ -205,7 +205,7 @@ namespace mtm
             {
                 newGraph.addVertex(it->getName());
             }
-            catch (const mtm::GraphException &e)
+            catch (const mtm::Exception &e)
             {
                 continue;
             }
@@ -218,7 +218,7 @@ namespace mtm
             {
                 newGraph.addVertex(it->getName());
             }
-            catch (const mtm::GraphException &e)
+            catch (const mtm::Exception &e)
             {
                 continue;
             }
@@ -231,7 +231,7 @@ namespace mtm
             {
                 newGraph.addEdge(it->getOrigin().getName(), it->getDestination().getName());
             }
-            catch (const mtm::GraphException &e)
+            catch (const mtm::Exception &e)
             {
                 continue;
             }
@@ -242,7 +242,7 @@ namespace mtm
             {
                 newGraph.addEdge(it->getOrigin().getName(), it->getDestination().getName());
             }
-            catch (const mtm::GraphException &e)
+            catch (const mtm::Exception &e)
             {
                 continue;
             }
