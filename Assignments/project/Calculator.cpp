@@ -21,6 +21,7 @@
 #define VALID_OPERATION "\\s*[+\\-\\*^]\\s*"
 #define GRAPH_DEF "\\s*\\{\\s*[a-zA-Z[;\\]0-9]+\\s*(,\\s*[a-zA-Z[;\\]0-9]*\\s*)*(\\s*\\|\\s*(<\\s*[a-zA-Z[;\\]0-9]+\\s*,\\s*[a-zA-Z[;\\]0-9]+\\s*>)"\
                 "*(\\s*,\\s*<\\s*[a-zA-Z[;\\]0-9]+\\s*,\\s*[a-zA-Z[;\\]0-9]+\\s*>)*)*\\s*\\}\\s*"
+#define FUNCTIONS ['!', '+', '^', '*', '-']
 using namespace mtm;
 
 std::string toUpper(std::string str)
@@ -92,6 +93,19 @@ Graph validateExpression(std::string expression, std::map<std::string, mtm::Grap
         }
         std::cout << isExpressionValid(*it);
         // TODO: Add the value calculation logic here. Also add the variable table. Also add the DEFINITION regex
+        // TODO: Make a string splitter according to spaces or regex, split up the current string into seperate keywords.
+        std::string current = *it;
+
+        while (!current.empty())
+        {
+            // Iterate through the string that we have.
+            // Each iteration, check for a substring regexp hit for function, variable or definition
+            // If function, throw error except for complement
+            // If variable, look for variable in varmap. If no result, throw error.
+            // Substring the regexp hit from current and carry on with iterations
+            // If last hit was operation, look for variable. 
+        }
+
     }
     return Graph();
 }
