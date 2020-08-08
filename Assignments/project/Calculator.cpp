@@ -38,7 +38,7 @@
 #define WHO "\\s*(who)\\s*"
 #define RESET "\\s*(reset)\\s*"
 #define ARGUMENTS "\\(\\s*.*\\s*\\)"
-#define RESERVED_KEYWORD "\\s*(delete)|(print)|(who)|(delete)|(reset)|(quit)\\s*"
+#define RESERVED_KEYWORD "\\s*(delete)|(print)|(who)|(delete)|(reset)|(quit)|(load)|(save)\\s*"
 using namespace mtm;
 
 std::string toUpper(std::string str)
@@ -257,8 +257,6 @@ Graph validateExpression(std::string expression, std::map<std::string, mtm::Grap
             // Not a valid expression at all. Break completely.
             throw UnknownVariable(*it);
         }
-        // TODO: Add the value calculation logic here. Also add the variable table. Also add the DEFINITION regex
-        // TODO: Make a string splitter according to spaces or regex, split up the current string into seperate keywords.
         std::string current = *it;
         removeWhitespace(&current);
         std::vector<std::string> commandsSplit;
