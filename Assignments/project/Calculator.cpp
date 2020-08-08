@@ -33,8 +33,9 @@
 #define VALID_VARIABLE "\\s*[a-zA-Z]+[a-zA-Z0-9]*\\s*=\\s*"
 #define FUNCTIONS ['!', '+', '^', '*', '-']
 #define QUIT "\\s*(quit)\\s*"
-#define PRINT "\\s*(print)\\s*"
+#define PRINT "\\s*(print)\\s*\\(\\s*.*\\s*\\)\\s*"
 #define WHO "\\s*(who)\\s*"
+#define ARGUMENTS "\\(\\s*.*\\s*\\)"
 using namespace mtm;
 
 std::string toUpper(std::string str)
@@ -125,7 +126,6 @@ Graph fetchVariable(std::string command, std::map<std::string, Graph> varTable, 
         {
             complement = true;
             command = command.substr(1, command.length()-1);
-            std::cout << command << std::endl;
         }
         Graph current;
         if (command == "temp")
@@ -141,7 +141,7 @@ Graph fetchVariable(std::string command, std::map<std::string, Graph> varTable, 
         else
         {
             // We have a valid variable. Fetch the variable.
-            Graph current = varTable[command];
+            current = varTable[command];
         }
         // Check if it's a complement.
         if (complement)
@@ -250,8 +250,11 @@ Graph validateExpression(std::string expression, std::map<std::string, mtm::Grap
             int match = parenthesis.top();
             parenthesis.pop();
             depth.push_back(expression.substr(i, match-i + 1));
-            // std::cout << *(depth.end()-1) << std::endl;
         }
+    }
+    if (parenthesis.size() != 0)
+    {
+        throw IllegalCommand();
     }
     if (*(expression.begin()) != '(')
         depth.push_back(expression);
@@ -289,34 +292,53 @@ Graph validateExpression(std::string expression, std::map<std::string, mtm::Grap
         for (auto strit = current.begin(); strit<=current.end() && left <= strit;++strit)
         {
             // Get the current substring.
+            bool subDef = false;
             std::string sub = std::string(left, strit);
             // Check if the current sub matches a variable.
+            std::smatch match;
             if (std::regex_match(sub, parenthesisExp))
             {
                 left = strit;
-            }
-            if (std::regex_match(sub, variableExp))
-            {
-                // We might have a continuation to the variable. Go through the variable until we don't have a match.
-                auto varIt = strit+1;
-                while (varIt!=current.end())
-                {
-                    std::string varSub = std::string(left, varIt);
-                    if (!std::regex_match(varSub, variableExp))
-                    {
-                        // The last one is a valid variable.
-                        break;
-                    }
-                    ++varIt;
-                }
-                commandsSplit.push_back(std::string(left, varIt-1));
-                left = varIt-1;
             }
             else if (std::regex_match(sub, operationExp)|| std::regex_match(sub, defintionExp))
             {
                 // Push into the vector.
                 commandsSplit.push_back(sub);
                 left = strit;
+            }
+            else if (std::regex_match(sub, variableExp))
+            {
+                // Check if we have a definition in our command.
+                if (std::regex_search(current, match, defintionExp))
+                {
+                    // Check if the sub is contained within the match.
+                    for (auto matchIterator = match.begin(); matchIterator!=match.end();++matchIterator)
+                    {
+                        if (matchIterator->str().find(sub) != std::string::npos)
+                        {
+                            // It's a substring.
+                            subDef = true;
+                            break;
+                        }
+                    }
+                }
+                // We might have a continuation to the variable. Go through the variable until we don't have a match.
+                if (!subDef)
+                {
+                    auto varIt = strit+1;
+                    while (varIt<=current.end())
+                    {
+                        std::string varSub = std::string(left, varIt);
+                        if (!std::regex_match(varSub, variableExp))
+                        {
+                            // The last one is a valid variable.
+                            break;
+                        }
+                        ++varIt;
+                    }
+                    commandsSplit.push_back(std::string(left, varIt-1));
+                    left = varIt-1;
+                }
             }
         }
         t = calculateCommands(commandsSplit, vars, t);
@@ -341,9 +363,11 @@ void shell()
 {
     std::string input = "";
     std::regex defintionExp(VALID_VARIABLE);
+    std::regex argumentsExp(ARGUMENTS);
     std::regex variableExp(VARIABLE);
     std::regex quit(QUIT);
     std::regex who(WHO);
+    std::regex print(PRINT);
     std::map<std::string, mtm::Graph> varTable;
     while (!std::regex_match(input, quit))
     {
@@ -380,6 +404,26 @@ void shell()
             for (auto it = varTable.begin(); it!= varTable.end();++it)
             {
                 std::cout << it->first << std::endl;
+            }
+        }
+        else if (std::regex_search(input, matches, print))
+        {
+            // Get the matched print.
+            std::string matchedPrint = matches[0];
+            // Get the matched expression.
+            std::smatch matchedArguments;
+            std::regex_search(input, matchedArguments, argumentsExp);
+            std::string match = matchedArguments[0];
+            try
+            {
+                Graph result= validateExpression(matchedArguments[0], varTable);
+                // Add the result into the variable table.
+                std::cout << result << std::endl;
+            }
+            catch (const Exception& e)
+            {
+                std::cout << e.what() << std::endl;
+                continue;
             }
         }
     }
