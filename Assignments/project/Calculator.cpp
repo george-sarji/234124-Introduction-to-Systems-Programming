@@ -11,14 +11,14 @@
 #define PROMPT "Gcalc> "
 #define VALID "\\s*\\(\\s*[a-zA-Z]+[a-zA-Z0-9]*\\s*([+\\-\\*^]\\s*[a-zA-Z]+[a-zA-Z0-9]*)*\\s*\\)\\s*"
 #define VALID_DEF "(\\s*\\s*[!]{0,1}(([!]{0,1}[a-zA-Z]+[a-zA-Z0-9]*)|"\
-            "\\s*[!]{0,1}\\{(\\s*[a-zA-Z[;\\]0-9]+\\s*(,\\s*[a-zA-Z[;\\]0-9]*\\s*)*)*"\
+            "\\s*[!]{0,1}\\{(\\s*[a-zA-Z[;\\]0-9]+\\s*(,\\s*[a-zA-Z[;\\]0-9]+\\s*)*)*"\
             "(\\s*\\|\\s*(<\\s*[a-zA-Z[;\\]0-9]+\\s*,\\s*[a-zA-Z[;\\]0-9]+\\s*>)*"\
             "(\\s*,\\s*<\\s*[a-zA-Z[;\\]0-9]+\\s*,\\s*[a-zA-Z[;\\]0-9]+\\s*>)*)*\\s*\\}\\s*)\\s*"\
             "([+\\-\\*^]\\s*[!]{0,1}(([!]{0,1}[a-zA-Z]+[a-zA-Z0-9]*)|\\s*[!]{0,1}\\{\\s*[a-zA-Z[;\\]0-9]+\\s*"\
-            "(,\\s*[a-zA-Z[;\\]0-9]*\\s*)*(\\s*\\|\\s*(<\\s*[a-zA-Z[;\\]0-9]+\\s*,\\s*[a-zA-Z[;\\]0-9]+\\s*>)*"\
+            "(,\\s*[a-zA-Z[;\\]0-9]+\\s*)*(\\s*\\|\\s*(<\\s*[a-zA-Z[;\\]0-9]+\\s*,\\s*[a-zA-Z[;\\]0-9]+\\s*>)*"\
             "(\\s*,\\s*<\\s*[a-zA-Z[;\\]0-9]+\\s*,\\s*[a-zA-Z[;\\]0-9]+\\s*>)*)*\\s*\\}\\s*))*\\s*\\s*)"\
             "|(\\s*\\(\\s*[!]{0,1}(([!]{0,1}[a-zA-Z]+[a-zA-Z0-9]*)|"\
-            "\\s*[!]{0,1}\\{\\s*[a-zA-Z[;\\]0-9]+\\s*(,\\s*[a-zA-Z[;\\]0-9]*\\s*)*"\
+            "\\s*[!]{0,1}\\{\\s*[a-zA-Z[;\\]0-9]+\\s*(,\\s*[a-zA-Z[;\\]0-9]+\\s*)*"\
             "(\\s*\\|\\s*(<\\s*[a-zA-Z[;\\]0-9]+\\s*,\\s*[a-zA-Z[;\\]0-9]+\\s*>)*"\
             "(\\s*,\\s*<\\s*[a-zA-Z[;\\]0-9]+\\s*,\\s*[a-zA-Z[;\\]0-9]+\\s*>)*)*\\s*\\}\\s*)\\s*"\
             "([+\\-\\*^]\\s*[!]{0,1}(([!]{0,1}[a-zA-Z]+[a-zA-Z0-9]*)|\\s*[!]{0,1}\\{\\s*[a-zA-Z[;\\]0-9]+\\s*"\
@@ -27,7 +27,7 @@
 #define VALID_OPERATION "\\s*[+\\-\\*^]\\s*"
 #define VALID_PARENTHESIS "[\\(\\)]"
 #define VARIABLE "\\s*[!]{0,1}[a-zA-Z]+[a-zA-Z0-9]*\\s*"
-#define GRAPH_DEF "\\s*[!]{0,1}\\s*\\{\\s*([a-zA-Z[;\\]0-9]+\\s*(,\\s*[a-zA-Z[;\\]0-9]*\\s*)*)*(\\s*\\|\\s*(<\\s*[a-zA-Z[;\\]0-9]+\\s*,\\s*[a-zA-Z[;\\]0-9]+\\s*>)"\
+#define GRAPH_DEF "\\s*[!]{0,1}\\s*\\{\\s*([a-zA-Z[;\\]0-9]+\\s*(,\\s*[a-zA-Z[;\\]0-9]+\\s*)*)*(\\s*\\|\\s*(<\\s*[a-zA-Z[;\\]0-9]+\\s*,\\s*[a-zA-Z[;\\]0-9]+\\s*>)"\
                 "*(\\s*,\\s*<\\s*[a-zA-Z[;\\]0-9]+\\s*,\\s*[a-zA-Z[;\\]0-9]+\\s*>)*)*\\s*\\}\\s*"
 #define VALID_VARIABLE "\\s*[a-zA-Z]+[a-zA-Z0-9]*\\s*=\\s*"
 #define FUNCTIONS ['!', '+', '^', '*', '-']
@@ -78,13 +78,14 @@ Graph createDefinition(std::string command)
         int firstComma = vertices.find(",");
         std::string current = vertices.substr(0, firstComma);
         // Get the current vertix.
-        try
+        mtm::Vertex currentVertex(current);
+        if (graph.isContainsVertex(current))
+        {
+            throw DuplicateVertex(current);
+        }
+        else
         {
             graph.addVertex(current);
-        }
-        catch (const mtm::Exception &e)
-        {
-            throw(e);
         }
         // Substring.
         vertices.erase(0, current.length()+1);
@@ -98,18 +99,12 @@ Graph createDefinition(std::string command)
         int openingTag = edges.find("<"), closingTag = edges.find(">");
         int firstVertex = comma-openingTag-1, secondVertex = closingTag-comma-1;
         // Attempt to add.
-        try
+        Vertex origin(edges.substr(openingTag+1, firstVertex)), destination(edges.substr(comma+1, secondVertex));
+        if (graph.isContainsVertex(origin) && graph.isContainsVertex(destination))
         {
-            Vertex origin(edges.substr(openingTag+1, firstVertex)), destination(edges.substr(comma+1, secondVertex));
-            if (graph.isContainsVertex(origin) && graph.isContainsVertex(destination))
-            {
-                graph.addEdge(origin.getName(), destination.getName());
-            }
+            throw DuplicateEdge("<");
         }
-        catch (const mtm::Exception &e)
-        {
-            throw(e);
-        }
+        graph.addEdge(origin.getName(), destination.getName());
         // Substring accordingly.
         edges = edges.substr(closingTag+2, edges.length()-1);
     }
@@ -162,20 +157,13 @@ Graph fetchVariable(std::string command, std::map<std::string, Graph> varTable, 
             complement = true;
             command = command.substr(1, command.length()-1);
         }
-        try
+        Graph current = createDefinition(command);
+        if (complement)
         {
-            Graph current = createDefinition(command);
-            if (complement)
-            {
-                current = !current;
-            }
-            // Check if we initiated.
-            return current;
+            current = !current;
         }
-        catch (const mtm::Exception& e)
-        {
-            throw(e);
-        }
+        // Check if we initiated.
+        return current;
     }
     return Graph();
 }
