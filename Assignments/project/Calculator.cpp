@@ -90,6 +90,10 @@ Graph createDefinition(std::string command)
         int comma = edges.find(",");
         int openingTag = edges.find("<"), closingTag = edges.find(">");
         int firstVertex = comma-openingTag-1, secondVertex = closingTag-comma-1;
+        if (firstVertex < 0 || secondVertex < 0)
+        {
+            break;
+        }
         // Attempt to add.
         graph.addEdge(edges.substr(openingTag+1, firstVertex), edges.substr(comma+1, secondVertex));
         // Substring accordingly.

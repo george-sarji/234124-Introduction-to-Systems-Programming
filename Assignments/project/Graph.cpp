@@ -288,7 +288,7 @@ namespace mtm
         // Go through the edges.
         for (auto it = edges.begin(); it != edges.end(); ++it)
         {
-            if (!graph.isContainsEdge(*it))
+            if (!graph.isContainsEdge(*it) && graph.isContainsVertex(it->getOrigin())&& graph.isContainsVertex(it->getDestination()))
             {
                 newGraph.addEdge(it->getOrigin().getName(), it->getDestination().getName());
             }
