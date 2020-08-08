@@ -71,6 +71,6 @@ namespace mtm
         UnknownVariable(const std::string vertex);
         const char* what() const noexcept override;
     };
-};
+}
 
 #endif

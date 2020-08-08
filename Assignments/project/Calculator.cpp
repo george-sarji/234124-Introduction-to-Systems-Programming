@@ -214,9 +214,6 @@ Graph calculateCommands(std::vector<std::string> commands, std::map<std::string,
 Graph validateExpression(std::string expression, std::map<std::string, mtm::Graph> vars)
 {
     // Go through the expression, check for the parenthesis and work by order.
-    int currentOpening = 0;
-    auto left = expression.begin();
-    auto right = expression.end()-1;
     std::vector<std::string> depth;
     std::stack<int> parenthesis;
     for (int i = expression.length()-1; i>= 0;i--)
@@ -252,7 +249,6 @@ Graph validateExpression(std::string expression, std::map<std::string, mtm::Grap
         if (it != depth.begin())
         {
             // We can replace.
-            int index = it->find(*(it-1));
             *it = it->replace(it->find(*(it-1)), (it-1)->length(), "temp");
         }
         if (!isExpressionValid(*it))
@@ -410,7 +406,6 @@ void shell(bool automatic)
                 std::string match = matches[0];
                 std::regex_search(match, matches, variableExp);
                 match = matches[0];
-                bool isDeleted = false;
                 if (varTable.count(match) == 0)
                 {
                     throw UnknownVariable(match);
