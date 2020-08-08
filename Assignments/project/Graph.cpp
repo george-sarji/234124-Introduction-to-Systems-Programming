@@ -3,6 +3,7 @@
 #include <string>
 #include <algorithm>
 #include <iostream>
+#include <fstream>
 
 namespace mtm
 {
@@ -362,20 +363,47 @@ namespace mtm
         return edges == graph.edges && vertices == graph.vertices;
     }
 
-    std::string mtm::Graph::getBinary() const
+    void mtm::Graph::writeBinary(std::string file_name) const
     {
-        std::string str = "";
-        str += vertices.size();
-        str+=edges.size();
+        // Attempt to open the file.
+        std::ofstream file(file_name, std::ios_base::binary);
+        if (!file || !file.is_open())
+        {
+            throw InvalidFilename(file_name);
+        }
+        // Start writing onto the file.
+        unsigned int numVertices = vertices.size();
+        file.write((const char*)&numVertices, sizeof(unsigned int));
+        unsigned int numEdges = edges.size();
+        file.write((const char*)&numEdges, sizeof(unsigned int));
+        // Go through the vertices and write.
         for (auto it = vertices.begin();it!=vertices.end();++it)
         {
-            str+=it->getName();
+            // Get the length of the name.
+            int charNum = it->getName().length();
+            file.write((const char*)&charNum, sizeof(unsigned int));
+            // Write the name.
+            std::string name = it->getName();
+            file.write((const char*)&name, charNum*sizeof(char));
         }
         for (auto it=edges.begin();it!=edges.end();++it)
         {
-            str+="<"+it->getOrigin().getName()+","+it->getDestination().getName()+">";
+            // Get the length of the name.
+            Vertex origin = it->getOrigin();
+            int charNum = origin.getName().length();
+            file.write((const char*)&charNum, sizeof(unsigned int));
+            // Write the name.
+            std::string name = origin.getName();
+            file.write((const char*)&name, charNum*sizeof(char));
+
+            Vertex destination = it->getDestination();
+            charNum = destination.getName().length();
+            file.write((const char*)&charNum, sizeof(unsigned int));
+            // Write the name.
+            name = destination.getName();
+            file.write((const char*)&name, charNum*sizeof(char));
         }
-        return str;
+        file.close();
     }
 
 } // namespace mtm

@@ -119,6 +119,7 @@ Graph loadBinaryFile(std::string command)
         dest[destChars]='\0';
         g.addEdge(origin, dest);
     }
+    file.close();
     return g;
 }
 
