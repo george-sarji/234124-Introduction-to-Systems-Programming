@@ -266,7 +266,7 @@ Graph validateExpression(std::string expression, std::map<std::string, mtm::Grap
         if (!isExpressionValid(*it))
         {
             // Not a valid expression at all. Break completely.
-            throw IllegalCommand(*it);
+            throw UnknownVariable(*it);
         }
         // TODO: Add the value calculation logic here. Also add the variable table. Also add the DEFINITION regex
         // TODO: Make a string splitter according to spaces or regex, split up the current string into seperate keywords.
@@ -363,71 +363,59 @@ void shell()
     std::map<std::string, mtm::Graph> varTable;
     while (!std::regex_match(input, quit))
     {
-        std::cout << PROMPT;
-        std::getline(std::cin, input);
-        std::smatch matches;
-        if (std::regex_search(input, matches, defintionExp))
+        try
         {
-            // Get the matched definition.
-            std::string matchedDef = matches[0];
-            input = input.substr(matchedDef.length(), input.length() - matchedDef.length());
-            // Remove the whitespaces.
-            removeWhitespace(&matchedDef);
-            // Get the variable.
-            std::smatch matchedVar;
-            std::regex_search(matchedDef, matchedVar, variableExp);
-            std::string variable = matchedVar[0];
-            // Get the result of the command.
-            try
+            std::cout << PROMPT;
+            std::getline(std::cin, input);
+            std::smatch matches;
+            if (std::regex_search(input, matches, defintionExp))
             {
-                Graph result= validateExpression(input, varTable);
+                // Get the matched definition.
+                std::string matchedDef = matches[0];
+                std::string formattedInput=input.substr(matchedDef.length(), input.length() - matchedDef.length());
+                // Remove the whitespaces.
+                removeWhitespace(&matchedDef);
+                // Get the variable.
+                std::smatch matchedVar;
+                std::regex_search(matchedDef, matchedVar, variableExp);
+                std::string variable = matchedVar[0];
+                // Get the result of the command.
+                if (formattedInput.empty())
+                {
+                    throw IllegalCommand(input);
+                }
+                Graph result= validateExpression(formattedInput, varTable);
                 // Add the result into the variable table.
                 saveVariable(variable, result, varTable);
             }
-            catch (const mtm::Exception& e)
+            else if (std::regex_match(input, who))
             {
-                std::cout << e.what() << std::endl;
-                continue;
+                // We got a valid who. Print out the map.
+                for (auto it = varTable.begin(); it!= varTable.end();++it)
+                {
+                    std::cout << it->first << std::endl;
+                }
             }
-        }
-        else if (std::regex_match(input, who))
-        {
-            // We got a valid who. Print out the map.
-            for (auto it = varTable.begin(); it!= varTable.end();++it)
+            else if (std::regex_search(input, matches, print))
             {
-                std::cout << it->first << std::endl;
-            }
-        }
-        else if (std::regex_search(input, matches, print))
-        {
-            // Get the matched print.
-            std::string matchedPrint = matches[0];
-            // Get the matched expression.
-            std::smatch matchedArguments;
-            std::regex_search(input, matchedArguments, argumentsExp);
-            std::string match = matchedArguments[0];
-            try
-            {
+                // Get the matched print.
+                std::string matchedPrint = matches[0];
+                // Get the matched expression.
+                std::smatch matchedArguments;
+                std::regex_search(input, matchedArguments, argumentsExp);
+                std::string match = matchedArguments[0];
                 Graph result= validateExpression(matchedArguments[0], varTable);
                 // Add the result into the variable table.
                 std::cout << result << std::endl;
             }
-            catch (const mtm::Exception& e)
+            else if (std::regex_search(input, matches, deleteExp))
             {
-                std::cout << e.what() << std::endl;
-                continue;
-            }
-        }
-        else if (std::regex_search(input, matches, deleteExp))
-        {
-            // Get the matched expression.
-            std::regex_search(input, matches, argumentsExp);
-            std::string match = matches[0];
-            std::regex_search(match, matches, variableExp);
-            match = matches[0];
-            bool isDeleted = false;
-            try
-            {
+                // Get the matched expression.
+                std::regex_search(input, matches, argumentsExp);
+                std::string match = matches[0];
+                std::regex_search(match, matches, variableExp);
+                match = matches[0];
+                bool isDeleted = false;
                 if (varTable.count(match) == 0)
                 {
                     throw UnknownVariable(match);
@@ -437,21 +425,20 @@ void shell()
                     varTable.erase(match);
                 }
             }
-            catch (const mtm::Exception& e)
+            else if (std::regex_match(input, resetExp))
             {
-                std::cout << e.what() << std::endl;
-                continue;
+                // Valid reset. Wipe the table.
+                varTable.clear();
+            }
+            else if (!std::regex_match(input, quit))
+            {
+                // No recognized command. Throw an error.
+                throw IllegalCommand(input);
             }
         }
-        else if (std::regex_match(input, resetExp))
+        catch (const Exception& e)
         {
-            // Valid reset. Wipe the table.
-            varTable.clear();
-        }
-        else if (!std::regex_match(input, quit))
-        {
-            // No recognized command. Throw an error.
-            std::cout << "Error: Invalid command '" << input << "'" << std::endl;
+            std::cout << e.what() <<std::endl;
         }
     }
 }
