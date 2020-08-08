@@ -357,4 +357,10 @@ namespace mtm
         return str;
     }
 
+    bool mtm::Graph::operator==(const mtm::Graph& graph) const
+    {
+        return edges == graph.edges && vertices == graph.vertices;
+    }
+
+
 } // namespace mtm

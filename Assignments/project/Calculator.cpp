@@ -7,7 +7,6 @@
 #include <regex>
 #include <map>
 #include "GraphException.h"
-#include <stdlib.h>
 
 #define PROMPT "Gcalc> "
 #define VALID "\\s*\\(\\s*[a-zA-Z]+[a-zA-Z0-9]*\\s*([+\\-\\*^]\\s*[a-zA-Z]+[a-zA-Z0-9]*)*\\s*\\)\\s*"
@@ -34,7 +33,9 @@
 #define FUNCTIONS ['!', '+', '^', '*', '-']
 #define QUIT "\\s*(quit)\\s*"
 #define PRINT "\\s*(print)\\s*\\(\\s*.*\\s*\\)\\s*"
+#define DELETE "\\s*(delete)\\s*\\(\\s*.*\\s*\\)\\s*"
 #define WHO "\\s*(who)\\s*"
+#define RESET "\\s*(reset)\\s*"
 #define ARGUMENTS "\\(\\s*.*\\s*\\)"
 using namespace mtm;
 
@@ -75,17 +76,18 @@ Graph createDefinition(std::string command)
     while (!vertices.empty() && !errorFlag)
     {
         int firstComma = vertices.find(",");
+        std::string current = vertices.substr(0, firstComma);
         // Get the current vertix.
         try
         {
-            graph.addVertex(vertices.substr(0, firstComma));
+            graph.addVertex(current);
         }
         catch (const mtm::Exception &e)
         {
             throw(e);
         }
         // Substring.
-        vertices = vertices.substr(firstComma+1, vertices.length()-1);
+        vertices.erase(0, current.length()+1);
     }
     // Go through the edges defined.
     std::string edges = command.substr(splitterPos+1, command.length()-1);
@@ -104,7 +106,7 @@ Graph createDefinition(std::string command)
                 graph.addEdge(origin.getName(), destination.getName());
             }
         }
-        catch (const mtm::GraphException &e)
+        catch (const mtm::Exception &e)
         {
             throw(e);
         }
@@ -170,7 +172,7 @@ Graph fetchVariable(std::string command, std::map<std::string, Graph> varTable, 
             // Check if we initiated.
             return current;
         }
-        catch (const Exception& e)
+        catch (const mtm::Exception& e)
         {
             throw(e);
         }
@@ -368,6 +370,8 @@ void shell()
     std::regex quit(QUIT);
     std::regex who(WHO);
     std::regex print(PRINT);
+    std::regex deleteExp(DELETE);
+    std::regex resetExp(RESET);
     std::map<std::string, mtm::Graph> varTable;
     while (!std::regex_match(input, quit))
     {
@@ -425,6 +429,41 @@ void shell()
                 std::cout << e.what() << std::endl;
                 continue;
             }
+        }
+        else if (std::regex_search(input, matches, deleteExp))
+        {
+            // Get the matched expression.
+            std::regex_search(input, matches, argumentsExp);
+            std::string match = matches[0];
+            std::regex_search(match, matches, variableExp);
+            match = matches[0];
+            bool isDeleted = false;
+            try
+            {
+                if (varTable.count(match) == 0)
+                {
+                    throw UnknownVariable();
+                }
+                else
+                {
+                    varTable.erase(match);
+                }
+            }
+            catch (const Exception& e)
+            {
+                std::cout << e.what() << std::endl;
+                continue;
+            }
+        }
+        else if (std::regex_match(input, resetExp))
+        {
+            // Valid reset. Wipe the table.
+            varTable.clear();
+        }
+        else if (!std::regex_match(input, quit))
+        {
+            // No recognized command. Throw an error.
+            std::cout << "Error: Invalid command '" << input << "'" << std::endl;
         }
     }
 }

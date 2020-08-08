@@ -32,6 +32,7 @@ namespace mtm
         Graph operator-(Graph &graph);
         Graph operator*(Graph &graph);
         Graph operator!() const;
+        bool operator==(const Graph& graph) const;
         friend std::ostream &operator<<(std::ostream &stream, Graph &graph);
     };
 
