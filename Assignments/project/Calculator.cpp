@@ -6,6 +6,7 @@
 #include "Graph.h"
 #include <regex>
 #include <map>
+#include <fstream>
 #include "Exceptions.h"
 
 #define PROMPT "Gcalc> "
@@ -340,7 +341,7 @@ void saveVariable(std::string key, Graph graph, std::map<std::string, Graph> &va
     }
 }
 
-void shell()
+void shell(bool automatic)
 {
     std::string input = "";
     std::regex defintionExp(VALID_VARIABLE);
@@ -352,11 +353,14 @@ void shell()
     std::regex deleteExp(DELETE);
     std::regex resetExp(RESET);
     std::map<std::string, mtm::Graph> varTable;
-    while (!std::regex_match(input, quit))
+    while (!std::regex_match(input, quit) && !std::cin.eof())
     {
         try
         {
-            std::cout << PROMPT;
+            if (!automatic)
+            {
+                std::cout << PROMPT;
+            }
             std::getline(std::cin, input);
             std::smatch matches;
             if (std::regex_search(input, matches, defintionExp))
@@ -445,7 +449,7 @@ int main(int argCount, char *args[])
         // SHELL
         try
         {
-            shell();
+            shell(false);
         }
         catch (const mtm::Exception& e)
         {
@@ -455,6 +459,28 @@ int main(int argCount, char *args[])
     }
     case 3:
     {
+        // Take the arguments and use them accordingly.
+        std::fstream outputFile, inputFile;
+        outputFile.open(args[2]);
+        inputFile.open(args[1]);
+        if (!inputFile.is_open())
+        {
+            std::cerr << "Error: Invalid input file '" << args[1] << "'" << std::endl;
+        }
+        else if (!outputFile.is_open())
+        {
+            std::cerr << "Error: Invalid output file '" << args[2] << "'" << std::endl;
+        }
+        else
+        {
+            // Change the buffers for the text.
+            std::cout.rdbuf(outputFile.rdbuf());
+            std::cin.rdbuf(inputFile.rdbuf());
+            shell(true);
+        }
+        outputFile.close();
+        inputFile.close();
+        break;
         // BATCH
     }
     default:
