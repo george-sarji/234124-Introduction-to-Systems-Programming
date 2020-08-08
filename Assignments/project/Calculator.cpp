@@ -92,7 +92,7 @@ Graph loadBinaryFile(std::string command)
 
     Graph g;
     // Go through the actual vertices.
-    for (int i=0;i<vertices;i++)
+    for (unsigned int i=0;i<vertices;i++)
     {
         unsigned int characters = 0;
         file.read((char*)&characters, sizeof(int));
@@ -104,7 +104,7 @@ Graph loadBinaryFile(std::string command)
         g.addVertex(item);
     }
 
-    for (int i=0;i<edges;i++)
+    for (unsigned int i=0;i<edges;i++)
     {
         unsigned int originCharacters = 0;
         file.read((char*)&originCharacters, 4);
