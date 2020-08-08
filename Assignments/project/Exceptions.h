@@ -71,6 +71,15 @@ namespace mtm
         UnknownVariable(const std::string vertex);
         const char* what() const noexcept override;
     };
+
+    class ReservedKeyword : public Exception
+    {
+    private:
+        std::string error;
+    public:
+        ReservedKeyword(const std::string vertex);
+        const char* what() const noexcept override;
+    };
 }
 
 #endif

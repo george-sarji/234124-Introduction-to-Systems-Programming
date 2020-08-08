@@ -38,6 +38,7 @@
 #define WHO "\\s*(who)\\s*"
 #define RESET "\\s*(reset)\\s*"
 #define ARGUMENTS "\\(\\s*.*\\s*\\)"
+#define RESERVED_KEYWORD "\\s*(delete)|(print)|(who)|(delete)|(reset)|(quit)\\s*"
 using namespace mtm;
 
 std::string toUpper(std::string str)
@@ -348,6 +349,7 @@ void shell(bool automatic)
     std::regex print(PRINT);
     std::regex deleteExp(DELETE);
     std::regex resetExp(RESET);
+    std::regex reservedWord(RESERVED_KEYWORD);
     std::map<std::string, mtm::Graph> varTable;
     while (!std::regex_match(input, quit) && !std::cin.eof())
     {
@@ -370,6 +372,10 @@ void shell(bool automatic)
                 std::smatch matchedVar;
                 std::regex_search(matchedDef, matchedVar, variableExp);
                 std::string variable = matchedVar[0];
+                if (std::regex_match(variable, reservedWord))
+                {
+                    throw ReservedKeyword(variable);
+                }
                 // Get the result of the command.
                 if (formattedInput.empty())
                 {

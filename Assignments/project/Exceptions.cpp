@@ -56,4 +56,12 @@ namespace mtm
     {
         return error.c_str();
     }
+
+    mtm::ReservedKeyword::ReservedKeyword(const std::string variable) : error("Error: Variable named as reserved keyword '" + variable + "'")
+    {
+    }
+    const char* mtm::ReservedKeyword::what() const noexcept
+    {
+        return error.c_str();
+    }
 }
