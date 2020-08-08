@@ -11,19 +11,30 @@
 
 #define PROMPT "Gcalc> "
 #define VALID "\\s*\\(\\s*[a-zA-Z]+[a-zA-Z0-9]*\\s*([+\\-\\*^]\\s*[a-zA-Z]+[a-zA-Z0-9]*)*\\s*\\)\\s*"
-#define VALID_DEF "\\s*\\(\\s*[!]{0,1}(([!]{0,1}[a-zA-Z]+[a-zA-Z0-9]*)|"\
+#define VALID_DEF "(\\s*\\s*[!]{0,1}(([!]{0,1}[a-zA-Z]+[a-zA-Z0-9]*)|"\
+            "\\s*[!]{0,1}\\{(\\s*[a-zA-Z[;\\]0-9]+\\s*(,\\s*[a-zA-Z[;\\]0-9]*\\s*)*)*"\
+            "(\\s*\\|\\s*(<\\s*[a-zA-Z[;\\]0-9]+\\s*,\\s*[a-zA-Z[;\\]0-9]+\\s*>)*"\
+            "(\\s*,\\s*<\\s*[a-zA-Z[;\\]0-9]+\\s*,\\s*[a-zA-Z[;\\]0-9]+\\s*>)*)*\\s*\\}\\s*)\\s*"\
+            "([+\\-\\*^]\\s*[!]{0,1}(([!]{0,1}[a-zA-Z]+[a-zA-Z0-9]*)|\\s*[!]{0,1}\\{\\s*[a-zA-Z[;\\]0-9]+\\s*"\
+            "(,\\s*[a-zA-Z[;\\]0-9]*\\s*)*(\\s*\\|\\s*(<\\s*[a-zA-Z[;\\]0-9]+\\s*,\\s*[a-zA-Z[;\\]0-9]+\\s*>)*"\
+            "(\\s*,\\s*<\\s*[a-zA-Z[;\\]0-9]+\\s*,\\s*[a-zA-Z[;\\]0-9]+\\s*>)*)*\\s*\\}\\s*))*\\s*\\s*)"\
+            "|(\\s*\\(\\s*[!]{0,1}(([!]{0,1}[a-zA-Z]+[a-zA-Z0-9]*)|"\
             "\\s*[!]{0,1}\\{\\s*[a-zA-Z[;\\]0-9]+\\s*(,\\s*[a-zA-Z[;\\]0-9]*\\s*)*"\
             "(\\s*\\|\\s*(<\\s*[a-zA-Z[;\\]0-9]+\\s*,\\s*[a-zA-Z[;\\]0-9]+\\s*>)*"\
             "(\\s*,\\s*<\\s*[a-zA-Z[;\\]0-9]+\\s*,\\s*[a-zA-Z[;\\]0-9]+\\s*>)*)*\\s*\\}\\s*)\\s*"\
             "([+\\-\\*^]\\s*[!]{0,1}(([!]{0,1}[a-zA-Z]+[a-zA-Z0-9]*)|\\s*[!]{0,1}\\{\\s*[a-zA-Z[;\\]0-9]+\\s*"\
             "(,\\s*[a-zA-Z[;\\]0-9]*\\s*)*(\\s*\\|\\s*(<\\s*[a-zA-Z[;\\]0-9]+\\s*,\\s*[a-zA-Z[;\\]0-9]+\\s*>)*"\
-            "(\\s*,\\s*<\\s*[a-zA-Z[;\\]0-9]+\\s*,\\s*[a-zA-Z[;\\]0-9]+\\s*>)*)*\\s*\\}\\s*))*\\s*\\)\\s*"
+            "(\\s*,\\s*<\\s*[a-zA-Z[;\\]0-9]+\\s*,\\s*[a-zA-Z[;\\]0-9]+\\s*>)*)*\\s*\\}\\s*))*\\s*\\)\\s*)"
 #define VALID_OPERATION "\\s*[+\\-\\*^]\\s*"
 #define VALID_PARENTHESIS "[\\(\\)]"
 #define VARIABLE "\\s*[!]{0,1}[a-zA-Z]+[a-zA-Z0-9]*\\s*"
-#define GRAPH_DEF "\\s*[!]{0,1}\\s*\\{\\s*[a-zA-Z[;\\]0-9]+\\s*(,\\s*[a-zA-Z[;\\]0-9]*\\s*)*(\\s*\\|\\s*(<\\s*[a-zA-Z[;\\]0-9]+\\s*,\\s*[a-zA-Z[;\\]0-9]+\\s*>)"\
+#define GRAPH_DEF "\\s*[!]{0,1}\\s*\\{\\s*([a-zA-Z[;\\]0-9]+\\s*(,\\s*[a-zA-Z[;\\]0-9]*\\s*)*)*(\\s*\\|\\s*(<\\s*[a-zA-Z[;\\]0-9]+\\s*,\\s*[a-zA-Z[;\\]0-9]+\\s*>)"\
                 "*(\\s*,\\s*<\\s*[a-zA-Z[;\\]0-9]+\\s*,\\s*[a-zA-Z[;\\]0-9]+\\s*>)*)*\\s*\\}\\s*"
+#define VALID_VARIABLE "\\s*[a-zA-Z]+[a-zA-Z0-9]*\\s*=\\s*"
 #define FUNCTIONS ['!', '+', '^', '*', '-']
+#define QUIT "\\s*(quit)\\s*"
+#define PRINT "\\s*(print)\\s*"
+#define WHO "\\s*(who)\\s*"
 using namespace mtm;
 
 std::string toUpper(std::string str)
@@ -86,9 +97,13 @@ Graph createDefinition(std::string command)
         // Attempt to add.
         try
         {
-            graph.addEdge(edges.substr(openingTag+1, firstVertex), edges.substr(comma+1, secondVertex));
+            Vertex origin(edges.substr(openingTag+1, firstVertex)), destination(edges.substr(comma+1, secondVertex));
+            if (graph.isContainsVertex(origin) && graph.isContainsVertex(destination))
+            {
+                graph.addEdge(origin.getName(), destination.getName());
+            }
         }
-        catch (const mtm::Exception &e)
+        catch (const mtm::GraphException &e)
         {
             throw(e);
         }
@@ -145,13 +160,20 @@ Graph fetchVariable(std::string command, std::map<std::string, Graph> varTable, 
             complement = true;
             command = command.substr(1, command.length()-1);
         }
-        Graph current = createDefinition(command);
-        if (complement)
+        try
         {
-            current = !current;
+            Graph current = createDefinition(command);
+            if (complement)
+            {
+                current = !current;
+            }
+            // Check if we initiated.
+            return current;
         }
-        // Check if we initiated.
-        return current;
+        catch (const Exception& e)
+        {
+            throw(e);
+        }
     }
     return Graph();
 }
@@ -239,7 +261,6 @@ Graph validateExpression(std::string expression, std::map<std::string, mtm::Grap
     // Start from the beginning and assess the strings.
     for (auto it = depth.begin();it!=depth.end();++it)
     {
-        std::cout << "Current string: " << *it << std::endl;
         // Check if the expression is actually valid according to regex.
         // Replace with the current pointer the old substring with the keyword 'temp'
         // Check if we have something before.
@@ -254,7 +275,6 @@ Graph validateExpression(std::string expression, std::map<std::string, mtm::Grap
             // Not a valid expression at all. Break completely.
             throw IllegalCommand();
         }
-        std::cout << isExpressionValid(*it);
         // TODO: Add the value calculation logic here. Also add the variable table. Also add the DEFINITION regex
         // TODO: Make a string splitter according to spaces or regex, split up the current string into seperate keywords.
         std::string current = *it;
@@ -266,7 +286,7 @@ Graph validateExpression(std::string expression, std::map<std::string, mtm::Grap
         std::regex operationExp(VALID_OPERATION);
         std::regex parenthesisExp(VALID_PARENTHESIS);
 
-        for (auto strit = current.begin(); strit!=current.end() && left <= strit;++strit)
+        for (auto strit = current.begin(); strit<=current.end() && left <= strit;++strit)
         {
             // Get the current substring.
             std::string sub = std::string(left, strit);
@@ -295,22 +315,74 @@ Graph validateExpression(std::string expression, std::map<std::string, mtm::Grap
             else if (std::regex_match(sub, operationExp)|| std::regex_match(sub, defintionExp))
             {
                 // Push into the vector.
-                sub.erase(std::remove_if(sub.begin(), sub.end(), isspace), sub.end());
                 commandsSplit.push_back(sub);
                 left = strit;
             }
         }
-        // Iterate through the string that we have.
-        // Each iteration, check for a substring regexp hit for function, variable or definition
-        // If function, throw error except for complement
-        // If variable, look for variable in varmap. If no result, throw error.
-        // Substring the regexp hit from current and carry on with iterations
-        // If last hit was operation, look for variable. 
-        // Go through the commands vector.
         t = calculateCommands(commandsSplit, vars, t);
-        std::cout << t;
     }
-    return Graph();
+    return t;
+}
+
+void saveVariable(std::string key, Graph graph, std::map<std::string, Graph> &varTable)
+{
+    // Check if the key is already valid.
+    if (varTable.count(key) == 0)
+    {
+        varTable.insert(std::pair<std::string, Graph>(key, graph));
+    }
+    else
+    {
+        varTable[key] = graph;
+    }
+}
+
+void shell()
+{
+    std::string input = "";
+    std::regex defintionExp(VALID_VARIABLE);
+    std::regex variableExp(VARIABLE);
+    std::regex quit(QUIT);
+    std::regex who(WHO);
+    std::map<std::string, mtm::Graph> varTable;
+    while (!std::regex_match(input, quit))
+    {
+        std::cout << PROMPT;
+        std::getline(std::cin, input);
+        std::smatch matches;
+        if (std::regex_search(input, matches, defintionExp))
+        {
+            // Get the matched definition.
+            std::string matchedDef = matches[0];
+            input = input.substr(matchedDef.length(), input.length() - matchedDef.length());
+            // Remove the whitespaces.
+            removeWhitespace(&matchedDef);
+            // Get the variable.
+            std::smatch matchedVar;
+            std::regex_search(matchedDef, matchedVar, variableExp);
+            std::string variable = matchedVar[0];
+            // Get the result of the command.
+            try
+            {
+                Graph result= validateExpression(input, varTable);
+                // Add the result into the variable table.
+                saveVariable(variable, result, varTable);
+            }
+            catch (const Exception& e)
+            {
+                std::cout << e.what() << std::endl;
+                continue;
+            }
+        }
+        else if (std::regex_match(input, who))
+        {
+            // We got a valid who. Print out the map.
+            for (auto it = varTable.begin(); it!= varTable.end();++it)
+            {
+                std::cout << it->first << std::endl;
+            }
+        }
+    }
 }
 
 int main(int argCount, char *args[])
@@ -324,7 +396,7 @@ int main(int argCount, char *args[])
         // SHELL
         try
         {
-            validateExpression("(!{a,b|<a,b>} + {c,d} + !({f,g}*{e,h}))", vars);
+            shell();
         }
         catch (const Exception& e)
         {
