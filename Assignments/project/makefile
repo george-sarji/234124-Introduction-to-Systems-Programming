@@ -27,7 +27,7 @@ swig:
 	swig -c++ -python -o graph_wrap.c graph.i
 
 wrapper:
-	g++ -std=c++11 -DNDEBUG --pedantic-errors -Wall -Werror -I/usr/local/include/python3.6m -fPIC -shared graph_wrap.c libgraph.a -o _graph.so
+	$(CXX) -std=c++11 -DNDEBUG --pedantic-errors -Wall -Werror -I/usr/local/include/python3.6m -fPIC -shared graph_wrap.c libgraph.a -o _graph.so
 
 tar: $(OBJS)
 	zip gcalc.zip Edge.h Edge.cpp Vertex.h Vertex.cpp Exceptions.cpp Exceptions.h makefile Graph.cpp Graph.h Calculator.cpp graph.i Graph.py

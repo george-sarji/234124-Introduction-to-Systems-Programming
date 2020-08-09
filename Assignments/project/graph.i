@@ -1,4 +1,4 @@
-%module graph_wrap
+%module graph
 %include "std_string.i"
 %include "typemaps.i"
 %{
