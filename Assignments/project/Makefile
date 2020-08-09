@@ -24,7 +24,7 @@ libgraph.a: $(OBJS)
 	ar -rs $@ $^
 
 swig:
-	swig -c++ -python -o graph_wrap.c graph.i
+	swig -python -o graph_wrap.c graph.i
 
 wrapper:
 	$(CXX) -std=c++11 -DNDEBUG --pedantic-errors -Wall -Werror -I/usr/local/include/python3.6m -fPIC -shared graph_wrap.c libgraph.a -o _graph.so
