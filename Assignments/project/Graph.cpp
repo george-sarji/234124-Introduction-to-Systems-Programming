@@ -383,8 +383,8 @@ namespace mtm
             int charNum = it->getName().length();
             file.write((const char*)&charNum, sizeof(unsigned int));
             // Write the name.
-            std::string name = it->getName();
-            file.write((const char*)&name, charNum*sizeof(char));
+            const char* name = it->getName().c_str();
+            file.write((const char*)name, charNum*sizeof(char));
         }
         for (auto it=edges.begin();it!=edges.end();++it)
         {
@@ -393,15 +393,15 @@ namespace mtm
             int charNum = origin.getName().length();
             file.write((const char*)&charNum, sizeof(unsigned int));
             // Write the name.
-            std::string name = origin.getName();
-            file.write((const char*)&name, charNum*sizeof(char));
+            const char* name = origin.getName().c_str();
+            file.write((const char*)name, charNum*sizeof(char));
 
             Vertex destination = it->getDestination();
             charNum = destination.getName().length();
             file.write((const char*)&charNum, sizeof(unsigned int));
             // Write the name.
-            name = destination.getName();
-            file.write((const char*)&name, charNum*sizeof(char));
+            name = destination.getName().c_str();
+            file.write((const char*)name, charNum*sizeof(char));
         }
         file.close();
     }
