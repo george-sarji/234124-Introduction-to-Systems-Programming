@@ -581,16 +581,13 @@ int main(int argCount, char *args[])
     case 3:
     {
         // Take the arguments and use them accordingly.
-        std::fstream outputFile, inputFile;
+        std::ifstream inputFile;
+        std::ofstream outputFile;
         outputFile.open(args[2]);
         inputFile.open(args[1]);
         if (!inputFile.is_open())
         {
             std::cerr << "Error: Invalid input file '" << args[1] << "'" << std::endl;
-        }
-        else if (!outputFile.is_open())
-        {
-            std::cerr << "Error: Invalid output file '" << args[2] << "'" << std::endl;
         }
         else
         {
