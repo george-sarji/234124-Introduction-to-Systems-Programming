@@ -37,7 +37,7 @@
 #define SAVE "( )*(save)( )*\\(( )*.+( )*,( )*.+( )*\\)( )*"
 #define SAVE_ARGUMENTS "\\(( )*.+( )*,( )*.+( )*\\)"
 #define RESERVED_KEYWORD "( )*(delete)|(print)|(who)|(delete)|(reset)|(quit)|(load)|(save)( )*"
-#define FILENAME "( )*.+(\\.gc)( )*"
+#define FILENAME "( )*.+( )*"
 using namespace mtm;
 
 std::string toUpper(std::string str)
@@ -78,7 +78,6 @@ Graph loadBinaryFile(std::string command)
     removeWhitespace(&command);
     // Remove the load.
     std::string name = std::string(command.begin()+5, command.end()-1);
-    std::cout << name << std::endl;
     // Check if the name is even valid, first of all.
     std::ifstream file(name, std::ios_base::binary);
     if (!file || !file.is_open())
@@ -299,8 +298,13 @@ Graph validateExpression(std::string expression, std::map<std::string, mtm::Grap
             // Push into the stack.
             parenthesis.push(i);
         }
-        if (expression[i] == '(')
+        else if (expression[i] == '(')
         {
+            if (parenthesis.empty())
+            {
+                // We have an invalid command.
+                throw UnknownVariable(expression);
+            }
             // Pop the latest index, substring and push into vector.
             int match = parenthesis.top();
             parenthesis.pop();
@@ -309,7 +313,7 @@ Graph validateExpression(std::string expression, std::map<std::string, mtm::Grap
     }
     if (parenthesis.size() != 0)
     {
-        throw IllegalCommand(expression);
+        throw UnknownVariable(expression);
     }
     if (*(expression.begin()) != '(')
         depth.push_back(expression);
@@ -363,12 +367,6 @@ Graph validateExpression(std::string expression, std::map<std::string, mtm::Grap
             {
                 left = strit;
             }
-            else if (std::regex_match(sub, operationExp)|| std::regex_match(sub, defintionExp) || std::regex_match(sub, loadExp))
-            {
-                // Push into the vector.
-                commandsSplit.push_back(sub);
-                left = strit;
-            }
             else if (std::regex_match(sub, variableExp))
             {
                 // Check if we have a definition in our command.
@@ -417,6 +415,12 @@ Graph validateExpression(std::string expression, std::map<std::string, mtm::Grap
                         strit = varIt;
                     }
                 }
+            }
+            else if (std::regex_match(sub, operationExp)|| std::regex_match(sub, defintionExp) || std::regex_match(sub, loadExp))
+            {
+                // Push into the vector.
+                commandsSplit.push_back(sub);
+                left = strit;
             }
         }
 
