@@ -8,13 +8,13 @@ RELEASE_FLAG = -DNDEBUG
 $(EXEC) : $(OBJS)
 	$(CXX) $(DEBUG_FLAG) $(OBJS) -o $@
 
-GraphWrapper.o: Graph.h Graph.cpp GraphWrapper.cpp GraphWrapper.h
+GraphWrapper.o: Graph.h GraphWrapper.h
 	$(CXX) -c $(DEBUG_FLAG) $(COMP_FLAG) $*.cpp
-Calculator.o: Edge.h Edge.cpp Vertex.h Vertex.cpp Exceptions.cpp Exceptions.h Calculator.cpp
+Calculator.o: Edge.h Vertex.h Exceptions.h Calculator.cpp
 	$(CXX) -c $(DEBUG_FLAG) $(COMP_FLAG) $*.cpp
-Graph.o: Edge.h Edge.cpp Vertex.h Vertex.cpp Exceptions.cpp Exceptions.h
+Graph.o: Edge.h Vertex.h Exceptions.h
 	$(CXX) -c $(DEBUG_FLAG) $(COMP_FLAG) $*.cpp
-Vertex.o: Vertex.h Vertex.cpp Exceptions.cpp Exceptions.h
+Vertex.o: Vertex.h Exceptions.h
 	$(CXX) -c $(DEBUG_FLAG) $(COMP_FLAG) $*.cpp
 Edge.o: Edge.h Edge.cpp
 	$(CXX) -c $(DEBUG_FLAG) $(COMP_FLAG) $*.cpp
