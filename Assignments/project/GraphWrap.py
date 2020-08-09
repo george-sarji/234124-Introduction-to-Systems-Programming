@@ -17,7 +17,7 @@ def addVertex(graph, v):
 def addEdge(graph, v1, v2):
     return gw.addEdge(graph, v1, v2)
 
-
+  
 def disp(graph):
     gw.displayGraph(graph)
 
