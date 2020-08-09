@@ -1,4 +1,3 @@
-#include <stdio.h>
 #include <string>
 #include <iostream>
 #include <cctype>
@@ -444,6 +443,7 @@ void saveVariable(std::string key, Graph graph, std::map<std::string, Graph> &va
 
 void shell(bool automatic)
 {
+
     std::string input = "";
     std::regex defintionExp(VALID_VARIABLE);
     std::regex argumentsExp(ARGUMENTS);
@@ -559,14 +559,13 @@ void shell(bool automatic)
     }
 }
 
+
 int main(int argCount, char *args[])
 {
-    // std::cout << argCount << std::endl;
     switch (argCount)
     {
     case 1:
     {
-        std::map<std::string, mtm::Graph> vars;
         // SHELL
         try
         {
