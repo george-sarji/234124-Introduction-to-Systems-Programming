@@ -321,7 +321,25 @@ namespace mtm
     }
     std::ostream &operator<<(std::ostream &stream, Graph &graph)
     {
-        stream << graph.toString();
+        std::string str = "";
+        // Sort the vertices and the edges.
+        std::sort(graph.edges.begin(), graph.edges.end());
+        std::sort(graph.vertices.begin(), graph.vertices.end());
+        // Go through the vertices.
+        for (auto it = graph.vertices.begin(); it != graph.vertices.end(); ++it)
+        {
+            // Add to the stream with a new line.
+            str += it->getName() + "\n";
+        }
+        // Print the spacer.
+        str += "$\n";
+        for (auto it = graph.edges.begin(); it != graph.edges.end(); ++it)
+        {
+            str += it->getOrigin().getName() + " " + it->getDestination().getName() +"\n";
+        }
+        str = str.substr(0, str.length()-1);
+
+        stream << str;
         return stream;
     }
 
@@ -333,29 +351,6 @@ namespace mtm
     void destroy(mtm::Graph graph)
     {
         graph.~Graph();
-    }
-
-    const char* mtm::Graph::toString()
-    {
-        std::string str = "";
-        // Sort the vertices and the edges.
-        std::sort(edges.begin(), edges.end());
-        std::sort(vertices.begin(), vertices.end());
-        // Go through the vertices.
-        for (auto it = vertices.begin(); it != vertices.end(); ++it)
-        {
-            // Add to the stream with a new line.
-            str += it->getName() + "\n";
-        }
-        // Print the spacer.
-        str += "$\n";
-        for (auto it = edges.begin(); it != edges.end(); ++it)
-        {
-            str += it->getOrigin().getName() + " " + it->getDestination().getName() +"\n";
-        }
-        str = str.substr(0, str.length()-1);
-
-        return str.c_str();
     }
 
     bool mtm::Graph::operator==(const mtm::Graph& graph) const

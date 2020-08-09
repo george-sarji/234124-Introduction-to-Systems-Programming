@@ -26,7 +26,6 @@ namespace mtm
 
         void writeBinary(std::string file_name) const;
 
-        const char* toString();
 
         // ! Operator overloads
         Graph operator+(Graph &graph);
