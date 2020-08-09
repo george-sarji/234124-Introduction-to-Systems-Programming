@@ -175,7 +175,6 @@ Graph fetchVariable(std::string command, std::map<std::string, Graph> varTable, 
             command = command.substr(1, command.length()-1);
         }
         // TODO: Function call to read data from file.
-        std::cout << command << std::endl;
         throw InvalidFilename("You have reached here.");
     }
     if (!define)
