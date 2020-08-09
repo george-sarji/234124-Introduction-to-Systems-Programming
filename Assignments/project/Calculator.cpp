@@ -10,34 +10,34 @@
 #include "Exceptions.h"
 
 #define PROMPT "Gcalc> "
-#define VALID "\\s*\\(\\s*[a-zA-Z]+[a-zA-Z0-9]*\\s*([+\\-\\*^]\\s*[a-zA-Z]+[a-zA-Z0-9]*)*\\s*\\)\\s*"
-#define VALID_DEF "\\s*[!]*\\(*[!]*((\\s*(load)\\(\\s*.*\\s*\\))|([a-zA-Z]+[a-zA-Z0-9]*)|(\\s*\\{\\s*("\
-                "[a-zA-Z[;\\]0-9]+\\s*(,\\s*[a-zA-Z[;\\]0-9]*\\s*)*)*(\\s*\\|\\s*(<\\s*[a-zA-Z[;\\]0-9]+"\
-                "\\s*,\\s*[a-zA-Z[;\\]0-9]+\\s*>)*(\\s*,\\s*<\\s*[a-zA-Z[;\\]0-9]+\\s*,\\s*[a-zA-Z[;\\]"\
-                "0-9]+\\s*>)*)*\\s*\\}\\s*))\\)*(\\s*[+*^-]\\s*[!]*(\\(*((\\s*(load)\\(\\s*.*\\s*\\))|"\
-                "([a-zA-Z]+[a-zA-Z0-9]*)|(\\s*\\{\\s*([a-zA-Z[;\\]0-9]+\\s*(,\\s*[a-zA-Z[;\\]0-9]*\\s*)*)"\
-                "*(\\s*\\|\\s*(<\\s*[a-zA-Z[;\\]0-9]+\\s*,\\s*[a-zA-Z[;\\]0-9]+\\s*>)*(\\s*,\\s*<\\s*[a-zA-Z"\
-                "[;\\]0-9]+\\s*,\\s*[a-zA-Z[;\\]0-9]+\\s*>)*)*\\s*\\}\\s*)))\\s*\\)*\\s*)*"
-#define VALID_OPERATION "\\s*[+\\-\\*^]\\s*"
+#define VALID "( )*\\(( )*[a-zA-Z]+[a-zA-Z0-9]*( )*([+\\-*^]( )*[a-zA-Z]+[a-zA-Z0-9]*)*( )*\\)( )*"
+#define VALID_DEF "( )*[!]*\\(*[!]*((( )*(load)\\(( )*.*( )*\\))|([a-zA-Z]+[a-zA-Z0-9]*)|(( )*\\{( )*("\
+                "[a-zA-Z[;\\]0-9]+( )*(,( )*[a-zA-Z[;\\]0-9]*( )*)*)*(( )*\\|( )*(<( )*[a-zA-Z[;\\]0-9]+"\
+                "( )*,( )*[a-zA-Z[;\\]0-9]+( )*>)*(( )*,( )*<( )*[a-zA-Z[;\\]0-9]+( )*,( )*[a-zA-Z[;\\]"\
+                "0-9]+( )*>)*)*( )*\\}( )*))\\)*(( )*[*+-^]( )*[!]*(\\(*((( )*(load)\\(( )*.*( )*\\))|"\
+                "([a-zA-Z]+[a-zA-Z0-9]*)|(( )*\\{( )*([a-zA-Z[;\\]0-9]+( )*(,( )*[a-zA-Z[;\\]0-9]*( )*)*)"\
+                "*(( )*\\|( )*(<( )*[a-zA-Z[;\\]0-9]+( )*,( )*[a-zA-Z[;\\]0-9]+( )*>)*(( )*,( )*<( )*[a-zA-Z"\
+                "[;\\]0-9]+( )*,( )*[a-zA-Z[;\\]0-9]+( )*>)*)*( )*\\}( )*)))( )*\\)*( )*)*"
+#define VALID_OPERATION "( )*[*+-^]( )*"
 #define VALID_PARENTHESIS "[\\(\\)]"
-#define VARIABLE "\\s*[!]{0,1}[a-zA-Z]+[a-zA-Z0-9]*\\s*"
-#define GRAPH_DEF "\\s*[!]{0,1}\\s*\\{\\s*([a-zA-Z[;\\]0-9]+\\s*(,\\s*[a-zA-Z[;\\]0-9]+\\s*)*)*(\\s*\\|"\
-                "\\s*(<\\s*[a-zA-Z[;\\]0-9]+\\s*,\\s*[a-zA-Z[;\\]0-9]+\\s*>)"\
-                "*(\\s*,\\s*<\\s*[a-zA-Z[;\\]0-9]+\\s*,\\s*[a-zA-Z[;\\]0-9]+\\s*>)*)*\\s*\\}\\s*"
-#define VALID_VARIABLE "\\s*[a-zA-Z]+[a-zA-Z0-9]*\\s*=\\s*"
+#define VARIABLE "( )*[!]{0,1}[a-zA-Z]+[a-zA-Z0-9]*( )*"
+#define GRAPH_DEF "( )*[!]{0,1}( )*\\{( )*([a-zA-Z[;\\]0-9]+( )*(,( )*[a-zA-Z[;\\]0-9]+( )*)*)*(( )*\\|"\
+                "( )*(<( )*[a-zA-Z[;\\]0-9]+( )*,( )*[a-zA-Z[;\\]0-9]+( )*>)"\
+                "*(( )*,( )*<( )*[a-zA-Z[;\\]0-9]+( )*,( )*[a-zA-Z[;\\]0-9]+( )*>)*)*( )*\\}( )*"
+#define VALID_VARIABLE "( )*[a-zA-Z]+[a-zA-Z0-9]*( )*=( )*"
 #define FUNCTIONS ['!', '+', '^', '*', '-']
-#define QUIT "\\s*(quit)\\s*"
-#define PRINT "\\s*(print)\\s*\\(\\s*.*\\s*\\)\\s*"
-#define DELETE "\\s*(delete)\\s*\\(\\s*.*\\s*\\)\\s*"
-#define WHO "\\s*(who)\\s*"
-#define RESET "\\s*(reset)\\s*"
-#define ARGUMENTS "\\(\\s*.*\\s*\\)"
-#define LOAD "\\s*[!]{0,1}\\s*(load)\\s*\\(\\s*.*\\s*\\)\\s*"
-#define LOAD_KEYWORD "\\s*(load)\\s*"
-#define SAVE "\\s*(save)\\s*\\(\\s*.+\\s*,\\s*.+\\s*\\)\\s*"
-#define SAVE_ARGUMENTS "\\(\\s*.+\\s*,\\s*.+\\s*\\)"
-#define RESERVED_KEYWORD "\\s*(delete)|(print)|(who)|(delete)|(reset)|(quit)|(load)|(save)\\s*"
-#define FILENAME "\\s*.+(\\.gc)\\s*"
+#define QUIT "( )*(quit)( )*"
+#define PRINT "( )*(print)( )*\\(( )*.*( )*\\)( )*"
+#define DELETE "( )*(delete)( )*\\(( )*.*( )*\\)( )*"
+#define WHO "( )*(who)( )*"
+#define RESET "( )*(reset)( )*"
+#define ARGUMENTS "\\(( )*.*( )*\\)"
+#define LOAD "( )*[!]{0,1}( )*(load)( )*\\(( )*.*( )*\\)( )*"
+#define LOAD_KEYWORD "( )*(load)( )*"
+#define SAVE "( )*(save)( )*\\(( )*.+( )*,( )*.+( )*\\)( )*"
+#define SAVE_ARGUMENTS "\\(( )*.+( )*,( )*.+( )*\\)"
+#define RESERVED_KEYWORD "( )*(delete)|(print)|(who)|(delete)|(reset)|(quit)|(load)|(save)( )*"
+#define FILENAME "( )*.+(\\.gc)( )*"
 using namespace mtm;
 
 std::string toUpper(std::string str)
