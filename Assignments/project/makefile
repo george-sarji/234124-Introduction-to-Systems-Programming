@@ -1,5 +1,5 @@
 CC = g++
-OBJS = Graph.o Edge.o Vertex.o Exceptions.o Calculator.o
+OBJS = Graph.o Edge.o Vertex.o Exceptions.o Calculator.o GraphWrapper.o
 EXEC = gcalc
 DEBUG_FLAG = 
 COMP_FLAG = -std=c++11 -Wall -Werror -pedantic-errors -fPIC
@@ -8,6 +8,8 @@ RELEASE_FLAG = -DNDEBUG
 $(EXEC) : $(OBJS)
 	$(CC) $(DEBUG_FLAG) $(OBJS) -o $@
 
+GraphWrapper.o: Graph.h Graph.cpp GraphWrapper.cpp GraphWrapper.h
+	$(CC) -c $(DEBUG_FLAG) $(COMP_FLAG) $*.cpp
 Calculator.o: Edge.h Edge.cpp Vertex.h Vertex.cpp Exceptions.cpp Exceptions.h Calculator.cpp
 	$(CC) -c $(DEBUG_FLAG) $(COMP_FLAG) $*.cpp
 Graph.o: Edge.h Edge.cpp Vertex.h Vertex.cpp Exceptions.cpp Exceptions.h
