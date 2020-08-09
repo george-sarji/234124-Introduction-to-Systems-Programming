@@ -335,7 +335,7 @@ namespace mtm
         graph.~Graph();
     }
 
-    std::string mtm::Graph::toString()
+    const char* mtm::Graph::toString()
     {
         std::string str = "";
         // Sort the vertices and the edges.
@@ -355,7 +355,7 @@ namespace mtm
         }
         str = str.substr(0, str.length()-1);
 
-        return str;
+        return str.c_str();
     }
 
     bool mtm::Graph::operator==(const mtm::Graph& graph) const

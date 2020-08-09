@@ -30,7 +30,7 @@ wrapper:
 	$(CXX) -std=c++11 -DNDEBUG --pedantic-errors -Wall -Werror -I/usr/local/include/python3.6m -fPIC -shared graph_wrap.c libgraph.a -o _graph.so
 
 tar: $(OBJS)
-	zip gcalc.zip Edge.h Edge.cpp Vertex.h Vertex.cpp Exceptions.cpp Exceptions.h Makefile Graph.cpp Graph.h Calculator.cpp graph.i GraphWrapper.cpp GraphWrapper.h GraphWrap.py
+	zip gcalc.zip Edge.h Edge.cpp Vertex.h Vertex.cpp Exceptions.cpp Exceptions.h Makefile Graph.cpp Graph.h Calculator.cpp graph.i GraphWrapper.cpp GraphWrapper.h
 
 clean:
 	rm -f $(OBJS) $(EXEC) libgraph.a _graph.so graph_wrap.c graph.py

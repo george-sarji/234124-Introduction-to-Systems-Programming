@@ -3,18 +3,16 @@
 #include "Graph.h"
 #include <string>
 
-namespace wrapper
-{
-    mtm::Graph createGraph();
-    mtm::Graph* addVertex(mtm::Graph* g, std::string v);
-    mtm::Graph* addEdge(mtm::Graph* g, std::string origin, std::string destination);
-    void displayGraph(mtm::Graph* g);
+mtm::Graph *create();
+void destroy(mtm::Graph*);
+mtm::Graph* addVertex(mtm::Graph*, const char*);
+mtm::Graph* addEdge(mtm::Graph*, const char*, const char*);
+void disp(mtm::Graph*);
 
-    mtm::Graph graphUnion(mtm::Graph* g1, mtm::Graph* g2, mtm::Graph* out);
-    mtm::Graph graphIntersection(mtm::Graph* g1, mtm::Graph* g2, mtm::Graph* out);
-    mtm::Graph GraphDifference(mtm::Graph* g1, mtm::Graph* g2, mtm::Graph* out);
-    mtm::Graph graphProduct(mtm::Graph* g1, mtm::Graph* g2, mtm::Graph* out);
-    mtm::Graph graphComplement(mtm::Graph* in, mtm::Graph* out);
-}
+mtm::Graph* graphUnion(mtm::Graph*, mtm::Graph*, mtm::Graph*);
+mtm::Graph* graphIntersection(mtm::Graph*, mtm::Graph*, mtm::Graph*);
+mtm::Graph* GraphDifference(mtm::Graph*, mtm::Graph*, mtm::Graph*);
+mtm::Graph* graphProduct(mtm::Graph*, mtm::Graph*, mtm::Graph*);
+mtm::Graph* graphComplement(mtm::Graph*, mtm::Graph*);
 
 #endif

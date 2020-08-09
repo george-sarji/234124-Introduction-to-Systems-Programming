@@ -2,109 +2,139 @@
 #include "Exceptions.h"
 #include <iostream>
 
-namespace wrapper
+mtm::Graph *create()
 {
-    mtm::Graph createGraph()
-    {
-        mtm::Graph g;
-        return g;
-    }
-    mtm::Graph* addVertex(mtm::Graph* g, std::string v)
-    {
-        try
-        {
-            g->addVertex(v);
-            return g;
-        }
-        catch (const mtm::Exception& e)
-        {
-            std::cout << e.what() << std::endl;
-        }
+    return new mtm::Graph;
+}
+
+void destroy(mtm::Graph* g) {
+    delete g;
+    g = nullptr;
+}
+mtm::Graph* addVertex(mtm::Graph* graph, const char* vertex)
+{
+    if(graph == NULL || vertex == NULL) {
+        std::cout << "Error: Invalid graph or vertex given." << std::endl;
         return nullptr;
     }
-    mtm::Graph* addEdge(mtm::Graph* g, std::string origin, std::string destination)
+    try
     {
-        try
-        {
-            g->addEdge(origin, destination);
-            return g;
-        }
-        catch (const mtm::Exception& e)
-        {
-            std::cout << e.what()<<std::endl;
-        }
+        graph->addVertex(vertex);
+        return graph;
+    }
+    catch (const mtm::Exception& e)
+    {
+        std::cout << e.what() << std::endl;
+    }
+    return nullptr;
+}
+mtm::Graph* addEdge(mtm::Graph* graph, const char* v1, const char* v2)
+{
+    if(graph == nullptr || v1 == nullptr || v2==nullptr) {
+        std::cout << "Error: Invalid graph or vertex given." << std::endl;
         return nullptr;
     }
-    void displayGraph(mtm::Graph* g)
+    try
     {
-        std::cout << g->toString()<<std::endl;
+        graph->addEdge(v1, v2);
+        return graph;
     }
+    catch (const mtm::Exception& e)
+    {
+        std::cout << e.what()<<std::endl;
+    }
+    return nullptr;
+}
+void disp(mtm::Graph* g)
+{
+    if(g == nullptr) {
+        std::cout << "Error: Invalid graph provided." << std::endl;
+        return;
+    }
+    std::cout << *g <<std::endl;
+}
 
 
-    mtm::Graph graphUnion(mtm::Graph* g1, mtm::Graph* g2, mtm::Graph* out)
-    {
-        try
-        {
-            // std::cout << g1;
-            *out = *g1 + *g2;
-        }
-        catch (const mtm::Exception& e)
-        {
-            std::cout << e.what() << std::endl;
-            out = nullptr;
-        }
-        return *out;
+mtm::Graph* graphUnion(mtm::Graph* graph_in1, mtm::Graph* graph_in2, mtm::Graph* graph_out)
+{
+    if(graph_out == nullptr || graph_in2 == nullptr || graph_in2 == nullptr) {
+        std::cout << "Error: Invalid graph given." << std::endl;
+        return nullptr;
     }
-    mtm::Graph graphIntersection(mtm::Graph* g1, mtm::Graph* g2, mtm::Graph* out)
+    try
     {
-        try
-        {
-            *out = *g1 ^ *g2;
-        }
-        catch (const mtm::Exception& e)
-        {
-            std::cout << e.what() << std::endl;
-            out = nullptr;
-        }
-        return *out;
+        // std::cout << graph_in1;
+        *graph_out = *graph_in1 + *graph_in2;
     }
-    mtm::Graph GraphDifference(mtm::Graph* g1, mtm::Graph* g2, mtm::Graph* out)
+    catch (const mtm::Exception& e)
     {
-        try
-        {
-            *out = *g1 - *g2;
-        }
-        catch (const mtm::Exception& e)
-        {
-            std::cout << e.what() << std::endl;
-            out = nullptr;
-        }
-        return *out;
+        std::cout << e.what() << std::endl;
+        graph_out = nullptr;
     }
-    mtm::Graph graphProduct(mtm::Graph* g1, mtm::Graph* g2, mtm::Graph* out)
+    return graph_out;
+}
+mtm::Graph* graphIntersection(mtm::Graph* graph_in1, mtm::Graph* graph_in2, mtm::Graph* graph_out)
+{
+    if(graph_out == nullptr || graph_in2 == nullptr || graph_in2 == nullptr) {
+        std::cout << "Error: Invalid graph given." << std::endl;
+        return nullptr;
+    }
+    try
     {
-        try
-        {
-            *out = *g1 * *g2;
-        }
-        catch (const mtm::Exception& e)
-        {
-            std::cout << e.what() << std::endl;
-            out = nullptr;
-        }
-        return *out;
+        *graph_out = *graph_in1 ^ *graph_in2;
     }
-    mtm::Graph graphComplement(mtm::Graph* in, mtm::Graph* out)
+    catch (const mtm::Exception& e)
     {
-        try
-        {
-            *out = !(*in);
-        }
-        catch (const mtm::Exception& e)
-        {
-            std::cout << e.what() << std::endl;
-            out = nullptr;
-        }
-        return *out;
+        std::cout << e.what() << std::endl;
+        graph_out = nullptr;
     }
+    return graph_out;
+}
+mtm::Graph* GraphDifference(mtm::Graph* graph_in1, mtm::Graph* graph_in2, mtm::Graph* graph_out)
+{
+    if(graph_out == nullptr || graph_in2 == nullptr || graph_in2 == nullptr) {
+        std::cout << "Error: Invalid graph given." << std::endl;
+        return nullptr;
+    }
+    try
+    {
+        *graph_out = *graph_in1 - *graph_in2;
+    }
+    catch (const mtm::Exception& e)
+    {
+        std::cout << e.what() << std::endl;
+        graph_out = nullptr;
+    }
+    return graph_out;
+}
+mtm::Graph* graphProduct(mtm::Graph* graph_in1, mtm::Graph* graph_in2, mtm::Graph* graph_out)
+{
+    if(graph_out == nullptr || graph_in2 == nullptr || graph_in2 == nullptr) {
+        std::cout << "Error: Invalid graph given." << std::endl;
+        return nullptr;
+    }
+    try
+    {
+        *graph_out = *graph_in1 * *graph_in2;
+    }
+    catch (const mtm::Exception& e)
+    {
+        std::cout << e.what() << std::endl;
+        graph_out = nullptr;
+    }
+    return graph_out;
+}
+mtm::Graph* graphComplement(mtm::Graph* graph_in, mtm::Graph* graph_out)
+{
+    if(graph_in == nullptr || graph_out == nullptr)
+    try
+    {
+        *graph_out = !(*graph_in);
+    }
+    catch (const mtm::Exception& e)
+    {
+        std::cout << e.what() << std::endl;
+        graph_out = nullptr;
+    }
+    return graph_out;
 }
