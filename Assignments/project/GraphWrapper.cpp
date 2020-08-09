@@ -9,10 +9,6 @@ namespace wrapper
         mtm::Graph g;
         return g;
     }
-    void destroyGraph(mtm::Graph* graph)
-    {
-        delete(graph);
-    }
     mtm::Graph* addVertex(mtm::Graph* g, std::string v)
     {
         try
@@ -45,69 +41,70 @@ namespace wrapper
     }
 
 
-    mtm::Graph* graphUnion(mtm::Graph* g1, mtm::Graph* g2, mtm::Graph* out)
+    mtm::Graph graphUnion(mtm::Graph* g1, mtm::Graph* g2, mtm::Graph* out)
     {
         try
         {
+            // std::cout << g1;
             *out = *g1 + *g2;
-            return out;
         }
         catch (const mtm::Exception& e)
         {
             std::cout << e.what() << std::endl;
+            out = nullptr;
         }
-        return nullptr;
+        return *out;
     }
-    mtm::Graph* graphIntersection(mtm::Graph* g1, mtm::Graph* g2, mtm::Graph* out)
+    mtm::Graph graphIntersection(mtm::Graph* g1, mtm::Graph* g2, mtm::Graph* out)
     {
         try
         {
             *out = *g1 ^ *g2;
-            return out;
         }
         catch (const mtm::Exception& e)
         {
             std::cout << e.what() << std::endl;
+            out = nullptr;
         }
-        return nullptr;
+        return *out;
     }
-    mtm::Graph* GraphDifference(mtm::Graph* g1, mtm::Graph* g2, mtm::Graph* out)
+    mtm::Graph GraphDifference(mtm::Graph* g1, mtm::Graph* g2, mtm::Graph* out)
     {
         try
         {
             *out = *g1 - *g2;
-            return out;
         }
         catch (const mtm::Exception& e)
         {
             std::cout << e.what() << std::endl;
+            out = nullptr;
         }
-        return nullptr;
+        return *out;
     }
-    mtm::Graph* graphProduct(mtm::Graph* g1, mtm::Graph* g2, mtm::Graph* out)
+    mtm::Graph graphProduct(mtm::Graph* g1, mtm::Graph* g2, mtm::Graph* out)
     {
         try
         {
             *out = *g1 * *g2;
-            return out;
         }
         catch (const mtm::Exception& e)
         {
             std::cout << e.what() << std::endl;
+            out = nullptr;
         }
-        return nullptr;
+        return *out;
     }
-    mtm::Graph* graphComplement(mtm::Graph* in, mtm::Graph* out)
+    mtm::Graph graphComplement(mtm::Graph* in, mtm::Graph* out)
     {
         try
         {
             *out = !(*in);
-            return out;
         }
         catch (const mtm::Exception& e)
         {
             std::cout << e.what() << std::endl;
+            out = nullptr;
         }
-        return nullptr;
+        return *out;
     }
 }

@@ -1,5 +1,4 @@
-%module graph
-%include "std_vector.i"
+%module graph_wrap
 %include "std_string.i"
 %include "typemaps.i"
 %{
@@ -7,28 +6,11 @@
     #include "Edge.h"
     #include "Vertex.h"
     #include "Exceptions.h"
-    using namespace mtm;
+    #include "GraphWrapper.h"
     %}
 
-%template(StringVector)std::vector<std::string>;
-%rename(__add__) Graph::operator+;
-%rename(__sub__) Graph::operator-;
-%rename(__mul__) Graph::operator*;
-%rename(__xor__) Graph::operator^;
-// %rename(__invert__) Graph::operator!;
-// %rename(__str__) Graph::toString;
+%rename(__str__) operator<<;
+%rename(complement) operator!;
 
-%exception{
-    try
-{
-    $action
-}
-catch (const Exception &e)
-{
-    std::cout << e.what() << std::endl;
-    SWIG_exception(SWIG_IOError, "Library error.");
-}
-}
-
-
+%include "GraphWrapper.h"
 %include "Graph.h"

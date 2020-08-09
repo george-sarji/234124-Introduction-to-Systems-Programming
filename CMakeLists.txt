@@ -5,6 +5,7 @@ set(MTM_FLAGS_DEBUG "-std=c99 --pedantic-errors -Wall -Werror")
 set(MTM_FLAGS_RELEASE "${MTM_FLAGS_DEBUG} -DNDEBUG")
 set(CMAKE_C_FLAGS ${MTM_FLAGS_DEBUG})
 set(CMAKE_C_STANDARD 99)
+set(CMAKE_CXX_STANDARD 11)
 
 set(MTM_MAPS "Assignments/hw1/maps")
 set(MTM_ELECTIONS "Assignments/hw1/elections")
