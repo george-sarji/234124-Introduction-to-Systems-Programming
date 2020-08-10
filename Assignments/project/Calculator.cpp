@@ -56,20 +56,26 @@ void removeWhitespace(std::string *str)
     str->erase(std::remove_if(str->begin(), str->end(), isspace), str->end());
 }
 
-std::ostream& getOutput() {
-    if(outputFile && outputFile.is_open()) {
+std::ostream& getOutput()
+{
+    if (outputFile && outputFile.is_open())
+    {
         return outputFile;
     }
-    else {
+    else
+    {
         return std::cout;
     }
 }
 
-std::istream& getInput() {
-    if(inputFile && inputFile.is_open()) {
+std::istream& getInput()
+{
+    if (inputFile && inputFile.is_open())
+    {
         return inputFile;
     }
-    else {
+    else
+    {
         return std::cin;
     }
 }
@@ -81,7 +87,7 @@ bool isExpressionValid(std::string str)
 {
     // Check according to regex if it meets the requirements.
     std::regex defExpression(VALID_DEF);
-    return std::regex_match(str, defExpression);
+    return std::regex_match(str, defExpression) && str.find("=") == std::string::npos;
 }
 
 bool isValidLoad(std::string arguments, std::string load)
@@ -483,7 +489,8 @@ void shell(bool automatic)
             getOutput() << PROMPT;
             std::getline(std::cin, input);
         }
-        else {
+        else
+        {
             std::getline(inputFile, input);
         }
         try
