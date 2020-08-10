@@ -44,3 +44,5 @@ print(!work)
 G = {a,b,c,d}
 G2 = G*G + !(!{a,b|<a,b>} * G)
 print(G2)
+save({a,b|<a,b>}, works.gf)
+print(load(works.gf))
