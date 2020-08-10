@@ -32,3 +32,15 @@ print(crying)
 print(G)
 save(G, graph_g.gf)
 loaded = load(graph_g.gf)
+print(loaded)
+delete(loaded)
+who
+reset
+who
+G = {a} + {b} * (!{c} + {d})
+print(G)
+work = {if, youre, reading, this| <if, reading>}
+print(!work)
+G = {a,b,c,d}
+G2 = G*G + !(!{a,b|<a,b>} * G)
+print(G2)
