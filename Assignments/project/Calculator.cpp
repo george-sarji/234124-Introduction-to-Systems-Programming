@@ -38,6 +38,8 @@
 #define RESERVED_KEYWORD "( )*(delete)|(print)|(who)|(delete)|(reset)|(quit)|(load)|(save)( )*"
 #define FILENAME "( )*.+( )*"
 using namespace mtm;
+std::ofstream outputFile;
+std::ifstream inputFile;
 
 std::string toUpper(std::string str)
 {
@@ -52,6 +54,24 @@ std::string toUpper(std::string str)
 void removeWhitespace(std::string *str)
 {
     str->erase(std::remove_if(str->begin(), str->end(), isspace), str->end());
+}
+
+std::ostream& getOutput() {
+    if(outputFile && outputFile.is_open()) {
+        return outputFile;
+    }
+    else {
+        return std::cout;
+    }
+}
+
+std::istream& getInput() {
+    if(inputFile && inputFile.is_open()) {
+        return inputFile;
+    }
+    else {
+        return std::cin;
+    }
 }
 
 // TODO: Create a function that receives the parameters after the assignment operator. It processes and checks if the given expression is valid, and returns
@@ -443,7 +463,7 @@ void saveVariable(std::string key, Graph graph, std::map<std::string, Graph> &va
 void shell(bool automatic)
 {
 
-    std::string input = "";
+    std::string input = "init";
     std::regex defintionExp(VALID_VARIABLE);
     std::regex argumentsExp(ARGUMENTS);
     std::regex variableExp(VARIABLE);
@@ -456,15 +476,18 @@ void shell(bool automatic)
     std::regex saveExp(SAVE);
     std::regex saveArguments(SAVE_ARGUMENTS);
     std::map<std::string, mtm::Graph> varTable;
-    while (!std::regex_match(input, quit) && !std::cin.eof())
+    while (!std::regex_match(input, quit) && !getInput().eof() && !input.empty())
     {
         if (!automatic)
         {
-            std::cout << PROMPT;
+            getOutput() << PROMPT;
+            std::getline(std::cin, input);
+        }
+        else {
+            std::getline(inputFile, input);
         }
         try
         {
-            std::getline(std::cin, input);
             std::smatch matches;
             if (std::regex_search(input, matches, defintionExp))
             {
@@ -495,7 +518,7 @@ void shell(bool automatic)
                 // We got a valid who. Print out the map.
                 for (auto it = varTable.begin(); it!= varTable.end();++it)
                 {
-                    std::cout << it->first << std::endl;
+                    getOutput() << it->first << std::endl;
                 }
             }
             else if (std::regex_search(input, matches, print))
@@ -508,7 +531,7 @@ void shell(bool automatic)
                 std::string match = matchedArguments[0];
                 Graph result= validateExpression(matchedArguments[0], varTable);
                 // Add the result into the variable table.
-                std::cout << result << std::endl;
+                getOutput() << result << std::endl;
             }
             else if (std::regex_search(input, matches, deleteExp))
             {
@@ -553,7 +576,7 @@ void shell(bool automatic)
         }
         catch (const mtm::Exception& e)
         {
-            std::cout << e.what() << std::endl;
+            getOutput() << e.what() << std::endl;
         }
     }
 }
@@ -579,8 +602,6 @@ int main(int argCount, char *args[])
     case 3:
     {
         // Take the arguments and use them accordingly.
-        std::ifstream inputFile;
-        std::ofstream outputFile;
         outputFile.open(args[2]);
         inputFile.open(args[1]);
         if (!inputFile.is_open())
@@ -590,8 +611,6 @@ int main(int argCount, char *args[])
         else
         {
             // Change the buffers for the text.
-            std::cout.rdbuf(outputFile.rdbuf());
-            std::cin.rdbuf(inputFile.rdbuf());
             shell(true);
         }
         outputFile.close();
