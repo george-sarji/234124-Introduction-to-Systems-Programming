@@ -46,3 +46,10 @@ G2 = G*G + !(!{a,b|<a,b>} * G)
 print(G2)
 save({a,b|<a,b>}, works.gf)
 print(load(works.gf))
+P = {[a;]}
+L = {a;}
+save(P, extra.gf)
+print(load(extra.gf))
+L = {[a;]}
+L = {L}
+print(L)

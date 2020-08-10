@@ -148,7 +148,7 @@ Graph loadBinaryFile(std::string command)
     return g;
 }
 
-Graph createDefinition(std::string command)
+Graph createDefinition(std::string command, std::map<std::string, mtm::Graph> varTable)
 {
     Graph graph;
     int splitterPos = command.find("|");
@@ -161,6 +161,9 @@ Graph createDefinition(std::string command)
     {
         int firstComma = vertices.find(",");
         std::string current = vertices.substr(0, firstComma);
+        if(varTable.find(current) != varTable.end()) {
+            throw ReservedKeyword(current);
+        }
         // Get the current vertix.
         graph.addVertex(current);
         // Substring.
@@ -242,7 +245,7 @@ Graph fetchVariable(std::string command, std::map<std::string, Graph> varTable, 
             complement = true;
             command = command.substr(1, command.length()-1);
         }
-        Graph current = createDefinition(command);
+        Graph current = createDefinition(command, varTable);
         if (complement)
         {
             current = !current;

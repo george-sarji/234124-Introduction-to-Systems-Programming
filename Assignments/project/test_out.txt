@@ -177,3 +177,9 @@ a
 b
 $
 a b
+Error: Illegal vertex name 'a;'
+[a;]
+$
+Error: Variable named as reserved keyword 'L'
+[a;]
+$
