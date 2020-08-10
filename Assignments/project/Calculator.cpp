@@ -562,7 +562,7 @@ void shell(bool automatic)
                 std::regex_search(input, matches, saveArguments);
                 // Get the comma and substring accordingly.
                 std::string arguments = matches[0];
-                int comma = arguments.find(',');
+                int comma = arguments.find_last_of(',');
                 // Substring accordingly.
                 std::string expression = arguments.substr(1, comma-1), filename = arguments.substr(comma+1, arguments.length()-comma-2);
                 std::regex_search(filename, matches, std::regex("[^ ].+"));
