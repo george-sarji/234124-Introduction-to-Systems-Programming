@@ -1,0 +1,34 @@
+G = {|}
+print(G)
+print((G)
+F = G + !{a,b|<a,b>} + ({c,d} - G * {d,f})
+print(F)
+who
+reset
+print(F)
+who
+T = {t,t}
+T = !{a,b,c}
+F = {c,d} + !T
+reset = T + F
+who = T + F
+print(T)
+print(T + F + T ^ F)
+G = T + F + T ^ F
+print(G)
+test = T+ F * T^F
+print(!test)
+who
+reset(G)
+delete(K)
+save(test, out.t)
+crying = load(out.t)
+print(crying)
+who
+print(T)
+print(crying)
+who
+print(crying)
+print(G)
+save(G, graph_g.gf)
+loaded = load(graph_g.gf)
