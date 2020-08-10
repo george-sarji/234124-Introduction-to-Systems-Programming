@@ -1,0 +1,175 @@
+$
+Error: Undefined variable '((G)'
+[c;d]
+[c;f]
+[d;d]
+[d;f]
+a
+b
+$
+b a
+F
+G
+Error: Undefined variable 'F'
+Error: Duplicate vertex name 't'
+Error: Variable named as reserved keyword 'reset'
+Error: Variable named as reserved keyword 'who'
+a
+b
+c
+$
+a b
+a c
+b a
+b c
+c a
+c b
+a
+b
+c
+d
+$
+a
+b
+c
+d
+$
+$
+F
+G
+T
+test
+Error: Unrecognized command 'reset(G)'
+Error: Undefined variable 'K'
+$
+F
+G
+T
+crying
+test
+a
+b
+c
+$
+a b
+a c
+b a
+b c
+c a
+c b
+$
+F
+G
+T
+crying
+test
+$
+a
+b
+c
+d
+$
+a
+b
+c
+d
+$
+F
+G
+T
+crying
+test
+[a;c]
+[a;d]
+[b;c]
+[b;d]
+$
+if
+reading
+this
+youre
+$
+if youre
+if this
+reading if
+reading youre
+reading this
+this if
+this youre
+this reading
+youre if
+youre reading
+youre this
+[a;a]
+[a;b]
+[a;c]
+[a;d]
+[b;a]
+[b;b]
+[b;c]
+[b;d]
+[c;a]
+[c;b]
+[c;c]
+[c;d]
+[d;a]
+[d;b]
+[d;c]
+[d;d]
+$
+[a;a] [a;c]
+[a;a] [a;d]
+[a;a] [b;a]
+[a;a] [b;b]
+[a;a] [b;c]
+[a;a] [b;d]
+[a;a] [a;b]
+[a;b] [a;d]
+[a;b] [b;d]
+[a;b] [b;c]
+[a;b] [b;b]
+[a;b] [b;a]
+[a;b] [a;c]
+[a;b] [a;a]
+[a;c] [a;d]
+[a;c] [b;d]
+[a;c] [b;c]
+[a;c] [b;b]
+[a;c] [b;a]
+[a;c] [a;b]
+[a;c] [a;a]
+[a;d] [a;a]
+[a;d] [a;b]
+[a;d] [a;c]
+[a;d] [b;a]
+[a;d] [b;b]
+[a;d] [b;c]
+[a;d] [b;d]
+[b;a] [a;a]
+[b;a] [b;d]
+[b;a] [b;c]
+[b;a] [b;b]
+[b;a] [a;c]
+[b;a] [a;b]
+[b;a] [a;d]
+[b;b] [a;a]
+[b;b] [a;b]
+[b;b] [a;c]
+[b;b] [a;d]
+[b;b] [b;a]
+[b;b] [b;c]
+[b;b] [b;d]
+[b;c] [a;c]
+[b;c] [b;d]
+[b;c] [b;b]
+[b;c] [b;a]
+[b;c] [a;d]
+[b;c] [a;b]
+[b;c] [a;a]
+[b;d] [a;a]
+[b;d] [a;b]
+[b;d] [a;c]
+[b;d] [a;d]
+[b;d] [b;a]
+[b;d] [b;b]
+[b;d] [b;c]
