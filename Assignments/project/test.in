@@ -1,0 +1,100 @@
+g = {|}
+g = g
+g1 = {[;], [[];], [[[;]]], [[[;];];], [;[;[;]]] |}
+g1 = g1 + {[]]}
+g1 = {[;][;][;];}
+g1 = {[ ; ]}
+g1 = g1 + {[],|}
+g1=     g1 + {, []}
+g1 = g1 + {[] | <[],[]>}
+g1 = {error, edge| <error, edge}
+g1 = {error, edge| error, edge>}
+g1 = {a,b|<a,b>,}
+g1 = {a,b   |<  a b  >}
+g1 = {a,b|,<a,b>}
+print(g 1 )
+g    = g  *     g 1
+g  = g  *        g2
+g2 = {aa,bb,cc |    <aa,bb>   , <b b,aa>}
+g2 = {aa,bb,cc |    < aa ,bb  >   , <bb, aa>}
+(g1) = {a,b,c}
+who = {a,b,c}
+print = {a,b,c}
+save = {a,b,c}
+delete = {a,b,c}
+reset = {a,b,c}
+quit = {a,b,c}
+load = {a,b,c}
+who
+g3 = !g2
+print(g3)
+print(!g1)
+print(g1 * g1 * g1)
+save(g1 * g1 *      g1, sCaRy!-*^+;[].gc)
+g3 = {v1, v2, v3 | <v1,v2>, <v2,v3> , <v1,v3>} + {x}
+g4 = {v1}
+g3 = g3 -             g4
+print(g3)
+g2 = g * g1 + g + {a,b,c | <a,b>, <b,a>}
+delete(g1)
+g2 = g2 + g1
+g2 = {}}
+= {a,b}
+g2 =        
+print()
+g4 = !!!!
+g4 = !!!
+g4 = g2 ** g2 ++ g2 ^^g2
+g4 = g2 !! g2
+g4 = !(g2)*
+g4 = g2!
+g4 = g2!!^
+print((((g4))))
+who
+delete()
+reset
+who
+g = {}
+print((g))+({}))
+save((g)), graph.gc)
+save(g, graph,gc)
+save(g, gr()aph)
+save(g*graph, gc)
+save({a,b,c,d,e,f,g | <a,g>}g, graph.gc)
+save({a,b,c,d,e,f,g | <a,g>},   gr aph.gc  )
+print(load(  gr aph.gc   ))
+  g1 = {a} + {b} + {c} + {d} + {e} + {f,g} + {a,g|<a,g      >} - load(gr aph.gc) + {x}
+print(g1)
+print({a} + {b} + {c} + {d} + {e} + {f,g} + {a,g|<a,g      >} - load(gr aph.gc) ^ !(({a,b})))
+g2 = (g1) ^ (g ) + !{a,b,c,d,e,f,g|<a,g>} + load(  gr aph.gc  )
+print((((load(gr aph.gc) ^ g2) - (g1 - {x})) +   !{x,y|<x,y>}) - load(gr aph.gc  ))
+g2 =      load(f i l e)
+g2 =load*(save({a,b}, file))
+save({a,b,c},)
+print(load((gr aph.gc)))
+()
+print((!!(g1 + {x,y})) * (!!!(g1+!{x,y})))
+g33 = (g1 + {y |<x,y >}) + {<y,x>}
+g3 = (!((g1 + {x,y |<x,y >}) + {x,y | <y,x>})) - ({x} ^ {y} - g^load( sCaRy!-*^+;[].gc )) - {x,y}
+print(g3)
+Print = {print, load, save, quit, who, delete, reset | <print,load>}
+g g = Print
+1g = Print
+delete(g + g1)
+delete((g2))
+who
+reset
+save({error}, =)
+load(=)
+equal = load(=)
+print(load(=) + equal)
+g1 = {a,b,c,d| <a,b>,<a,c>,<a,d> }
+g2 = (((!(g1)) ^ {|}) + (!!(g1^g1)) - ((g1)+!(g1)) +((g1)*(g1)) - ((((g1*g1)))) + (g1*g1))
+print(g2 -{x,y,z, [a;a] |})
+delet e(g2)
+delete (g1)
+prin t   ({a})
+print({THE, END, THANKS, FOR, STOPPING, BY})
+who
+quit
+print({OMG})
