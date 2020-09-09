@@ -97,6 +97,23 @@ bool isValidLoad(std::string arguments, std::string load)
     return std::regex_match(arguments, fileExp) && load.find(arguments)!=std::string::npos;
 }
 
+bool isValidDef(std::string commands)
+{
+    // Go through the given command.
+    bool open = false;
+    for (auto it = commands.end()-1; it != commands.begin()-1; --it)
+    {
+        if (*it == '}')
+        {
+            open = true;
+        }
+        else if (*it == '{')
+        {
+            return open;
+        }
+    }
+    return false;
+}
 Graph loadBinaryFile(std::string command)
 {
     // Format the string.
@@ -443,7 +460,7 @@ Graph validateExpression(std::string expression, std::map<std::string, mtm::Grap
                     }
                 }
             }
-            else if (std::regex_match(sub, operationExp)|| std::regex_match(sub, defintionExp) || std::regex_match(sub, loadExp))
+            else if (std::regex_match(sub, operationExp) || isValidDef(sub) || std::regex_match(sub, loadExp))
             {
                 // Push into the vector.
                 commandsSplit.push_back(sub);
